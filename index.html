@@ -143,6 +143,8 @@
       display: inline-block;
       transition: background 0.3s ease;
       font-size: clamp(14px, 2.5vw, 16px);
+      border: none;
+      cursor: pointer;
     }
     .btn-primary {
       background: var(--gradient-accent);
@@ -150,45 +152,63 @@
     }
     .btn-primary:hover { background: #0095b6; }
 
-    /* Video Introduction */
+    /* Video Introduction - Optimized for Vimeo */
     .video-intro {
-      margin: 40px auto;
+      margin: 60px auto;
       text-align: center;
-      background: var(--card);
-      padding: clamp(24px, 5vw, 40px) 16px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      max-width: 800px;
+      max-width: 1200px;
+      padding: 0 16px;
     }
-    .video-intro::before {
+    .video-intro h2 {
+      font-size: clamp(24px, 5vw, 28px);
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .video-intro h2::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--gradient-accent);
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--accent);
     }
-    .video-intro h2 { margin-bottom: 20px; font-size: clamp(24px, 5vw, 28px); }
-    .video-container {
+    .video-wrapper {
       position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
+      width: 100%;
+      max-width: 640px; /* Larger for Vimeo’s 16:9 ratio */
+      margin: 0 auto;
       border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      aspect-ratio: 16 / 9; /* Standard Vimeo video ratio */
     }
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .video-wrapper iframe {
       width: 100%;
       height: 100%;
       border: none;
     }
     .video-fallback {
-      color: var(--muted);
-      font-size: clamp(14px, 2.5vw, 16px);
+      display: none; /* Hidden by default, shown via JS if needed */
       margin-top: 16px;
+      font-size: clamp(14px, 2.5vw, 16px);
+      color: var(--muted);
+    }
+    .video-fallback a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .video-fallback a:hover {
+      text-decoration: underline;
+    }
+    .video-caption {
+      margin-top: 16px;
+      font-size: clamp(14px, 2.5vw, 16px);
+      color: var(--muted);
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* Process */
@@ -249,34 +269,37 @@
     .service-list li { margin: 8px 0; color: var(--muted); font-size: clamp(14px, 2.5vw, 16px); }
     .service-list li::before { content: '→'; color: var(--accent-2); margin-right: 8px; }
 
-    /* Testimonials - Redesigned with slider */
+    /* Testimonials */
     .testimonials { margin: 40px auto; }
     .testimonials-grid {
-      display: flex;
-      overflow: hidden;
-      position: relative;
-      gap: 20px;
-      scroll-behavior: smooth;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 30px;
+      justify-content: center;
     }
     .testimonial {
-      background: var(--gradient-bg);
-      padding: 20px;
+      background: var(--card);
+      padding: 24px;
       border-radius: var(--radius);
       box-shadow: var(--shadow-sm);
-      flex: 0 0 100%;
-      max-width: 100%;
-      transition: transform 0.3s ease;
       position: relative;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .testimonial:hover { transform: translateY(-4px); }
+    .testimonial:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
     .testimonial::before {
       content: '“';
-      font-size: 48px;
+      font-size: 60px;
       color: var(--accent);
       position: absolute;
-      top: -10px;
-      left: 10px;
-      opacity: 0.2;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.1;
     }
     .testimonial-quote { 
       font-style: italic; 
@@ -294,21 +317,11 @@
       color: var(--muted); 
       font-size: clamp(12px, 2vw, 14px); 
     }
-    .slider-nav {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 20px;
+    .testimonial-stars {
+      color: #ffd700;
+      font-size: 20px;
+      margin-bottom: 8px;
     }
-    .slider-dot {
-      width: 10px;
-      height: 10px;
-      background: var(--muted);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .slider-dot.active { background: var(--accent); }
 
     /* Advantages */
     .advantages { margin: 40px auto; padding: 40px 0; background: var(--gradient-bg); }
@@ -351,7 +364,7 @@
     .cta ul li { font-size: clamp(14px, 2.5vw, 16px); }
     .cta ul li::before { content: '✓'; margin-right: 10px; }
 
-    /* Footer - Optimized without social links */
+    /* Footer */
     footer {
       background: var(--text);
       color: #f1f5f9;
@@ -406,16 +419,16 @@
     .newsletter-signup p {
       margin-bottom: 10px;
     }
-    .newsletter-signup a {
+    .newsletter-signup button {
       background: var(--gradient-accent);
       color: white;
       padding: clamp(8px, 2vw, 10px) clamp(16px, 3vw, 20px);
       border-radius: var(--radius);
-      text-decoration: none;
-      display: inline-block;
+      border: none;
+      cursor: pointer;
       font-size: clamp(14px, 2.5vw, 16px);
     }
-    .newsletter-signup a:hover {
+    .newsletter-signup button:hover {
       background: #0095b6;
     }
     .footer-bottom {
@@ -427,13 +440,65 @@
       margin: 0 auto;
     }
 
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: var(--card);
+      border-radius: var(--radius);
+      max-width: 800px;
+      width: 90%;
+      height: 80vh;
+      padding: 24px;
+      position: relative;
+      box-shadow: var(--shadow-md);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .modal-header h3 {
+      font-size: clamp(18px, 3vw, 20px);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .modal-close:hover { color: var(--accent); }
+    .modal-body {
+      height: calc(100% - 40px);
+      overflow: auto;
+    }
+    .modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .container { padding: 0 12px; }
       h1 { font-size: clamp(24px, 6vw, 28px); }
       .stats, .advantages-grid { flex-direction: column; align-items: center; }
       .process-grid, .services-grid { grid-template-columns: 1fr; }
-      .video-container { padding-bottom: 75%; }
+      .video-wrapper { max-width: 100%; }
       .footer-content { grid-template-columns: 1fr; text-align: center; }
       .footer-section { text-align: center; }
       .footer-section h4::after { left: 50%; transform: translateX(-50%); }
@@ -444,14 +509,16 @@
         position: absolute; 
         top: 60px; 
         left: 0; 
-        right: 0; 
+        right: 0;
         background: #ffffff; 
         padding: 16px; 
         box-shadow: var(--shadow-sm); 
       }
       .menu-toggle { display: block; }
-      .testimonials-grid { flex-direction: column; }
+      .testimonials-grid { grid-template-columns: 1fr; }
       .testimonial { flex: 0 0 100%; }
+      .modal-content { width: 95%; height: 90vh; padding: 16px; }
+      .modal-body { height: calc(100% - 40px); }
     }
     @media (min-width: 769px) and (max-width: 1024px) {
       .container { padding: 0 16px; }
@@ -459,13 +526,13 @@
       .stats { gap: 24px; }
       .process-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
       .services-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-      .testimonials-grid { flex-wrap: nowrap; }
-      .testimonial { flex: 0 0 48%; max-width: 48%; }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-content { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .video-wrapper { max-width: 560px; }
     }
     @media (min-width: 1025px) {
-      .testimonials-grid { flex-wrap: nowrap; }
-      .testimonial { flex: 0 0 32%; max-width: 32%; }
+      .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+      .video-wrapper { max-width: 640px; }
     }
     </style>
 </head>
@@ -480,7 +547,7 @@
           <a href="#services" class="translatable" data-en="Services" data-zh="服务">Services</a>
           <a href="#testimonials" class="translatable" data-en="Clients" data-zh="客户">Clients</a>
           <a href="#faq" class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</a>
-          <a href="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjpkMmdSpHDaJ4Wcn2xoQJeqb" target="_blank" class="translatable" data-en="Submit Requirements" data-zh="提交需求">Submit Requirements</a>
+          <button class="translatable" data-modal="open" data-en="Submit Requirements" data-zh="提交需求">Submit Requirements</button>
         </nav>
         <div class="language-switcher">
           <button data-lang="en" class="active" aria-label="Switch to English">English</button>
@@ -513,15 +580,24 @@
           <li class="translatable" data-en="Done-for-you team matching that actually works" data-zh="为您完成的团队匹配，真正有效">Done-for-you team matching that actually works</li>
           <li class="translatable" data-en="Full project guarantee with supervision" data-zh="全程监督的项目保证">Full project guarantee with supervision</li>
         </ul>
-        <a class="btn btn-primary translatable" href="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjpkMmdSpHDaJ4Wcn2xoQJeqb" target="_blank" data-en="Start in 1 Minute" data-zh="1分钟开始">Start in 1 Minute</a>
+        <button class="btn btn-primary translatable" data-modal="open" data-en="Start in 1 Minute" data-zh="1分钟开始">Start in 1 Minute</button>
       </section>
 
       <section class="video-intro container" id="video">
         <h2 class="translatable" data-en="Discover GOAOXOR" data-zh="了解GOAOXOR">Discover GOAOXOR</h2>
-        <div class="video-container">
-          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="GOAOXOR Introduction Video" allowfullscreen></iframe>
+        <div class="video-wrapper">
+          <!-- Placeholder: Replace with your own Vimeo video embed URL (e.g., https://player.vimeo.com/video/YOUR_VIDEO_ID) -->
+          <iframe
+            src="https://player.vimeo.com/video/76979871?background=0"
+            title="GOAOXOR Creative Team Introduction Video"
+            loading="lazy"
+            allowfullscreen
+          ></iframe>
+          <div class="video-fallback translatable" data-en="Video unavailable. Visit our website or contact us for more." data-zh="视频不可用。请访问我们的网站或联系我们了解更多。">
+            Video unavailable. Visit our <a href="https://goaoxor.com" target="_blank">website</a> or <a href="mailto:info@goaoxor.com">contact us</a> for more.
+          </div>
         </div>
-        <p class="video-fallback translatable" data-en="Your browser does not support video playback. Contact us at info@goaoxor.com for more information." data-zh="您的浏览器不支持视频播放。请通过info@goaoxor.com联系我们了解更多信息。">Your browser does not support video playback. Contact us at info@goaoxor.com for more information.</p>
+        <p class="video-caption translatable" data-en="Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects." data-zh="探索GOAOXOR如何为您连接影视、动画和视频项目的顶级创意人才。">Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects.</p>
       </section>
 
       <section class="process container" id="process">
@@ -558,7 +634,7 @@
       <section class="cta container" id="contact-cta">
         <h2 class="translatable" data-en="Ready to Start Your Project?" data-zh="准备好开始您的项目了吗？">Ready to Start Your Project?</h2>
         <p class="translatable" data-en="We'll guide you every step of the way - from defining the project to successful delivery." data-zh="我们将全程指导您 - 从定义项目到成功交付。">We'll guide you every step of the way - from defining the project to successful delivery.</p>
-        <a class="btn btn-primary translatable" href="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjpkMmdSpHDaJ4Wcn2xoQJeqb" target="_blank" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</a>
+        <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
       </section>
 
       <section class="services container" id="services">
@@ -601,27 +677,37 @@
 
       <section class="testimonials container" id="testimonials">
         <h2 class="translatable" data-en="Trusted by Our Clients" data-zh="客户信赖">Trusted by Our Clients</h2>
-        <div class="testimonials-grid" role="region" aria-label="Testimonials slider">
+        <div class="testimonials-grid">
           <div class="testimonial">
-            <p class="testimonial-quote translatable" data-en="GOAOXOR's seamless matching saved us 60% on our video campaign, delivering stunning quality on time." data-zh="GOAOXOR的无缝匹配为我们的视频活动节省了60%的成本，按时交付了惊艳的质量。">GOAOXOR's seamless matching saved us 60% on our video campaign, delivering stunning quality on time.</p>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="GOAOXOR's seamless matching saved us 60% on our video campaign, delivering stunning quality on time—absolutely transformative!" data-zh="GOAOXOR的无缝匹配为我们的视频活动节省了60%的成本，按时交付了惊艳的质量—绝对是变革性的！">GOAOXOR's seamless matching saved us 60% on our video campaign, delivering stunning quality on time—absolutely transformative!</p>
             <div class="testimonial-author">Aiden Clark</div>
             <div class="testimonial-company translatable" data-en="ArcStone Founder" data-zh="ArcStone创始人">ArcStone Founder</div>
           </div>
           <div class="testimonial">
-            <p class="testimonial-quote translatable" data-en="Their professional oversight ensured our animation project was flawless, exceeding all expectations." data-zh="他们的专业监督确保我们的动画项目完美无瑕，超出了所有期望。">Their professional oversight ensured our animation project was flawless, exceeding all expectations.</p>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="Their professional oversight ensured our animation project was flawless, exceeding all expectations with creative brilliance!" data-zh="他们的专业监督确保我们的动画项目完美无瑕，以创意 brilliance 超出了所有期望！">Their professional oversight ensured our animation project was flawless, exceeding all expectations with creative brilliance!</p>
             <div class="testimonial-author">Anna Tan</div>
             <div class="testimonial-company translatable" data-en="Dynamic Marketing Lead" data-zh="动态营销负责人">Dynamic Marketing Lead</div>
           </div>
           <div class="testimonial">
-            <p class="testimonial-quote translatable" data-en="Top-notch team selection and management cut our production time in half with exceptional results." data-zh="顶尖的团队选择和管理将我们的生产时间缩短了一半，成果卓越。">Top-notch team selection and management cut our production time in half with exceptional results.</p>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="Top-notch team selection and management cut our production time in half with exceptional, vibrant results!" data-zh="顶尖的团队选择和管理将我们的生产时间缩短了一半，成果卓越且充满活力！">Top-notch team selection and management cut our production time in half with exceptional, vibrant results!</p>
             <div class="testimonial-author">Dayne Kamela</div>
             <div class="testimonial-company translatable" data-en="LitWithPrayer Creative Director" data-zh="LitWithPrayer创意总监">LitWithPrayer Creative Director</div>
           </div>
-        </div>
-        <div class="slider-nav">
-          <div class="slider-dot active" data-slide="0"></div>
-          <div class="slider-dot" data-slide="1"></div>
-          <div class="slider-dot" data-slide="2"></div>
+          <div class="testimonial">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="Impressive cost savings and high-quality output on our short video series—GOAOXOR is a game-changer!" data-zh="我们的短视频系列取得了令人印象深刻的成本节省和高品质输出—GOAOXOR是变革者！">Impressive cost savings and high-quality output on our short video series—GOAOXOR is a game-changer!</p>
+            <div class="testimonial-author">Nick Wingo</div>
+            <div class="testimonial-company translatable" data-en="Architectural Visualization Supervisor" data-zh="建筑可视化主管">Architectural Visualization Supervisor</div>
+          </div>
+          <div class="testimonial">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="Efficient, reliable, and budget-friendly—GOAOXOR transformed our creative workflow with stunning efficiency!" data-zh="高效、可靠且预算友好—GOAOXOR以惊人的效率改变了我们的创意工作流程！">Efficient, reliable, and budget-friendly—GOAOXOR transformed our creative workflow with stunning efficiency!</p>
+            <div class="testimonial-author">Fady Gamal</div>
+            <div class="testimonial-company translatable" data-en="G-Mobile Marketing Director" data-zh="G-Mobile营销总监">G-Mobile Marketing Director</div>
+          </div>
         </div>
       </section>
 
@@ -659,26 +745,36 @@
           <li class="translatable" data-en="Pay when you match - never upfront" data-zh="匹配时支付 - 无需预付">Pay when you match - never upfront</li>
           <li class="translatable" data-en="Full supervision guarantee - risk-free collaboration" data-zh="全程监督保证 - 无风险协作">Full supervision guarantee - risk-free collaboration</li>
         </ul>
-        <a class="btn btn-primary translatable" href="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjpkMmdSpHDaJ4Wcn2xoQJeqb" target="_blank" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</a>
+        <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
       </section>
 
       <section class="testimonials container">
         <h2 class="translatable" data-en="More Success Stories" data-zh="更多成功案例">More Success Stories</h2>
-        <div class="testimonials-grid" role="region" aria-label="Testimonials slider">
+        <div class="testimonials-grid">
           <div class="testimonial">
-            <p class="testimonial-quote translatable" data-en="GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost." data-zh="GOAOXOR简化了我们的影视项目，以极低的成本交付了卓越的质量。">GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost.</p>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost—truly game-changing!" data-zh="GOAOXOR简化了我们的影视项目，以极低的成本交付了卓越的质量—真正改变了游戏规则！">GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost—truly game-changing!</p>
             <div class="testimonial-author">Simon Ellery</div>
             <div class="testimonial-company translatable" data-en="White Rabbit" data-zh="白兔">White Rabbit</div>
           </div>
           <div class="testimonial">
-            <p class="testimonial-quote translatable" data-en="Their expert team matching cut our production timeline by 40%, with outstanding results." data-zh="他们的专家团队匹配将我们的生产时间缩短了40%，成果卓越。">Their expert team matching cut our production timeline by 40%, with outstanding results.</p>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="Their expert team matching cut our production timeline by 40%, with outstanding, vibrant results that wowed our audience!" data-zh="他们的专家团队匹配将我们的生产时间缩短了40%，成果卓越且充满活力，让我们的观众惊叹！">Their expert team matching cut our production timeline by 40%, with outstanding, vibrant results that wowed our audience!</p>
             <div class="testimonial-author">Sam Turner</div>
             <div class="testimonial-company translatable" data-en="GreenTree Real Estate" data-zh="绿树房地产">GreenTree Real Estate</div>
           </div>
-        </div>
-        <div class="slider-nav">
-          <div class="slider-dot active" data-slide="0"></div>
-          <div class="slider-dot" data-slide="1"></div>
+          <div class="testimonial">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="Outstanding service and incredible value—GOAOXOR made our brand visuals come to life effortlessly with creative flair!" data-zh="优秀的服务和惊人的价值—GOAOXOR轻松地让我们的品牌视觉活起来，充满创意 flair！">Outstanding service and incredible value—GOAOXOR made our brand visuals come to life effortlessly with creative flair!</p>
+            <div class="testimonial-author">Emily Lee</div>
+            <div class="testimonial-company translatable" data-en="Design Studio Owner" data-zh="设计工作室所有者">Design Studio Owner</div>
+          </div>
+          <div class="testimonial">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote translatable" data-en="The sound design team exceeded our expectations, providing high-quality audio at an unbeatable price with immersive soundscapes!" data-zh="声音设计团队超出了我们的期望，以无敌的价格提供高质量音频，沉浸式 soundscapes！">The sound design team exceeded our expectations, providing high-quality audio at an unbeatable price with immersive soundscapes!</p>
+            <div class="testimonial-author">Michael Zhang</div>
+            <div class="testimonial-company translatable" data-en="Media Production Manager" data-zh="媒体生产经理">Media Production Manager</div>
+          </div>
         </div>
       </section>
 
@@ -724,18 +820,31 @@
         <div class="footer-section">
           <h4 class="translatable" data-en="Connect With Us" data-zh="联系我们">Connect With Us</h4>
           <a href="mailto:info@goaoxor.com" class="translatable" data-en="Email: info@goaoxor.com" data-zh="邮箱：info@goaoxor.com"><span class="icon">✉️</span>Email: info@goaoxor.com</a>
-          <a href="tel:+1234567890" class="translatable" data-en="Phone: +1 (234) 567-890" data-zh="电话：+1 (234) 567-890"><span class="icon">📞</span>Phone: +1 (234) 567-890</a>
+          <a href="https://www.tiktok.com/@emmamanlay" target="_blank" class="translatable" data-en="TikTok: @emmamanlay" data-zh="TikTok：@emmamanlay"><span class="icon">🎵</span>TikTok: @emmamanlay</a>
         </div>
         <div class="footer-section">
           <h4 class="translatable" data-en="Stay Updated" data-zh="保持更新">Stay Updated</h4>
           <p class="translatable" data-en="Subscribe to our newsletter for the latest creative insights." data-zh="订阅我们的时事通讯，获取最新的创意洞察。">Subscribe to our newsletter for the latest creative insights.</p>
           <div class="newsletter-signup">
-            <a href="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjpkMmdSpHDaJ4Wcn2xoQJeqb" target="_blank" class="translatable" data-en="Join Now" data-zh="立即加入">Join Now</a>
+            <button class="translatable" data-modal="open" data-en="Join Now" data-zh="立即加入">Join Now</button>
           </div>
         </div>
       </div>
       <div class="footer-bottom container translatable" data-en="© 2025 GOAOXOR. All Rights Reserved." data-zh="© 2025 GOAOXOR。版权所有。">© 2025 GOAOXOR. All Rights Reserved.</div>
     </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="form-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="translatable" data-en="Submit Your Project" data-zh="提交您的项目">Submit Your Project</h3>
+          <button class="modal-close" aria-label="Close modal">×</button>
+        </div>
+        <div class="modal-body">
+          <iframe class="modal-iframe" src="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjpkMmdSpHDaJ4Wcn2xoQJeqb" title="GOAOXOR Project Form" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
 
     <script>
     // Language Switcher
@@ -779,27 +888,27 @@
       document.querySelector('nav').classList.toggle('active');
     });
 
-    // Testimonials Slider
-    document.querySelectorAll('.testimonials-grid').forEach(grid => {
-      const testimonials = grid.querySelectorAll('.testimonial');
-      const dots = grid.nextElementSibling.querySelectorAll('.slider-dot');
-      let currentIndex = 0;
-
-      function showSlide(index) {
-        testimonials.forEach((testimonial, i) => {
-          testimonial.style.display = i === index ? 'block' : 'none';
-          dots[i].classList.toggle('active', i === index);
-        });
-      }
-
-      dots.forEach(dot => {
-        dot.addEventListener('click', () => {
-          currentIndex = parseInt(dot.dataset.slide);
-          showSlide(currentIndex);
-        });
+    // Modal Toggle
+    const modal = document.querySelector('#form-modal');
+    document.querySelectorAll('[data-modal="open"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        modal.style.display = 'flex';
       });
+    });
+    document.querySelector('.modal-close').addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+    modal.addEventListener('click', e => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
 
-      showSlide(currentIndex);
+    // Video Fallback Handling
+    const iframe = document.querySelector('.video-wrapper iframe');
+    iframe.addEventListener('error', () => {
+      document.querySelector('.video-fallback').style.display = 'block';
+      iframe.style.display = 'none';
     });
     </script>
 </body>
