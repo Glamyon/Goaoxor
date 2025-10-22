@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goaoxor 费用计算器</title>
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
+    .calculator-container { max-width: 800px; margin: 50px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .pricing-table { margin-bottom: 30px; }
+    .result-section { margin-top: 30px; border-top: 1px solid #dee2e6; padding-top: 20px; }
+    .lang-toggle { position: absolute; top: 10px; right: 10px; }
+    .error { color: red; font-size: 0.9em; margin-top: 5px; display: none; }
+    .note { font-size: 0.9em; color: #6c757d; margin-top: 10px; }
+    .section-title { font-weight: bold; color: #495057; }
+    .btn-primary { padding: 10px; font-size: 1.1em; }
+    .btn-secondary { padding: 10px; font-size: 1.1em; margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <div class="lang-toggle">
+    <button class="btn btn-outline-primary btn-sm" onclick="toggleLanguage()">English</button>
+  </div>
+  <div class="calculator-container">
+    <h2 class="text-center mb-4" id="title">Goaoxor 费用计算器</h2>
+    <p id="description">输入项目价值，查看客户中介费（单独支付，Wise）和团队介绍费（从项目费用扣除，微信/支付宝）。费用根据预算范围分级计算。</p>
+    
+    <!-- 定价表 -->
+    <h4 class="mb-3" id="pricingTableTitle">定价表</h4>
+    <table class="table table-bordered pricing-table">
+      <thead>
+        <tr>
+          <th id="tableValue">项目价值</th>
+          <th id="tableClientFee">客户中介费 (Wise，单独)</th>
+          <th id="tableProviderFee">团队介绍费 (微信/支付宝，从项目扣)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>$300以下</td><td>$30 (固定)</td><td>10% ($10-$30, 20%保证金)</td></tr>
+        <tr><td>$301-800</td><td>$50 (固定)</td><td>10% ($30-$80, 20%保证金)</td></tr>
+        <tr><td>$801-2000</td><td>$80 (固定)</td><td>8% ($64-$160, 20%保证金)</td></tr>
+        <tr><td>$2001-5000</td><td>$100 (固定)</td><td>6% ($120-$300, 上限$150, 20%保证金)</td></tr>
+        <tr><td>$5001+</td><td>$150 (固定)</td><td>5% ($250-$500, 上限$200, 20%保证金)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 输入表单 -->
+    <form id="calculatorForm">
+      <div class="mb-3">
+        <label for="projectValue" class="form-label" id="labelProjectValue">项目价值（美元，$100-$10000）</label>
+        <input type="number" class="form-control" id="projectValue" min="100" max="10000" placeholder="输入项目价值" required>
+        <div id="errorMessage" class="error">请输入$100-$10000之间的数字。</div>
+      </div>
+      <div class="mb-3">
+        <label for="budgetRange" class="form-label" id="labelBudgetRange">预算范围</label>
+        <select class="form-select" id="budgetRange">
+          <option value="0">$300以下</option>
+          <option value="1">$301-$800</option>
+          <option value="2">$801-$2000</option>
+          <option value="3">$2001-$5000</option>
+          <option value="4">$5001以上</option>
+        </select>
+      </div>
+      <div class="d-flex">
+        <button type="submit" class="btn btn-primary" id="calculateButton">计算费用</button>
+        <button type="button" class="btn btn-secondary" id="resetButton">重置</button>
+      </div>
+    </form>
+
+    <!-- 结果显示 -->
+    <div class="result-section" id="resultSection" style="display: none;">
+      <h4 class="mb-3" id="resultTitle">费用明细</h4>
+      
+      <div class="mb-4">
+        <h5 class="section-title" id="clientSectionTitle">客户费用明细</h5>
+        <table class="table table-bordered">
+          <tr><th id="tableClientFee">客户中介费（Wise，单独支付）</th><td id="clientFee"></td></tr>
+          <tr><th id="tableClientCost">客户总成本（中介费+项目价值）</th><td id="clientCost"></td></tr>
+        </table>
+        <p class="note" id="clientNote">客户通过Wise支付中介费（<a href="https://wise.com" target="_blank">教程</a>），不计入项目费用。</p>
+      </div>
+      
+      <div>
+        <h5 class="section-title" id="providerSectionTitle">团队费用明细</h5>
+        <table class="table table-bordered">
+          <tr><th id="tableProviderFee">团队介绍费（微信/支付宝，从项目费用扣除）</th><td id="providerFee"></td></tr>
+          <tr><th id="tableProviderDeposit">团队介绍费保证金（20%）</th><td id="providerDeposit"></td></tr>
+          <tr><th id="tableProviderBalance">团队介绍费尾款（80%）</th><td id="providerBalance"></td></tr>
+          <tr><th id="tableProviderNet">团队实际收入（项目价值-介绍费）</th><td id="providerNet"></td></tr>
+        </table>
+        <p class="note" id="providerNote">团队通过微信/支付宝支付介绍费（20%保证金，交付后80%尾款），从项目费用扣除。</p>
+      </div>
+      
+      <p class="note" id="paymentNote">客户与团队直接协商项目费用，定金20%-50%（PayPal/Wise等），需提供支付截图（Lark群）。Goaoxor仅收取中介费和介绍费，不代收项目款。</p>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5.3 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let isEnglish = false;
+
+    function toggleLanguage() {
+      isEnglish = !isEnglish;
+      updateText();
+    }
+
+    function updateText() {
+      document.getElementById('title').textContent = isEnglish ? 'Goaoxor Pricing Calculator' : 'Goaoxor 费用计算器';
+      document.getElementById('description').textContent = isEnglish
+        ? 'Enter project value to calculate client intermediary fee (separate, via Wise) and provider referral fee (deducted from project value, via WeChat/Alipay). Fees are tiered by budget range.'
+        : '输入项目价值，查看客户中介费（单独支付，Wise）和团队介绍费（从项目费用扣除，微信/支付宝）。费用根据预算范围分级计算。';
+      document.getElementById('pricingTableTitle').textContent = isEnglish ? 'Pricing Table' : '定价表';
+      document.getElementById('tableValue').textContent = isEnglish ? 'Project Value' : '项目价值';
+      document.getElementById('tableClientFee').textContent = isEnglish ? 'Client Intermediary Fee (Wise, separate)' : '客户中介费 (Wise，单独)';
+      document.getElementById('tableProviderFee').textContent = isEnglish ? 'Provider Referral Fee (WeChat/Alipay, deducted)' : '团队介绍费 (微信/支付宝，从项目扣)';
+      document.getElementById('labelProjectValue').textContent = isEnglish ? 'Project Value (USD, $100-$10000)' : '项目价值（美元，$100-$10000）';
+      document.getElementById('labelBudgetRange').textContent = isEnglish ? 'Budget Range' : '预算范围';
+      document.getElementById('budgetRange').innerHTML = isEnglish
+        ? `<option value="0">Below $300</option><option value="1">$301-$800</option><option value="2">$801-$2000</option><option value="3">$2001-$5000</option><option value="4">Above $5001</option>`
+        : `<option value="0">$300以下</option><option value="1">$301-$800</option><option value="2">$801-$2000</option><option value="3">$2001-$5000</option><option value="4">$5001以上</option>`;
+      document.getElementById('calculateButton').textContent = isEnglish ? 'Calculate Fees' : '计算费用';
+      document.getElementById('resetButton').textContent = isEnglish ? 'Reset' : '重置';
+      document.getElementById('resultTitle').textContent = isEnglish ? 'Fee Breakdown' : '费用明细';
+      document.getElementById('clientSectionTitle').textContent = isEnglish ? 'Client Fee Details' : '客户费用明细';
+      document.getElementById('providerSectionTitle').textContent = isEnglish ? 'Provider Fee Details' : '团队费用明细';
+      document.getElementById('tableClientFee').textContent = isEnglish ? 'Client Intermediary Fee (Wise, separate)' : '客户中介费（Wise，单独支付）';
+      document.getElementById('tableClientCost').textContent = isEnglish ? 'Client Total Cost (Intermediary Fee + Project Value)' : '客户总成本（中介费+项目价值）';
+      document.getElementById('tableProviderFee').textContent = isEnglish ? 'Provider Referral Fee (WeChat/Alipay, deducted from project)' : '团队介绍费（微信/支付宝，从项目费用扣除）';
+      document.getElementById('tableProviderDeposit').textContent = isEnglish ? 'Provider Referral Fee Deposit (20%)' : '团队介绍费保证金（20%）';
+      document.getElementById('tableProviderBalance').textContent = isEnglish ? 'Provider Referral Fee Balance (80%)' : '团队介绍费尾款（80%）';
+      document.getElementById('tableProviderNet').textContent = isEnglish ? 'Provider Net Income (Project Value - Referral Fee)' : '团队实际收入（项目价值-介绍费）';
+      document.getElementById('clientNote').innerHTML = isEnglish 
+        ? 'Clients pay the intermediary fee via Wise (<a href="https://wise.com" target="_blank">tutorial</a>), separate from project value.'
+        : '客户通过Wise支付中介费（<a href="https://wise.com" target="_blank">教程</a>），不计入项目费用。';
+      document.getElementById('providerNote').textContent = isEnglish 
+        ? 'Providers pay the referral fee via WeChat/Alipay (20% deposit, 80% balance after delivery), deducted from project value.'
+        : '团队通过微信/支付宝支付介绍费（20%保证金，交付后80%尾款），从项目费用扣除。';
+      document.getElementById('paymentNote').textContent = isEnglish 
+        ? 'Clients and providers negotiate project value directly, with a 20%-50% deposit (e.g., PayPal/Wise), and provide payment screenshots (Lark group). Goaoxor only charges intermediary and referral fees, not handling project payments.'
+        : '客户与团队直接协商项目费用，定金20%-50%（PayPal/Wise等），需提供支付截图（Lark群）。Goaoxor仅收取中介费和介绍费，不代收项目款。';
+      document.getElementById('errorMessage').textContent = isEnglish ? 'Please enter a number between $100 and $10000.' : '请输入$100-$10000之间的数字。';
+    }
+
+    function calculateFees() {
+      const projectValue = parseFloat(document.getElementById('projectValue').value);
+      const errorMessage = document.getElementById('errorMessage');
+      const resultSection = document.getElementById('resultSection');
+
+      if (isNaN(projectValue) || projectValue < 100 || projectValue > 10000) {
+        errorMessage.style.display = 'block';
+        resultSection.style.display = 'none';
+        return;
+      }
+      errorMessage.style.display = 'none';
+
+      let clientFee, providerFee, providerDeposit, providerBalance, providerNet, clientCost;
+
+      if (projectValue <= 300) {
+        clientFee = 30;
+        providerFee = Math.max(10, Math.min(30, projectValue * 0.1));
+      } else if (projectValue <= 800) {
+        clientFee = 50;
+        providerFee = Math.max(30, Math.min(80, projectValue * 0.1));
+      } else if (projectValue <= 2000) {
+        clientFee = 80;
+        providerFee = Math.max(64, Math.min(160, projectValue * 0.08));
+      } else if (projectValue <= 5000) {
+        clientFee = 100;
+        providerFee = Math.max(120, Math.min(150, projectValue * 0.06));
+      } else {
+        clientFee = 150;
+        providerFee = Math.max(250, Math.min(200, projectValue * 0.05));
+      }
+
+      providerDeposit = providerFee * 0.2;
+      providerBalance = providerFee * 0.8;
+      providerNet = projectValue - providerFee;
+      clientCost = clientFee + projectValue;
+
+      document.getElementById('clientFee').textContent = `$${clientFee.toFixed(2)}`;
+      document.getElementById('clientCost').textContent = `$${clientCost.toFixed(2)}`;
+      document.getElementById('providerFee').textContent = `$${providerFee.toFixed(2)}`;
+      document.getElementById('providerDeposit').textContent = `$${providerDeposit.toFixed(2)}`;
+      document.getElementById('providerBalance').textContent = `$${providerBalance.toFixed(2)}`;
+      document.getElementById('providerNet').textContent = `$${providerNet.toFixed(2)}`;
+
+      resultSection.style.display = 'block';
+    }
+
+    document.getElementById('calculatorForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      calculateFees();
+    });
+
+    document.getElementById('projectValue').addEventListener('input', function () {
+      const value = parseFloat(this.value);
+      const select = document.getElementById('budgetRange');
+      if (!isNaN(value)) {
+        if (value <= 300) select.value = '0';
+        else if (value <= 800) select.value = '1';
+        else if (value <= 2000) select.value = '2';
+        else if (value <= 5000) select.value = '3';
+        else select.value = '4';
+        calculateFees();
+      }
+    });
+
+    document.getElementById('resetButton').addEventListener('click', function () {
+      document.getElementById('calculatorForm').reset();
+      document.getElementById('resultSection').style.display = 'none';
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('budgetRange').value = '0';
+    });
+
+    // 初始化文本
+    updateText();
+  </script>
+</body>
+</html>
