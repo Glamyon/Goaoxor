@@ -24,8 +24,8 @@
       --shadow-md: 0 6px 16px rgba(0,0,0,0.1);
       --gradient-bg: linear-gradient(135deg, #e6f7ff, #f0f9ff);
       --gradient-accent: linear-gradient(90deg, #00b4d8, #3db6f0);
-      --success-bg: #f1f5f9; /* For success stories section */
-      --success-accent: #3b82f6; /* Blue accent for success stories */
+      --success-bg: #f1f5f9;
+      --success-accent: #3b82f6;
     }
 
     *,*:before,*:after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -214,7 +214,7 @@
       margin-right: auto;
     }
 
-    /* Process - Optimized number styling */
+    /* Process */
     .process { margin: 40px auto; }
     h2 {
       font-size: clamp(24px, 5vw, 28px);
@@ -263,7 +263,7 @@
     .step-title { font-size: clamp(18px, 3vw, 20px); font-weight: 600; margin: 8px 0; }
     .step-desc { color: var(--muted); font-size: clamp(14px, 2.5vw, 16px); }
 
-    /* Services */
+    /* Services - Updated with new 'More' card */
     .services { margin: 40px auto; background: var(--gradient-bg); padding: 40px 0; }
     .services-grid {
       display: grid;
@@ -359,7 +359,7 @@
       margin-bottom: 8px;
     }
 
-    /* Testimonials - Success Stories (New Style) */
+    /* Testimonials - Success Stories */
     .testimonials.success-stories {
       margin: 40px auto;
       background: var(--success-bg);
@@ -684,7 +684,6 @@
       <section class="video-intro container" id="video">
         <h2 class="translatable" data-en="Discover GOAOXOR" data-zh="了解GOAOXOR">Discover GOAOXOR</h2>
         <div class="video-wrapper">
-          <!-- Placeholder: Replace with your own Vimeo video embed URL (e.g., https://player.vimeo.com/video/YOUR_VIDEO_ID) -->
           <iframe
             src="https://player.vimeo.com/video/76979871?background=0"
             title="GOAOXOR Creative Team Introduction Video"
@@ -768,6 +767,14 @@
               <li class="translatable" data-en="Sound Design" data-zh="声音设计">Sound Design</li>
               <li class="translatable" data-en="Voiceover" data-zh="配音">Voiceover</li>
               <li class="translatable" data-en="Music Composition" data-zh="音乐创作">Music Composition</li>
+            </ul>
+          </div>
+          <div class="service-category">
+            <div class="service-title translatable" data-en="More" data-zh="更多">More</div>
+            <ul class="service-list">
+              <li class="translatable" data-en="Game Art" data-zh="游戏美术">Game Art</li>
+              <li class="translatable" data-en="Virtual Reality" data-zh="虚拟现实">Virtual Reality</li>
+              <li class="translatable" data-en="Creative Consulting" data-zh="创意咨询">Creative Consulting</li>
             </ul>
           </div>
         </div>
