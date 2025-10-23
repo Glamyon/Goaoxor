@@ -1,181 +1,216 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <title>Goaoxor 内部后台</title>
-    <style>
-        * { box-sizing: border-box; margin:0; padding:0; }
-        body { font-family: "微软雅黑", Arial, sans-serif; background: #f5f5f5; }
+<meta charset="UTF-8">
+<title>Goaoxor 管理后台</title>
+<style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family:"微软雅黑", Arial, sans-serif; background:#f0f2f5; }
 
-        /* 登录界面 */
-        #loginDiv { display: flex; justify-content: center; align-items: center; height: 100vh; }
-        #loginCard { background: white; padding: 40px; border-radius: 10px; width: 350px; box-shadow: 0 0 15px rgba(0,0,0,0.2); text-align: center; }
-        #loginCard h2 { margin-bottom: 20px; }
-        #loginCard input { width: 80%; padding: 10px; margin: 10px 0; font-size: 16px; }
-        #loginCard button { width: 84%; padding: 10px; margin-top: 10px; background: #007BFF; color:white; border:none; border-radius:5px; cursor:pointer; font-size:16px; }
-        #loginCard button:hover { background:#0056b3; }
-        #loginMsg { margin-top:10px; color:red; font-size:14px; }
+    /* 登录界面 */
+    #loginDiv { display:flex; justify-content:center; align-items:center; height:100vh; }
+    #loginCard { background:white; padding:40px; border-radius:12px; width:380px; box-shadow:0 8px 20px rgba(0,0,0,0.2); text-align:center; }
+    #loginCard h2 { margin-bottom:20px; color:#2c3e50; }
+    #loginCard input { width:80%; padding:12px; margin:12px 0; font-size:16px; border:1px solid #ccc; border-radius:6px; }
+    #loginCard button { width:84%; padding:12px; margin-top:10px; background: linear-gradient(90deg,#4facfe,#00f2fe); color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; transition:0.3s; }
+    #loginCard button:hover { opacity:0.85; }
+    #loginMsg { margin-top:10px; color:red; font-size:14px; }
 
-        /* 主后台布局 */
-        #mainDiv { display: flex; min-height: 100vh; display:none; }
-        #sidebar { width: 220px; background: #2c3e50; color:white; padding-top:20px; flex-shrink:0; }
-        #sidebar h3 { text-align:center; margin-bottom:20px; font-weight:normal; }
-        #sidebar button {
-            width: 100%; padding:12px; border:none; background:none; color:white; text-align:left; padding-left:20px;
-            font-size:16px; cursor:pointer; outline:none; transition:0.2s;
-        }
-        #sidebar button:hover, #sidebar .active { background:#34495e; }
+    /* 主后台布局 */
+    #mainDiv { display:flex; height:100vh; display:none; overflow:hidden; }
+    #sidebar { width:220px; background:#2c3e50; color:white; flex-shrink:0; display:flex; flex-direction:column; padding-top:20px; }
+    #sidebar h3 { text-align:center; margin-bottom:20px; font-weight:normal; font-size:18px; }
+    #sidebar button {
+        width:100%; padding:14px; border:none; background:none; color:white; text-align:left; padding-left:25px;
+        font-size:16px; cursor:pointer; outline:none; transition:0.2s;
+    }
+    #sidebar button:hover, #sidebar .active { background:#34495e; }
 
-        #content { flex:1; padding:30px; background:#ecf0f1; }
-        #content h2 { margin-bottom:20px; }
+    #content { flex:1; padding:25px; background:#ecf0f1; overflow-y:auto; }
+    #topBar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    #topBar .welcome { font-size:18px; color:#2c3e50; }
+    #topBar .time { font-size:14px; color:#7f8c8d; }
 
-        /* 工具卡片 */
-        .toolCard {
-            background:white; padding:20px; border-radius:8px; display:inline-block; margin:10px;
-            width:200px; text-align:center; box-shadow:0 0 10px rgba(0,0,0,0.1); cursor:pointer; transition:0.3s;
-        }
-        .toolCard:hover { box-shadow:0 0 15px rgba(0,0,0,0.3); }
-        .toolCard a { text-decoration:none; color:#007BFF; display:block; margin-top:10px; }
+    /* 工具卡片 */
+    .toolCard {
+        background:white; padding:20px; border-radius:10px; display:inline-block; margin:10px;
+        width:220px; text-align:center; box-shadow:0 0 12px rgba(0,0,0,0.1); cursor:pointer; transition:0.3s;
+    }
+    .toolCard:hover { transform:translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+    .toolCard a { text-decoration:none; color:#3498db; display:block; margin-top:10px; }
 
-        /* 修改密码 */
-        #changePasswordDiv input { width: 60%; padding:8px; margin:5px 0; }
-        #changePasswordDiv button { padding:6px 12px; margin-top:10px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer; }
-        #changePasswordDiv button:hover { background:#0056b3; }
-        #changeMsg { margin-top:10px; color:red; font-size:14px; }
+    /* 修改密码 */
+    #changePasswordDiv input { width:60%; padding:10px; margin:6px 0; border-radius:6px; border:1px solid #ccc; }
+    #changePasswordDiv button { padding:8px 16px; margin-top:10px; background:#4facfe; color:white; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
+    #changePasswordDiv button:hover { opacity:0.85; }
+    #changeMsg { margin-top:10px; color:red; font-size:14px; }
 
-        @media(max-width:800px){
-            #mainDiv { flex-direction: column; }
-            #sidebar { width:100%; display:flex; justify-content:space-around; padding:10px 0; }
-            #sidebar button { font-size:14px; padding:8px; }
-        }
-    </style>
+    /* 底部 */
+    #footer { text-align:center; padding:10px; font-size:12px; color:#7f8c8d; border-top:1px solid #ddd; margin-top:20px; }
+
+    @media(max-width:900px){
+        #mainDiv { flex-direction:column; }
+        #sidebar { width:100%; flex-direction:row; justify-content:space-around; padding:10px 0; }
+        #sidebar button { font-size:14px; padding:8px; text-align:center; }
+    }
+</style>
 </head>
 <body>
 
-    <!-- 登录界面 -->
-    <div id="loginDiv">
-        <div id="loginCard">
-            <h2>Goaoxor 内部后台</h2>
-            <input type="password" id="passwordInput" placeholder="请输入管理员密码">
-            <br>
-            <button id="loginBtn">登录</button>
-            <p id="loginMsg"></p>
-        </div>
+<!-- 登录 -->
+<div id="loginDiv">
+    <div id="loginCard">
+        <h2>Goaoxor 管理后台</h2>
+        <input type="password" id="passwordInput" placeholder="请输入管理员密码"><br>
+        <button id="loginBtn">登录</button>
+        <p id="loginMsg"></p>
+    </div>
+</div>
+
+<!-- 主后台 -->
+<div id="mainDiv">
+    <!-- 左侧导航 -->
+    <div id="sidebar">
+        <h3>后台导航</h3>
+        <button id="navDashboard" class="active">首页</button>
+        <button id="navChange">修改密码</button>
+        <button id="navOrder">订单管理</button>
+        <button id="navOrderRecord">订单记录</button>
+        <button id="navContract">合同生成器</button>
+        <button id="navContractRecord">合同记录</button>
+        <button id="navFuture1">预留功能1</button>
+        <button id="navFuture2">预留功能2</button>
+        <button id="navLogout">退出登录</button>
     </div>
 
-    <!-- 主后台 -->
-    <div id="mainDiv">
-        <!-- 左侧导航 -->
-        <div id="sidebar">
-            <h3>后台导航</h3>
-            <button id="navDashboard" class="active">首页</button>
-            <button id="navChange">修改密码</button>
-            <button id="navLogout">退出登录</button>
+    <!-- 内容区 -->
+    <div id="content">
+        <div id="topBar">
+            <div class="welcome">欢迎，管理员！ 上次登录: <span id="lastLogin">未记录</span></div>
+            <div class="time" id="currentTime"></div>
         </div>
 
-        <!-- 内容区 -->
-        <div id="content">
-            <!-- 首页/Dashboard -->
-            <div id="dashboard">
-                <h2>欢迎，管理员！</h2>
-                <p>上次登录时间：<span id="lastLogin">未记录</span></p>
-                <h3>内部工具快捷入口</h3>
-                <div id="toolsDiv">
-                    <div class="toolCard"><strong>订单价格计算器</strong><a href="#" target="_blank">打开</a></div>
-                    <div class="toolCard"><strong>合同生成器</strong><a href="#" target="_blank">打开</a></div>
-                </div>
-            </div>
-
-            <!-- 修改密码 -->
-            <div id="changePasswordDiv" style="display:none;">
-                <h2>修改密码</h2>
-                <input type="password" id="oldPassword" placeholder="请输入旧密码"><br>
-                <input type="password" id="newPassword" placeholder="请输入新密码（至少6位）"><br>
-                <input type="password" id="confirmPassword" placeholder="确认新密码"><br>
-                <button id="changeBtn">确认修改</button>
-                <p id="changeMsg"></p>
+        <!-- Dashboard -->
+        <div id="dashboard">
+            <h2>首页面板</h2>
+            <div id="toolsDiv">
+                <div class="toolCard"><strong>订单计算器</strong><a href="#">打开</a></div>
+                <div class="toolCard"><strong>合同生成器</strong><a href="#">打开</a></div>
+                <div class="toolCard"><strong>订单记录</strong><a href="#">查看</a></div>
+                <div class="toolCard"><strong>合同记录</strong><a href="#">查看</a></div>
+                <div class="toolCard"><strong>预留模块1</strong><a href="#">预留</a></div>
+                <div class="toolCard"><strong>预留模块2</strong><a href="#">预留</a></div>
             </div>
         </div>
+
+        <!-- 修改密码 -->
+        <div id="changePasswordDiv" style="display:none;">
+            <h2>修改密码</h2>
+            <input type="password" id="oldPassword" placeholder="旧密码"><br>
+            <input type="password" id="newPassword" placeholder="新密码（至少6位）"><br>
+            <input type="password" id="confirmPassword" placeholder="确认新密码"><br>
+            <button id="changeBtn">确认修改</button>
+            <p id="changeMsg"></p>
+        </div>
+
+        <!-- 占位模块 -->
+        <div id="placeholder" style="display:none;">
+            <h2>功能模块占位</h2>
+            <p>这里可以添加新的管理功能或数据统计模块。</p>
+        </div>
+
+        <div id="footer">Goaoxor © 2025 管理后台 | 版本 1.0</div>
     </div>
+</div>
 
-    <script>
-        // 初始密码
-        let storedPassword = localStorage.getItem('adminPassword') || "123456";
+<script>
+    let storedPassword = localStorage.getItem('adminPassword') || "123456";
 
-        const loginDiv = document.getElementById('loginDiv');
-        const mainDiv = document.getElementById('mainDiv');
-        const dashboardDiv = document.getElementById('dashboard');
-        const changeDiv = document.getElementById('changePasswordDiv');
-        const lastLoginSpan = document.getElementById('lastLogin');
+    const loginDiv = document.getElementById('loginDiv');
+    const mainDiv = document.getElementById('mainDiv');
+    const dashboardDiv = document.getElementById('dashboard');
+    const changeDiv = document.getElementById('changePasswordDiv');
+    const placeholderDiv = document.getElementById('placeholder');
+    const lastLoginSpan = document.getElementById('lastLogin');
+    const currentTimeSpan = document.getElementById('currentTime');
 
-        const loginBtn = document.getElementById('loginBtn');
-        const navDashboard = document.getElementById('navDashboard');
-        const navChange = document.getElementById('navChange');
-        const navLogout = document.getElementById('navLogout');
-        const changeBtn = document.getElementById('changeBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    const navDashboard = document.getElementById('navDashboard');
+    const navChange = document.getElementById('navChange');
+    const navOrder = document.getElementById('navOrder');
+    const navOrderRecord = document.getElementById('navOrderRecord');
+    const navContract = document.getElementById('navContract');
+    const navContractRecord = document.getElementById('navContractRecord');
+    const navFuture1 = document.getElementById('navFuture1');
+    const navFuture2 = document.getElementById('navFuture2');
+    const navLogout = document.getElementById('navLogout');
+    const changeBtn = document.getElementById('changeBtn');
 
-        window.onload = function(){
-            loginDiv.style.display = "flex";
-            const lastLoginTime = localStorage.getItem('lastLoginTime');
-            if(lastLoginTime) lastLoginSpan.innerText = lastLoginTime;
+    function updateTime(){
+        currentTimeSpan.innerText = new Date().toLocaleString();
+    }
+    setInterval(updateTime,1000);
+
+    window.onload = function(){
+        loginDiv.style.display = "flex";
+        const lastLoginTime = localStorage.getItem('lastLoginTime');
+        if(lastLoginTime) lastLoginSpan.innerText = lastLoginTime;
+        updateTime();
+    }
+
+    loginBtn.addEventListener('click', function(){
+        const pwd = document.getElementById('passwordInput').value;
+        if(pwd === storedPassword){
+            loginDiv.style.display = "none";
+            mainDiv.style.display = "flex";
+            const now = new Date().toLocaleString();
+            lastLoginSpan.innerText = now;
+            localStorage.setItem('lastLoginTime', now);
+            document.getElementById('loginMsg').innerText="";
+        } else {
+            document.getElementById('loginMsg').innerText="密码错误，请重试！";
         }
+    });
 
-        loginBtn.addEventListener('click', function(){
-            const pwd = document.getElementById('passwordInput').value;
-            if(pwd === storedPassword){
-                loginDiv.style.display = "none";
-                mainDiv.style.display = "flex";
-                const now = new Date().toLocaleString();
-                lastLoginSpan.innerText = now;
-                localStorage.setItem('lastLoginTime', now);
-            } else {
-                document.getElementById('loginMsg').innerText = "密码错误，请重试";
-            }
-        });
+    function showSection(section){
+        dashboardDiv.style.display = (section==='dashboard')?"block":"none";
+        changeDiv.style.display = (section==='change')?"block":"none";
+        placeholderDiv.style.display = (section==='placeholder')?"block":"none";
+    }
 
-        navDashboard.addEventListener('click', function(){ showSection('dashboard'); });
-        navChange.addEventListener('click', function(){ showSection('changePassword'); });
-        navLogout.addEventListener('click', function(){ logout(); });
-        changeBtn.addEventListener('click', function(){ changePassword(); });
+    function setActive(btn){
+        document.querySelectorAll('#sidebar button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+    }
 
-        function logout(){
-            mainDiv.style.display = "none";
-            loginDiv.style.display = "flex";
-            document.getElementById('passwordInput').value = "";
-        }
+    navDashboard.addEventListener('click',()=>{ showSection('dashboard'); setActive(navDashboard); });
+    navChange.addEventListener('click',()=>{ showSection('change'); setActive(navChange); });
+    navOrder.addEventListener('click',()=>{ showSection('placeholder'); setActive(navOrder); });
+    navOrderRecord.addEventListener('click',()=>{ showSection('placeholder'); setActive(navOrderRecord); });
+    navContract.addEventListener('click',()=>{ showSection('placeholder'); setActive(navContract); });
+    navContractRecord.addEventListener('click',()=>{ showSection('placeholder'); setActive(navContractRecord); });
+    navFuture1.addEventListener('click',()=>{ showSection('placeholder'); setActive(navFuture1); });
+    navFuture2.addEventListener('click',()=>{ showSection('placeholder'); setActive(navFuture2); });
+    navLogout.addEventListener('click',()=>{ mainDiv.style.display="none"; loginDiv.style.display="flex"; document.getElementById('passwordInput').value=""; });
 
-        function showSection(section){
-            dashboardDiv.style.display = "none";
-            changeDiv.style.display = "none";
-            if(section === 'dashboard') dashboardDiv.style.display = "block";
-            if(section === 'changePassword') changeDiv.style.display = "block";
+    changeBtn.addEventListener('click',()=>{
+        const oldPwd = document.getElementById('oldPassword').value;
+        const newPwd = document.getElementById('newPassword').value;
+        const confirmPwd = document.getElementById('confirmPassword').value;
+        const msg = document.getElementById('changeMsg');
 
-            // 高亮导航
-            navDashboard.classList.remove('active');
-            navChange.classList.remove('active');
-            if(section === 'dashboard') navDashboard.classList.add('active');
-            if(section === 'changePassword') navChange.classList.add('active');
-        }
+        if(oldPwd !== storedPassword){ msg.innerText="旧密码不正确"; return; }
+        if(newPwd.length<6){ msg.innerText="新密码至少6位"; return; }
+        if(newPwd !== confirmPwd){ msg.innerText="两次密码输入不一致"; return; }
 
-        function changePassword(){
-            const oldPwd = document.getElementById('oldPassword').value;
-            const newPwd = document.getElementById('newPassword').value;
-            const confirmPwd = document.getElementById('confirmPassword').value;
-            const msg = document.getElementById('changeMsg');
-
-            if(oldPwd !== storedPassword){ msg.style.color='red'; msg.innerText="旧密码错误"; return; }
-            if(newPwd !== confirmPwd){ msg.style.color='red'; msg.innerText="两次输入的新密码不一致"; return; }
-            if(newPwd.length < 6){ msg.style.color='red'; msg.innerText="新密码至少6位"; return; }
-
-            storedPassword = newPwd;
-            localStorage.setItem('adminPassword', storedPassword);
-            msg.style.color = "green";
-            msg.innerText = "密码修改成功";
-            document.getElementById('oldPassword').value="";
-            document.getElementById('newPassword').value="";
-            document.getElementById('confirmPassword').value="";
-        }
-    </script>
-
+        storedPassword = newPwd;
+        localStorage.setItem('adminPassword', storedPassword);
+        msg.style.color="green";
+        msg.innerText="密码修改成功！";
+        document.getElementById('oldPassword').value="";
+        document.getElementById('newPassword').value="";
+        document.getElementById('confirmPassword').value="";
+    });
+</script>
 </body>
 </html>
