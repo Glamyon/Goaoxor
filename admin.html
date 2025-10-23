@@ -4,55 +4,58 @@
 <meta charset="UTF-8">
 <title>Goaoxor 管理后台</title>
 <style>
-    * { box-sizing: border-box; margin:0; padding:0; }
-    body { font-family:"微软雅黑", Arial, sans-serif; background:#f0f2f5; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:"微软雅黑", Arial, sans-serif; background:#f0f2f5; }
 
-    /* 登录界面 */
-    #loginDiv { display:flex; justify-content:center; align-items:center; height:100vh; }
-    #loginCard { background:white; padding:40px; border-radius:12px; width:380px; box-shadow:0 8px 20px rgba(0,0,0,0.2); text-align:center; }
-    #loginCard h2 { margin-bottom:20px; color:#2c3e50; }
-    #loginCard input { width:80%; padding:12px; margin:12px 0; font-size:16px; border:1px solid #ccc; border-radius:6px; }
-    #loginCard button { width:84%; padding:12px; margin-top:10px; background: linear-gradient(90deg,#4facfe,#00f2fe); color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; transition:0.3s; }
-    #loginCard button:hover { opacity:0.85; }
-    #loginMsg { margin-top:10px; color:red; font-size:14px; }
+/* 登录界面 */
+#loginDiv { display:flex; justify-content:center; align-items:center; height:100vh; }
+#loginCard { background:white; padding:40px; border-radius:12px; width:380px; box-shadow:0 8px 20px rgba(0,0,0,0.2); text-align:center; }
+#loginCard h2 { margin-bottom:20px; color:#2c3e50; }
+#loginCard input { width:80%; padding:12px; margin:12px 0; font-size:16px; border:1px solid #ccc; border-radius:6px; }
+#loginCard button { width:84%; padding:12px; margin-top:10px; background: linear-gradient(90deg,#4facfe,#00f2fe); color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; transition:0.3s; }
+#loginCard button:hover { opacity:0.85; }
+#loginMsg { margin-top:10px; color:red; font-size:14px; }
 
-    /* 主后台布局 */
-    #mainDiv { display:flex; height:100vh; display:none; overflow:hidden; }
-    #sidebar { width:220px; background:#2c3e50; color:white; flex-shrink:0; display:flex; flex-direction:column; padding-top:20px; }
-    #sidebar h3 { text-align:center; margin-bottom:20px; font-weight:normal; font-size:18px; }
-    #sidebar button {
-        width:100%; padding:14px; border:none; background:none; color:white; text-align:left; padding-left:25px;
-        font-size:16px; cursor:pointer; outline:none; transition:0.2s;
-    }
-    #sidebar button:hover, #sidebar .active { background:#34495e; }
+/* 主后台布局 */
+#mainDiv { display:flex; height:100vh; display:none; overflow:hidden; }
+#sidebar { width:220px; background:#2c3e50; color:white; flex-shrink:0; display:flex; flex-direction:column; padding-top:20px; }
+#sidebar h3 { text-align:center; margin-bottom:20px; font-weight:normal; font-size:18px; }
+#sidebar button {
+    width:100%; padding:14px; border:none; background:none; color:white; text-align:left; padding-left:25px;
+    font-size:16px; cursor:pointer; outline:none; transition:0.2s;
+}
+#sidebar button:hover, #sidebar .active { background:#34495e; }
 
-    #content { flex:1; padding:25px; background:#ecf0f1; overflow-y:auto; }
-    #topBar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-    #topBar .welcome { font-size:18px; color:#2c3e50; }
-    #topBar .time { font-size:14px; color:#7f8c8d; }
+#content { flex:1; padding:25px; background:#ecf0f1; overflow-y:auto; }
+#topBar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+#topBar .welcome { font-size:18px; color:#2c3e50; }
+#topBar .time { font-size:14px; color:#7f8c8d; }
 
-    /* 工具卡片 */
-    .toolCard {
-        background:white; padding:20px; border-radius:10px; display:inline-block; margin:10px;
-        width:220px; text-align:center; box-shadow:0 0 12px rgba(0,0,0,0.1); cursor:pointer; transition:0.3s;
-    }
-    .toolCard:hover { transform:translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
-    .toolCard a { text-decoration:none; color:#3498db; display:block; margin-top:10px; }
+/* 卡片样式 */
+.toolCard {
+    background:white; padding:20px; border-radius:10px; display:inline-block; margin:10px;
+    width:220px; text-align:center; box-shadow:0 0 12px rgba(0,0,0,0.1); cursor:pointer; transition:0.3s;
+}
+.toolCard:hover { transform:translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+.toolCard a { text-decoration:none; color:#3498db; display:block; margin-top:10px; }
 
-    /* 修改密码 */
-    #changePasswordDiv input { width:60%; padding:10px; margin:6px 0; border-radius:6px; border:1px solid #ccc; }
-    #changePasswordDiv button { padding:8px 16px; margin-top:10px; background:#4facfe; color:white; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
-    #changePasswordDiv button:hover { opacity:0.85; }
-    #changeMsg { margin-top:10px; color:red; font-size:14px; }
+/* 修改密码模块 */
+#changePasswordDiv input { width:60%; padding:10px; margin:6px 0; border-radius:6px; border:1px solid #ccc; }
+#changePasswordDiv button { padding:8px 16px; margin-top:10px; background:#4facfe; color:white; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
+#changePasswordDiv button:hover { opacity:0.85; }
+#changeMsg { margin-top:10px; color:red; font-size:14px; }
 
-    /* 底部 */
-    #footer { text-align:center; padding:10px; font-size:12px; color:#7f8c8d; border-top:1px solid #ddd; margin-top:20px; }
+/* 表格占位 */
+.tablePlaceholder { background:white; padding:20px; border-radius:10px; box-shadow:0 0 12px rgba(0,0,0,0.1); margin-bottom:20px; }
 
-    @media(max-width:900px){
-        #mainDiv { flex-direction:column; }
-        #sidebar { width:100%; flex-direction:row; justify-content:space-around; padding:10px 0; }
-        #sidebar button { font-size:14px; padding:8px; text-align:center; }
-    }
+/* 底部 */
+#footer { text-align:center; padding:10px; font-size:12px; color:#7f8c8d; border-top:1px solid #ddd; margin-top:20px; }
+
+@media(max-width:900px){
+    #mainDiv { flex-direction:column; }
+    #sidebar { width:100%; flex-direction:row; justify-content:space-around; padding:10px 0; }
+    #sidebar button { font-size:14px; padding:8px; text-align:center; }
+}
 </style>
 </head>
 <body>
@@ -90,7 +93,7 @@
             <div class="time" id="currentTime"></div>
         </div>
 
-        <!-- Dashboard -->
+        <!-- 首页 Dashboard -->
         <div id="dashboard">
             <h2>首页面板</h2>
             <div id="toolsDiv">
@@ -113,10 +116,34 @@
             <p id="changeMsg"></p>
         </div>
 
-        <!-- 占位模块 -->
-        <div id="placeholder" style="display:none;">
-            <h2>功能模块占位</h2>
-            <p>这里可以添加新的管理功能或数据统计模块。</p>
+        <!-- 订单管理占位 -->
+        <div id="orderDiv" style="display:none;">
+            <h2>订单管理</h2>
+            <div class="tablePlaceholder">这里将显示订单管理界面，未来可输入新订单、计算价格、修改状态。</div>
+        </div>
+
+        <!-- 订单记录占位 -->
+        <div id="orderRecordDiv" style="display:none;">
+            <h2>订单记录</h2>
+            <div class="tablePlaceholder">这里将显示所有历史订单，支持搜索、筛选、排序。</div>
+        </div>
+
+        <!-- 合同生成器占位 -->
+        <div id="contractDiv" style="display:none;">
+            <h2>合同生成器</h2>
+            <div class="tablePlaceholder">这里将生成合同模板，未来可下载或复制合同。</div>
+        </div>
+
+        <!-- 合同记录占位 -->
+        <div id="contractRecordDiv" style="display:none;">
+            <h2>合同记录</h2>
+            <div class="tablePlaceholder">这里显示合同列表，可按客户、日期、订单号筛选。</div>
+        </div>
+
+        <!-- 未来模块占位 -->
+        <div id="futureDiv" style="display:none;">
+            <h2>预留模块</h2>
+            <div class="tablePlaceholder">这里为未来功能预留空间，可扩展消息中心、数据统计等。</div>
         </div>
 
         <div id="footer">Goaoxor © 2025 管理后台 | 版本 1.0</div>
@@ -124,93 +151,100 @@
 </div>
 
 <script>
-    let storedPassword = localStorage.getItem('adminPassword') || "123456";
+let storedPassword = localStorage.getItem('adminPassword') || "123456";
 
-    const loginDiv = document.getElementById('loginDiv');
-    const mainDiv = document.getElementById('mainDiv');
-    const dashboardDiv = document.getElementById('dashboard');
-    const changeDiv = document.getElementById('changePasswordDiv');
-    const placeholderDiv = document.getElementById('placeholder');
-    const lastLoginSpan = document.getElementById('lastLogin');
-    const currentTimeSpan = document.getElementById('currentTime');
+const loginDiv = document.getElementById('loginDiv');
+const mainDiv = document.getElementById('mainDiv');
+const lastLoginSpan = document.getElementById('lastLogin');
+const currentTimeSpan = document.getElementById('currentTime');
 
-    const loginBtn = document.getElementById('loginBtn');
-    const navDashboard = document.getElementById('navDashboard');
-    const navChange = document.getElementById('navChange');
-    const navOrder = document.getElementById('navOrder');
-    const navOrderRecord = document.getElementById('navOrderRecord');
-    const navContract = document.getElementById('navContract');
-    const navContractRecord = document.getElementById('navContractRecord');
-    const navFuture1 = document.getElementById('navFuture1');
-    const navFuture2 = document.getElementById('navFuture2');
-    const navLogout = document.getElementById('navLogout');
-    const changeBtn = document.getElementById('changeBtn');
+const loginBtn = document.getElementById('loginBtn');
+const navDashboard = document.getElementById('navDashboard');
+const navChange = document.getElementById('navChange');
+const navOrder = document.getElementById('navOrder');
+const navOrderRecord = document.getElementById('navOrderRecord');
+const navContract = document.getElementById('navContract');
+const navContractRecord = document.getElementById('navContractRecord');
+const navFuture1 = document.getElementById('navFuture1');
+const navFuture2 = document.getElementById('navFuture2');
+const navLogout = document.getElementById('navLogout');
+const changeBtn = document.getElementById('changeBtn');
 
-    function updateTime(){
-        currentTimeSpan.innerText = new Date().toLocaleString();
+const sections = {
+    dashboard: document.getElementById('dashboard'),
+    change: document.getElementById('changePasswordDiv'),
+    order: document.getElementById('orderDiv'),
+    orderRecord: document.getElementById('orderRecordDiv'),
+    contract: document.getElementById('contractDiv'),
+    contractRecord: document.getElementById('contractRecordDiv'),
+    future: document.getElementById('futureDiv')
+};
+
+function updateTime(){
+    currentTimeSpan.innerText = new Date().toLocaleString();
+}
+setInterval(updateTime,1000);
+
+window.onload = function(){
+    loginDiv.style.display = "flex";
+    const lastLoginTime = localStorage.getItem('lastLoginTime');
+    if(lastLoginTime) lastLoginSpan.innerText = lastLoginTime;
+    updateTime();
+};
+
+loginBtn.addEventListener('click', function(){
+    const pwd = document.getElementById('passwordInput').value;
+    if(pwd === storedPassword){
+        loginDiv.style.display = "none";
+        mainDiv.style.display = "flex";
+        const now = new Date().toLocaleString();
+        lastLoginSpan.innerText = now;
+        localStorage.setItem('lastLoginTime', now);
+        document.getElementById('loginMsg').innerText="";
+    } else {
+        document.getElementById('loginMsg').innerText="密码错误，请重试！";
     }
-    setInterval(updateTime,1000);
+});
 
-    window.onload = function(){
-        loginDiv.style.display = "flex";
-        const lastLoginTime = localStorage.getItem('lastLoginTime');
-        if(lastLoginTime) lastLoginSpan.innerText = lastLoginTime;
-        updateTime();
+function showSection(sec){
+    for(let key in sections){
+        sections[key].style.display = (key===sec)?'block':'none';
     }
+}
 
-    loginBtn.addEventListener('click', function(){
-        const pwd = document.getElementById('passwordInput').value;
-        if(pwd === storedPassword){
-            loginDiv.style.display = "none";
-            mainDiv.style.display = "flex";
-            const now = new Date().toLocaleString();
-            lastLoginSpan.innerText = now;
-            localStorage.setItem('lastLoginTime', now);
-            document.getElementById('loginMsg').innerText="";
-        } else {
-            document.getElementById('loginMsg').innerText="密码错误，请重试！";
-        }
-    });
+function setActive(btn){
+    document.querySelectorAll('#sidebar button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+}
 
-    function showSection(section){
-        dashboardDiv.style.display = (section==='dashboard')?"block":"none";
-        changeDiv.style.display = (section==='change')?"block":"none";
-        placeholderDiv.style.display = (section==='placeholder')?"block":"none";
-    }
+navDashboard.addEventListener('click',()=>{ showSection('dashboard'); setActive(navDashboard); });
+navChange.addEventListener('click',()=>{ showSection('change'); setActive(navChange); });
+navOrder.addEventListener('click',()=>{ showSection('order'); setActive(navOrder); });
+navOrderRecord.addEventListener('click',()=>{ showSection('orderRecord'); setActive(navOrderRecord); });
+navContract.addEventListener('click',()=>{ showSection('contract'); setActive(navContract); });
+navContractRecord.addEventListener('click',()=>{ showSection('contractRecord'); setActive(navContractRecord); });
+navFuture1.addEventListener('click',()=>{ showSection('future'); setActive(navFuture1); });
+navFuture2.addEventListener('click',()=>{ showSection('future'); setActive(navFuture2); });
+navLogout.addEventListener('click',()=>{ mainDiv.style.display="none"; loginDiv.style.display="flex"; document.getElementById('passwordInput').value=""; });
 
-    function setActive(btn){
-        document.querySelectorAll('#sidebar button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-    }
+changeBtn.addEventListener('click',()=>{
+    const oldPwd = document.getElementById('oldPassword').value;
+    const newPwd = document.getElementById('newPassword').value;
+    const confirmPwd = document.getElementById('confirmPassword').value;
+    const msg = document.getElementById('changeMsg');
 
-    navDashboard.addEventListener('click',()=>{ showSection('dashboard'); setActive(navDashboard); });
-    navChange.addEventListener('click',()=>{ showSection('change'); setActive(navChange); });
-    navOrder.addEventListener('click',()=>{ showSection('placeholder'); setActive(navOrder); });
-    navOrderRecord.addEventListener('click',()=>{ showSection('placeholder'); setActive(navOrderRecord); });
-    navContract.addEventListener('click',()=>{ showSection('placeholder'); setActive(navContract); });
-    navContractRecord.addEventListener('click',()=>{ showSection('placeholder'); setActive(navContractRecord); });
-    navFuture1.addEventListener('click',()=>{ showSection('placeholder'); setActive(navFuture1); });
-    navFuture2.addEventListener('click',()=>{ showSection('placeholder'); setActive(navFuture2); });
-    navLogout.addEventListener('click',()=>{ mainDiv.style.display="none"; loginDiv.style.display="flex"; document.getElementById('passwordInput').value=""; });
+    if(oldPwd !== storedPassword){ msg.innerText="旧密码不正确"; return; }
+    if(newPwd.length<6){ msg.innerText="新密码至少6位"; return; }
+    if(newPwd !== confirmPwd){ msg.innerText="两次密码输入不一致"; return; }
 
-    changeBtn.addEventListener('click',()=>{
-        const oldPwd = document.getElementById('oldPassword').value;
-        const newPwd = document.getElementById('newPassword').value;
-        const confirmPwd = document.getElementById('confirmPassword').value;
-        const msg = document.getElementById('changeMsg');
-
-        if(oldPwd !== storedPassword){ msg.innerText="旧密码不正确"; return; }
-        if(newPwd.length<6){ msg.innerText="新密码至少6位"; return; }
-        if(newPwd !== confirmPwd){ msg.innerText="两次密码输入不一致"; return; }
-
-        storedPassword = newPwd;
-        localStorage.setItem('adminPassword', storedPassword);
-        msg.style.color="green";
-        msg.innerText="密码修改成功！";
-        document.getElementById('oldPassword').value="";
-        document.getElementById('newPassword').value="";
-        document.getElementById('confirmPassword').value="";
-    });
+    storedPassword = newPwd;
+    localStorage.setItem('adminPassword', storedPassword);
+    msg.style.color="green";
+    msg.innerText="密码修改成功！";
+    document.getElementById('oldPassword').value="";
+    document.getElementById('newPassword').value="";
+    document.getElementById('confirmPassword').value="";
+});
 </script>
 </body>
 </html>
