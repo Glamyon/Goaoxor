@@ -235,29 +235,16 @@
       <!-- 合同生成器 -->
       <div id="contractDiv" style="display:none;">
         <h2>合同生成器</h2>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="toolCard">
-              <h4>客户中介服务合同</h4>
-              <p>生成客户合同模板。</p>
-              <a href="#" onclick="generateContract(0, 'client')" class="btn btn-primary btn-sm">生成</a>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="toolCard">
-              <h4>服务团队介绍费合同</h4>
-              <p>生成团队合同模板。</p>
-              <a href="#" onclick="generateContract(0, 'provider')" class="btn btn-primary btn-sm">生成</a>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="toolCard">
-              <h4>客户-服务团队项目合同</h4>
-              <p>生成项目合同模板。</p>
-              <a href="#" onclick="generateContract(0, 'project')" class="btn btn-primary btn-sm">生成</a>
-            </div>
-          </div>
-        </div>
+        <form id="contractForm">
+          <input type="number" id="contractOrderId" class="form-control" placeholder="订单ID" required>
+          <select id="contractType" class="form-select" required>
+            <option value="" disabled selected>选择合同类型</option>
+            <option value="client">客户中介服务合同</option>
+            <option value="provider">服务团队介绍费合同</option>
+            <option value="project">客户-服务团队项目合同</option>
+          </select>
+          <button type="submit" class="btn btn-primary">生成合同</button>
+        </form>
         <p id="contractMsg" class="error"></p>
       </div>
 
@@ -292,9 +279,12 @@
   <script>
     // 初始化 localStorage 数据
     if (!localStorage.getItem('admins')) {
-      localStorage.setItem('admins', JSON.stringify([
-        { username: 'admin', password: sha256('123456'), lastLogin: '未记录' }
-      ]));
+      sha256('123456').then(hash => {
+        localStorage.setItem('admins', JSON.stringify([
+          { username: 'admin', password: hash, lastLogin: '未记录' }
+        ]));
+        console.log('初始化默认管理员账户: admin / 123456');
+      });
     }
     if (!localStorage.getItem('orders')) {
       localStorage.setItem('orders', JSON.stringify([]));
@@ -319,11 +309,12 @@
       const logs = JSON.parse(localStorage.getItem('logs'));
       logs.push({ action, username, timestamp: new Date().toLocaleString() });
       localStorage.setItem('logs', JSON.stringify(logs));
+      console.log('日志记录:', action, username); // 调试日志
     }
 
     // 加载管理员列表到登录下拉框
     function loadAdminList() {
-      const admins = JSON.parse(localStorage.getItem('admins'));
+      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
       const select = document.getElementById('usernameInput');
       select.innerHTML = '<option value="" disabled selected>选择管理员账户</option>';
       admins.forEach(admin => {
@@ -332,6 +323,7 @@
         option.textContent = admin.username;
         select.appendChild(option);
       });
+      console.log('管理员列表:', admins); // 调试日志
     }
 
     // 费用计算逻辑
@@ -363,11 +355,15 @@
       const username = DOMPurify.sanitize(document.getElementById('usernameInput').value);
       const pwd = document.getElementById('passwordInput').value;
       const msg = document.getElementById('loginMsg');
-      const admins = JSON.parse(localStorage.getItem('admins'));
+      console.log('尝试登录，用户:', username); // 调试日志
+      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
+      console.log('管理员列表:', admins); // 调试日志
       const hashedPwd = await sha256(pwd);
+      console.log('输入密码哈希:', hashedPwd); // 调试日志
       const admin = admins.find(a => a.username === username && a.password === hashedPwd);
       if (!admin) {
         msg.textContent = '用户名或密码错误！';
+        console.log('登录失败：未找到匹配的管理员');
         return;
       }
       sessionStorage.setItem('currentUser', username);
@@ -379,6 +375,7 @@
       document.getElementById('currentUser').textContent = username;
       document.getElementById('lastLogin').textContent = admin.lastLogin;
       msg.textContent = '';
+      console.log('登录成功:', username);
     });
 
     // 添加管理员
@@ -396,7 +393,7 @@
         msg.textContent = '密码至少6位！';
         return;
       }
-      const admins = JSON.parse(localStorage.getItem('admins'));
+      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
       if (admins.find(a => a.username === username)) {
         msg.textContent = '用户名已存在！';
         return;
@@ -414,7 +411,7 @@
 
     // 删除管理员
     function deleteAdmin(username) {
-      let admins = JSON.parse(localStorage.getItem('admins'));
+      let admins = JSON.parse(localStorage.getItem('admins') || '[]');
       if (admins.length <= 1) {
         alert('无法删除最后一个管理员！');
         return;
@@ -431,7 +428,7 @@
 
     // 获取管理员列表
     function fetchAdmins() {
-      const admins = JSON.parse(localStorage.getItem('admins'));
+      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
       const tbody = document.getElementById('adminTableBody');
       tbody.innerHTML = '';
       admins.forEach(admin => {
@@ -460,7 +457,7 @@
         msg.textContent = '新密码至少6位！';
         return;
       }
-      const admins = JSON.parse(localStorage.getItem('admins'));
+      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
       const admin = admins.find(a => a.username === username);
       const hashedOldPwd = await sha256(oldPwd);
       if (admin.password !== hashedOldPwd) {
@@ -718,6 +715,14 @@
       document.getElementById('usernameInput').value = '';
     });
 
+    // 合同生成表单
+    document.getElementById('contractForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const orderId = parseInt(document.getElementById('contractOrderId').value);
+      const type = document.getElementById('contractType').value;
+      generateContract(orderId, type);
+    });
+
     // 更新时间
     function updateTime() {
       document.getElementById('currentTime').textContent = new Date().toLocaleString();
@@ -730,7 +735,7 @@
         document.getElementById('loginDiv').style.display = 'none';
         document.getElementById('mainDiv').style.display = 'flex';
         const username = sessionStorage.getItem('currentUser');
-        const admins = JSON.parse(localStorage.getItem('admins'));
+        const admins = JSON.parse(localStorage.getItem('admins') || '[]');
         const admin = admins.find(a => a.username === username);
         document.getElementById('currentUser').textContent = username;
         document.getElementById('lastLogin').textContent = admin ? admin.lastLogin : '未记录';
