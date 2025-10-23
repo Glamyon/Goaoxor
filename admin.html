@@ -1,250 +1,645 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>Goaoxor 管理后台</title>
-<style>
-* { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:"微软雅黑", Arial, sans-serif; background:#f0f2f5; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goaoxor 管理后台</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <style>
+    body { font-family: "微软雅黑", Arial, sans-serif; background: #f0f2f5; color: #333; }
+    #loginDiv { display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    #loginCard { background: white; padding: 40px; border-radius: 15px; width: 400px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); text-align: center; }
+    #loginCard h2 { margin-bottom: 25px; color: #2c3e50; font-weight: 600; }
+    #loginCard input { width: 100%; padding: 12px; margin: 15px 0; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; transition: border 0.3s; }
+    #loginCard input:focus { border-color: #4facfe; outline: none; }
+    #loginCard button { width: 100%; padding: 12px; background: linear-gradient(90deg, #4facfe, #00f2fe); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: opacity 0.3s; }
+    #loginCard button:hover { opacity: 0.9; }
+    #loginMsg { margin-top: 15px; color: red; font-size: 14px; }
 
-/* 登录界面 */
-#loginDiv { display:flex; justify-content:center; align-items:center; height:100vh; }
-#loginCard { background:white; padding:40px; border-radius:12px; width:380px; box-shadow:0 8px 20px rgba(0,0,0,0.2); text-align:center; }
-#loginCard h2 { margin-bottom:20px; color:#2c3e50; }
-#loginCard input { width:80%; padding:12px; margin:12px 0; font-size:16px; border:1px solid #ccc; border-radius:6px; }
-#loginCard button { width:84%; padding:12px; margin-top:10px; background: linear-gradient(90deg,#4facfe,#00f2fe); color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; transition:0.3s; }
-#loginCard button:hover { opacity:0.85; }
-#loginMsg { margin-top:10px; color:red; font-size:14px; }
+    #mainDiv { display: none; height: 100vh; overflow: hidden; }
+    #sidebar { width: 250px; background: linear-gradient(180deg, #2c3e50, #1a252f); color: white; flex-shrink: 0; display: flex; flex-direction: column; padding-top: 30px; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
+    #sidebar h3 { text-align: center; margin-bottom: 30px; font-weight: 500; font-size: 20px; letter-spacing: 1px; }
+    #sidebar button { width: 100%; padding: 15px; border: none; background: none; color: white; text-align: left; padding-left: 30px; font-size: 16px; cursor: pointer; transition: background 0.3s, padding-left 0.3s; }
+    #sidebar button:hover { background: #34495e; padding-left: 35px; }
+    #sidebar .active { background: #34495e; padding-left: 35px; border-left: 4px solid #4facfe; }
 
-/* 主后台布局 */
-#mainDiv { display:flex; height:100vh; display:none; overflow:hidden; }
-#sidebar { width:220px; background:#2c3e50; color:white; flex-shrink:0; display:flex; flex-direction:column; padding-top:20px; }
-#sidebar h3 { text-align:center; margin-bottom:20px; font-weight:normal; font-size:18px; }
-#sidebar button {
-    width:100%; padding:14px; border:none; background:none; color:white; text-align:left; padding-left:25px;
-    font-size:16px; cursor:pointer; outline:none; transition:0.2s;
-}
-#sidebar button:hover, #sidebar .active { background:#34495e; }
+    #content { flex: 1; padding: 30px; background: #f0f2f5; overflow-y: auto; }
+    #topBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    #topBar .welcome { font-size: 18px; color: #2c3e50; font-weight: 500; }
+    #topBar .time { font-size: 14px; color: #7f8c8d; }
 
-#content { flex:1; padding:25px; background:#ecf0f1; overflow-y:auto; }
-#topBar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-#topBar .welcome { font-size:18px; color:#2c3e50; }
-#topBar .time { font-size:14px; color:#7f8c8d; }
+    .toolCard { background: white; padding: 20px; border-radius: 10px; display: inline-block; margin: 15px; width: 250px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .toolCard:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+    .toolCard a { text-decoration: none; color: #3498db; display: block; margin-top: 10px; font-weight: 500; }
+    .toolCard h4 { margin-bottom: 10px; color: #2c3e50; font-size: 18px; }
+    .toolCard p { color: #7f8c8d; font-size: 14px; }
 
-/* 卡片样式 */
-.toolCard {
-    background:white; padding:20px; border-radius:10px; display:inline-block; margin:10px;
-    width:220px; text-align:center; box-shadow:0 0 12px rgba(0,0,0,0.1); cursor:pointer; transition:0.3s;
-}
-.toolCard:hover { transform:translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
-.toolCard a { text-decoration:none; color:#3498db; display:block; margin-top:10px; }
-
-/* 修改密码模块 */
-#changePasswordDiv input { width:60%; padding:10px; margin:6px 0; border-radius:6px; border:1px solid #ccc; }
-#changePasswordDiv button { padding:8px 16px; margin-top:10px; background:#4facfe; color:white; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
-#changePasswordDiv button:hover { opacity:0.85; }
-#changeMsg { margin-top:10px; color:red; font-size:14px; }
-
-/* 表格占位 */
-.tablePlaceholder { background:white; padding:20px; border-radius:10px; box-shadow:0 0 12px rgba(0,0,0,0.1); margin-bottom:20px; }
-
-/* 底部 */
-#footer { text-align:center; padding:10px; font-size:12px; color:#7f8c8d; border-top:1px solid #ddd; margin-top:20px; }
-
-@media(max-width:900px){
-    #mainDiv { flex-direction:column; }
-    #sidebar { width:100%; flex-direction:row; justify-content:space-around; padding:10px 0; }
-    #sidebar button { font-size:14px; padding:8px; text-align:center; }
-}
-</style>
+    .form-group { margin-bottom: 20px; }
+    .form-control { border-radius: 8px; border: 1px solid #ddd; transition: border 0.3s; }
+    .form-control:focus { border-color: #4facfe; box-shadow: 0 0 0 0.25rem rgba(79, 172, 254, 0.25); }
+    .btn-primary { background: linear-gradient(90deg, #4facfe, #00f2fe); border: none; padding: 10px 20px; border-radius: 8px; transition: opacity 0.3s; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { background: #6c757d; border: none; padding: 10px 20px; border-radius: 8px; transition: opacity 0.3s; }
+    .btn-secondary:hover { opacity: 0.9; }
+    .error { color: red; font-size: 14px; margin-top: 10px; }
+    .success { color: green; font-size: 14px; margin-top: 10px; }
+    .lang-toggle { position: absolute; top: 10px; right: 10px; }
+    @media (max-width: 900px) {
+      #mainDiv { flex-direction: column; }
+      #sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; padding: 10px 0; }
+      #sidebar button { flex: 1; text-align: center; padding: 10px; }
+      .toolCard { width: 100%; margin: 10px 0; }
+      .form-control { width: 100%; }
+    }
+  </style>
 </head>
 <body>
+  <div class="lang-toggle">
+    <button class="btn btn-outline-primary btn-sm" onclick="toggleLanguage()">English</button>
+  </div>
 
-<!-- 登录 -->
-<div id="loginDiv">
+  <!-- 登录 -->
+  <div id="loginDiv">
     <div id="loginCard">
-        <h2>Goaoxor 管理后台</h2>
-        <input type="password" id="passwordInput" placeholder="请输入管理员密码"><br>
-        <button id="loginBtn">登录</button>
-        <p id="loginMsg"></p>
+      <h2 id="loginTitle">Goaoxor 管理后台</h2>
+      <input type="password" id="passwordInput" class="form-control" placeholder="请输入管理员密码">
+      <button id="loginBtn" class="btn btn-primary mt-3">登录</button>
+      <p id="loginMsg" class="error"></p>
     </div>
-</div>
+  </div>
 
-<!-- 主后台 -->
-<div id="mainDiv">
-    <!-- 左侧导航 -->
+  <!-- 主后台 -->
+  <div id="mainDiv" class="d-flex">
     <div id="sidebar">
-        <h3>后台导航</h3>
-        <button id="navDashboard" class="active">首页</button>
-        <button id="navChange">修改密码</button>
-        <button id="navOrder">订单管理</button>
-        <button id="navOrderRecord">订单记录</button>
-        <button id="navContract">合同生成器</button>
-        <button id="navContractRecord">合同记录</button>
-        <button id="navFuture1">预留功能1</button>
-        <button id="navFuture2">预留功能2</button>
-        <button id="navLogout">退出登录</button>
+      <h3 id="sidebarTitle">后台导航</h3>
+      <button id="navDashboard" class="active">首页</button>
+      <button id="navOrder">订单管理</button>
+      <button id="navOrderRecord">订单记录</button>
+      <button id="navContract">合同生成器</button>
+      <button id="navContractRecord">合同记录</button>
+      <button id="navChange">修改密码</button>
+      <button id="navLogout">退出登录</button>
     </div>
-
-    <!-- 内容区 -->
     <div id="content">
-        <div id="topBar">
-            <div class="welcome">欢迎，管理员！ 上次登录: <span id="lastLogin">未记录</span></div>
-            <div class="time" id="currentTime"></div>
-        </div>
+      <div id="topBar">
+        <div id="welcomeText">欢迎，管理员！ 上次登录: <span id="lastLogin">未记录</span></div>
+        <div id="currentTime"></div>
+      </div>
 
-        <!-- 首页 Dashboard -->
-        <div id="dashboard">
-            <h2>首页面板</h2>
-            <div id="toolsDiv">
-                <div class="toolCard"><strong>订单计算器</strong><a href="#">打开</a></div>
-                <div class="toolCard"><strong>合同生成器</strong><a href="#">打开</a></div>
-                <div class="toolCard"><strong>订单记录</strong><a href="#">查看</a></div>
-                <div class="toolCard"><strong>合同记录</strong><a href="#">查看</a></div>
-                <div class="toolCard"><strong>预留模块1</strong><a href="#">预留</a></div>
-                <div class="toolCard"><strong>预留模块2</strong><a href="#">预留</a></div>
+      <!-- 首页 -->
+      <div id="dashboard">
+        <h2 id="dashboardTitle">Goaoxor 生态首页</h2>
+        <p id="dashboardDesc">欢迎来到Goaoxor管理后台。这里提供核心工具和快速访问，帮助您高效管理项目。</p>
+        <div id="toolsDiv" class="row">
+          <div class="toolCard col-md-4">
+            <h4 id="toolCalculator">订单计算器</h4>
+            <p id="toolCalculatorDesc">快速计算中介费和介绍费。</p>
+            <a href="/pricing_calculator.html" target="_blank" class="btn btn-primary btn-sm">打开计算器</a>
+          </div>
+          <div class="toolCard col-md-4">
+            <h4 id="toolOrder">订单管理</h4>
+            <p id="toolOrderDesc">添加新订单，设置类型和状态。</p>
+            <a href="#" onclick="showSection('orderDiv')" class="btn btn-primary btn-sm">添加订单</a>
+          </div>
+          <div class="toolCard col-md-4">
+            <h4 id="toolOrderRecord">订单记录</h4>
+            <p id="toolOrderRecordDesc">查看和更新所有订单。</p>
+            <a href="#" onclick="showSection('orderRecordDiv')" class="btn btn-primary btn-sm">查看记录</a>
+          </div>
+          <div class="toolCard col-md-4">
+            <h4 id="toolContract">合同生成器</h4>
+            <p id="toolContractDesc">生成客户、团队和项目合同。</p>
+            <a href="#" onclick="showSection('contractDiv')" class="btn btn-primary btn-sm">生成合同</a>
+          </div>
+          <div class="toolCard col-md-4">
+            <h4 id="toolContractRecord">合同记录</h4>
+            <p id="toolContractRecordDesc">查看历史合同。</p>
+            <a href="#" onclick="showSection('contractRecordDiv')" class="btn btn-primary btn-sm">查看记录</a>
+          </div>
+          <div class="toolCard col-md-4">
+            <h4 id="toolStatistics">数据统计</h4>
+            <p id="toolStatisticsDesc">查看收入、订单数量和状态分布。</p>
+            <a href="#" onclick="showStatistics()" class="btn btn-primary btn-sm">查看统计</a>
+          </div>
+          <div class="toolCard col-md-4">
+            <h4 id="toolBackup">数据备份</h4>
+            <p id="toolBackupDesc">导出订单和合同数据。</p>
+            <a href="#" onclick="exportData()" class="btn btn-primary btn-sm">导出备份</a>
+          </div>
+          <div class="toolCard col-md-4">
+            <h4 id="toolSettings">系统设置</h4>
+            <p id="toolSettingsDesc">修改默认设置，如密码或定价。</p>
+            <a href="#" onclick="showSettings()" class="btn btn-primary btn-sm">打开设置</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 修改密码 -->
+      <div id="changePasswordDiv" style="display:none;">
+        <h2 id="changePasswordTitle">修改密码</h2>
+        <input type="password" id="oldPassword" class="form-control" placeholder="旧密码">
+        <input type="password" id="newPassword" class="form-control" placeholder="新密码（至少6位）">
+        <input type="password" id="confirmPassword" class="form-control" placeholder="确认新密码">
+        <button id="changeBtn" class="btn btn-primary">确认修改</button>
+        <p id="changeMsg" class="error"></p>
+      </div>
+
+      <!-- 订单管理 -->
+      <div id="orderDiv" style="display:none;">
+        <h2 id="orderTitle">订单管理</h2>
+        <form id="orderForm">
+          <input type="text" id="clientName" class="form-control" placeholder="客户姓名" required>
+          <input type="email" id="clientEmail" class="form-control" placeholder="客户邮箱" required>
+          <input type="number" id="projectValue" class="form-control" placeholder="项目价值（$100-$10000）" min="100" max="10000" required>
+          <select id="projectType" class="form-select" required>
+            <option value="" disabled selected>选择项目类型</option>
+            <option value="video">短视频</option>
+            <option value="animation">动画</option>
+            <option value="uiux">UI/UX设计</option>
+          </select>
+          <select id="orderStatus" class="form-select" required>
+            <option value="" disabled selected>选择订单状态</option>
+            <option value="pending">待处理</option>
+            <option value="in-progress">进行中</option>
+            <option value="completed">已完成</option>
+          </select>
+          <input type="date" id="deadline" class="form-control" required>
+          <input type="text" id="providerName" class="form-control" placeholder="团队名称" required>
+          <input type="text" id="notes" class="form-control" placeholder="备注">
+          <button type="submit" class="btn btn-primary">创建订单</button>
+          <button type="reset" class="btn btn-secondary">重置</button>
+        </form>
+        <p id="orderMsg" class="error"></p>
+      </div>
+
+      <!-- 订单记录 -->
+      <div id="orderRecordDiv" style="display:none;">
+        <h2 id="orderRecordTitle">订单记录</h2>
+        <div class="mb-3">
+          <input type="text" id="filterClientName" class="form-control" placeholder="按客户姓名筛选">
+          <select id="filterStatus" class="form-select">
+            <option value="">所有状态</option>
+            <option value="pending">待处理</option>
+            <option value="in-progress">进行中</option>
+            <option value="completed">已完成</option>
+          </select>
+          <button class="btn btn-primary" onclick="fetchOrders()">筛选</button>
+        </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>订单ID</th>
+              <th>客户姓名</th>
+              <th>项目价值</th>
+              <th>类型</th>
+              <th>状态</th>
+              <th>团队名称</th>
+              <th>备注</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="orderTable"></tbody>
+        </table>
+      </div>
+
+      <!-- 合同生成器 -->
+      <div id="contractDiv" style="display:none;">
+        <h2 id="contractTitle">合同生成器</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="toolCard">
+              <h4 id="clientContractTitle">客户中介服务合同</h4>
+              <p id="clientContractDesc">生成客户合同模板。</p>
+              <a href="#" onclick="generateContract('client')" class="btn btn-primary btn-sm">生成</a>
             </div>
+          </div>
+          <div class="col-md-4">
+            <div class="toolCard">
+              <h4 id="providerContractTitle">服务团队介绍费合同</h4>
+              <p id="providerContractDesc">生成团队合同模板。</p>
+              <a href="#" onclick="generateContract('provider')" class="btn btn-primary btn-sm">生成</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="toolCard">
+              <h4 id="projectContractTitle">客户-服务团队项目合同</h4>
+              <p id="projectContractDesc">生成项目合同模板。</p>
+              <a href="#" onclick="generateContract('project')" class="btn btn-primary btn-sm">生成</a>
+            </div>
+          </div>
         </div>
+        <p id="contractMsg" class="error"></p>
+      </div>
 
-        <!-- 修改密码 -->
-        <div id="changePasswordDiv" style="display:none;">
-            <h2>修改密码</h2>
-            <input type="password" id="oldPassword" placeholder="旧密码"><br>
-            <input type="password" id="newPassword" placeholder="新密码（至少6位）"><br>
-            <input type="password" id="confirmPassword" placeholder="确认新密码"><br>
-            <button id="changeBtn">确认修改</button>
-            <p id="changeMsg"></p>
+      <!-- 合同记录 -->
+      <div id="contractRecordDiv" style="display:none;">
+        <h2 id="contractRecordTitle">合同记录</h2>
+        <div class="mb-3">
+          <input type="text" id="filterContractClient" class="form-control" placeholder="按客户姓名筛选">
+          <input type="date" id="filterContractDate" class="form-control">
+          <button class="btn btn-primary" onclick="fetchContracts()">筛选</button>
         </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>合同ID</th>
+              <th>订单ID</th>
+              <th>客户姓名</th>
+              <th>类型</th>
+              <th>创建日期</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="contractTable"></tbody>
+        </table>
+      </div>
 
-        <!-- 订单管理占位 -->
-        <div id="orderDiv" style="display:none;">
-            <h2>订单管理</h2>
-            <div class="tablePlaceholder">这里将显示订单管理界面，未来可输入新订单、计算价格、修改状态。</div>
-        </div>
-
-        <!-- 订单记录占位 -->
-        <div id="orderRecordDiv" style="display:none;">
-            <h2>订单记录</h2>
-            <div class="tablePlaceholder">这里将显示所有历史订单，支持搜索、筛选、排序。</div>
-        </div>
-
-        <!-- 合同生成器占位 -->
-        <div id="contractDiv" style="display:none;">
-            <h2>合同生成器</h2>
-            <div class="tablePlaceholder">这里将生成合同模板，未来可下载或复制合同。</div>
-        </div>
-
-        <!-- 合同记录占位 -->
-        <div id="contractRecordDiv" style="display:none;">
-            <h2>合同记录</h2>
-            <div class="tablePlaceholder">这里显示合同列表，可按客户、日期、订单号筛选。</div>
-        </div>
-
-        <!-- 未来模块占位 -->
-        <div id="futureDiv" style="display:none;">
-            <h2>预留模块</h2>
-            <div class="tablePlaceholder">这里为未来功能预留空间，可扩展消息中心、数据统计等。</div>
-        </div>
-
-        <div id="footer">Goaoxor © 2025 管理后台 | 版本 1.0</div>
+      <div id="footer">Goaoxor © 2025 管理后台 | 版本 1.0</div>
     </div>
-</div>
+  </div>
 
-<script>
-let storedPassword = localStorage.getItem('adminPassword') || "123456";
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let isEnglish = false;
 
-const loginDiv = document.getElementById('loginDiv');
-const mainDiv = document.getElementById('mainDiv');
-const lastLoginSpan = document.getElementById('lastLogin');
-const currentTimeSpan = document.getElementById('currentTime');
-
-const loginBtn = document.getElementById('loginBtn');
-const navDashboard = document.getElementById('navDashboard');
-const navChange = document.getElementById('navChange');
-const navOrder = document.getElementById('navOrder');
-const navOrderRecord = document.getElementById('navOrderRecord');
-const navContract = document.getElementById('navContract');
-const navContractRecord = document.getElementById('navContractRecord');
-const navFuture1 = document.getElementById('navFuture1');
-const navFuture2 = document.getElementById('navFuture2');
-const navLogout = document.getElementById('navLogout');
-const changeBtn = document.getElementById('changeBtn');
-
-const sections = {
-    dashboard: document.getElementById('dashboard'),
-    change: document.getElementById('changePasswordDiv'),
-    order: document.getElementById('orderDiv'),
-    orderRecord: document.getElementById('orderRecordDiv'),
-    contract: document.getElementById('contractDiv'),
-    contractRecord: document.getElementById('contractRecordDiv'),
-    future: document.getElementById('futureDiv')
-};
-
-function updateTime(){
-    currentTimeSpan.innerText = new Date().toLocaleString();
-}
-setInterval(updateTime,1000);
-
-window.onload = function(){
-    loginDiv.style.display = "flex";
-    const lastLoginTime = localStorage.getItem('lastLoginTime');
-    if(lastLoginTime) lastLoginSpan.innerText = lastLoginTime;
-    updateTime();
-};
-
-loginBtn.addEventListener('click', function(){
-    const pwd = document.getElementById('passwordInput').value;
-    if(pwd === storedPassword){
-        loginDiv.style.display = "none";
-        mainDiv.style.display = "flex";
-        const now = new Date().toLocaleString();
-        lastLoginSpan.innerText = now;
-        localStorage.setItem('lastLoginTime', now);
-        document.getElementById('loginMsg').innerText="";
-    } else {
-        document.getElementById('loginMsg').innerText="密码错误，请重试！";
+    // 初始化 localStorage 数据
+    if (!localStorage.getItem('adminPassword')) {
+      localStorage.setItem('adminPassword', '123456');
+      localStorage.setItem('lastLogin', '未记录');
     }
-});
-
-function showSection(sec){
-    for(let key in sections){
-        sections[key].style.display = (key===sec)?'block':'none';
+    if (!localStorage.getItem('orders')) {
+      localStorage.setItem('orders', JSON.stringify([]));
     }
-}
+    if (!localStorage.getItem('contracts')) {
+      localStorage.setItem('contracts', JSON.stringify([]));
+    }
 
-function setActive(btn){
-    document.querySelectorAll('#sidebar button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-}
+    // 语言切换
+    function toggleLanguage() {
+      isEnglish = !isEnglish;
+      document.getElementById('loginTitle').textContent = isEnglish ? 'Goaoxor Admin Dashboard' : 'Goaoxor 管理后台';
+      document.getElementById('sidebarTitle').textContent = isEnglish ? 'Navigation' : '后台导航';
+      document.getElementById('navDashboard').textContent = isEnglish ? 'Dashboard' : '首页';
+      document.getElementById('navOrder').textContent = isEnglish ? 'Order Management' : '订单管理';
+      document.getElementById('navOrderRecord').textContent = isEnglish ? 'Order Records' : '订单记录';
+      document.getElementById('navContract').textContent = isEnglish ? 'Contract Generator' : '合同生成器';
+      document.getElementById('navContractRecord').textContent = isEnglish ? 'Contract Records' : '合同记录';
+      document.getElementById('navChange').textContent = isEnglish ? 'Change Password' : '修改密码';
+      document.getElementById('navLogout').textContent = isEnglish ? 'Logout' : '退出登录';
+      document.getElementById('welcomeText').innerHTML = isEnglish
+        ? `Welcome, Admin! Last Login: <span id="lastLogin">${localStorage.getItem('lastLogin')}</span>`
+        : `欢迎，管理员！ 上次登录: <span id="lastLogin">${localStorage.getItem('lastLogin')}</span>`;
+      document.getElementById('dashboardTitle').textContent = isEnglish ? 'Goaoxor Dashboard' : 'Goaoxor 生态首页';
+      document.getElementById('dashboardDesc').textContent = isEnglish ? 'Welcome to the Goaoxor admin dashboard. Here you can access core tools and quick links for efficient project management.' : '欢迎来到Goaoxor管理后台。这里提供核心工具和快速访问，帮助您高效管理项目。';
+      document.getElementById('toolCalculator').textContent = isEnglish ? 'Order Calculator' : '订单计算器';
+      document.getElementById('toolOrder').textContent = isEnglish ? 'Order Management' : '订单管理';
+      document.getElementById('toolOrderRecord').textContent = isEnglish ? 'Order Records' : '订单记录';
+      document.getElementById('toolContract').textContent = isEnglish ? 'Contract Generator' : '合同生成器';
+      document.getElementById('toolContractRecord').textContent = isEnglish ? 'Contract Records' : '合同记录';
+      document.getElementById('toolStatistics').textContent = isEnglish ? 'Data Statistics' : '数据统计';
+      document.getElementById('toolBackup').textContent = isEnglish ? 'Data Backup' : '数据备份';
+      document.getElementById('toolSettings').textContent = isEnglish ? 'System Settings' : '系统设置';
+      document.getElementById('changePasswordTitle').textContent = isEnglish ? 'Change Password' : '修改密码';
+      document.getElementById('orderTitle').textContent = isEnglish ? 'Order Management' : '订单管理';
+      document.getElementById('orderRecordTitle').textContent = isEnglish ? 'Order Records' : '订单记录';
+      document.getElementById('contractTitle').textContent = isEnglish ? 'Contract Generator' : '合同生成器';
+      document.getElementById('contractRecordTitle').textContent = isEnglish ? 'Contract Records' : '合同记录';
+      document.getElementById('clientContractTitle').textContent = isEnglish ? 'Client Intermediary Contract' : '客户中介服务合同';
+      document.getElementById('providerContractTitle').textContent = isEnglish ? 'Provider Referral Contract' : '服务团队介绍费合同';
+      document.getElementById('projectContractTitle').textContent = isEnglish ? 'Project Contract Template' : '客户-服务团队项目合同模板';
+      document.getElementById('clientContractDesc').textContent = isEnglish ? 'Generate client contract template.' : '生成客户合同模板。';
+      document.getElementById('providerContractDesc').textContent = isEnglish ? 'Generate provider contract template.' : '生成团队合同模板。';
+      document.getElementById('projectContractDesc').textContent = isEnglish ? 'Generate project contract template.' : '生成项目合同模板。';
+      document.getElementById('toolStatisticsDesc').textContent = isEnglish ? 'View income, order count, and status distribution.' : '查看收入、订单数量和状态分布。';
+      document.getElementById('toolBackupDesc').textContent = isEnglish ? 'Export orders and contracts data.' : '导出订单和合同数据。';
+      document.getElementById('toolSettingsDesc').textContent = isEnglish ? 'Modify default settings, such as password or pricing.' : '修改默认设置，如密码或定价。';
+      document.getElementById('orderForm').querySelector('button[type="submit"]').textContent = isEnglish ? 'Create Order' : '创建订单';
+      document.getElementById('orderForm').querySelector('button[type="reset"]').textContent = isEnglish ? 'Reset' : '重置';
+      document.getElementById('filterClientName').placeholder = isEnglish ? 'Filter by Client Name' : '按客户姓名筛选';
+      document.getElementById('filterStatus').children[0].textContent = isEnglish ? 'All Statuses' : '所有状态';
+      document.getElementById('contractOrderId').placeholder = isEnglish ? 'Order ID' : '订单ID';
+      document.getElementById('contractType').children[0].textContent = isEnglish ? 'Select Contract Type' : '选择合同类型';
+      document.getElementById('contractForm').querySelector('button[type="submit"]').textContent = isEnglish ? 'Generate Contract' : '生成合同';
+      document.getElementById('filterContractClient').placeholder = isEnglish ? 'Filter by Client Name' : '按客户姓名筛选';
+      document.getElementById('filterContractDate').placeholder = isEnglish ? 'Filter by Date' : '按日期筛选';
+      fetchOrders();
+      fetchContracts();
+    }
 
-navDashboard.addEventListener('click',()=>{ showSection('dashboard'); setActive(navDashboard); });
-navChange.addEventListener('click',()=>{ showSection('change'); setActive(navChange); });
-navOrder.addEventListener('click',()=>{ showSection('order'); setActive(navOrder); });
-navOrderRecord.addEventListener('click',()=>{ showSection('orderRecord'); setActive(navOrderRecord); });
-navContract.addEventListener('click',()=>{ showSection('contract'); setActive(navContract); });
-navContractRecord.addEventListener('click',()=>{ showSection('contractRecord'); setActive(navContractRecord); });
-navFuture1.addEventListener('click',()=>{ showSection('future'); setActive(navFuture1); });
-navFuture2.addEventListener('click',()=>{ showSection('future'); setActive(navFuture2); });
-navLogout.addEventListener('click',()=>{ mainDiv.style.display="none"; loginDiv.style.display="flex"; document.getElementById('passwordInput').value=""; });
+    // 费用计算逻辑
+    function calculateFees(projectValue) {
+      let clientFee, providerFee;
+      if (projectValue <= 300) {
+        clientFee = 30; providerFee = Math.max(10, Math.min(30, projectValue * 0.1));
+      } else if (projectValue <= 800) {
+        clientFee = 50; providerFee = Math.max(30, Math.min(80, projectValue * 0.1));
+      } else if (projectValue <= 2000) {
+        clientFee = 80; providerFee = Math.max(64, Math.min(160, projectValue * 0.08));
+      } else if (projectValue <= 5000) {
+        clientFee = 100; providerFee = Math.max(120, Math.min(150, projectValue * 0.06));
+      } else {
+        clientFee = 150; providerFee = Math.max(250, Math.min(200, projectValue * 0.05));
+      }
+      return {
+        clientFee,
+        providerFee,
+        providerDeposit: providerFee * 0.2,
+        providerBalance: providerFee * 0.8,
+        providerNet: projectValue - providerFee,
+        clientCost: clientFee + projectValue
+      };
+    }
 
-changeBtn.addEventListener('click',()=>{
-    const oldPwd = document.getElementById('oldPassword').value;
-    const newPwd = document.getElementById('newPassword').value;
-    const confirmPwd = document.getElementById('confirmPassword').value;
-    const msg = document.getElementById('changeMsg');
+    // 登录
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const pwd = document.getElementById('passwordInput').value;
+      const msg = document.getElementById('loginMsg');
+      if (pwd === localStorage.getItem('adminPassword')) {
+        localStorage.setItem('lastLogin', new Date().toLocaleString());
+        document.getElementById('loginDiv').style.display = 'none';
+        document.getElementById('mainDiv').style.display = 'flex';
+        document.getElementById('lastLogin').textContent = localStorage.getItem('lastLogin');
+        msg.textContent = '';
+      } else {
+        msg.textContent = isEnglish ? 'Incorrect password!' : '密码错误，请重试！';
+      }
+    });
 
-    if(oldPwd !== storedPassword){ msg.innerText="旧密码不正确"; return; }
-    if(newPwd.length<6){ msg.innerText="新密码至少6位"; return; }
-    if(newPwd !== confirmPwd){ msg.innerText="两次密码输入不一致"; return; }
+    // 修改密码
+    document.getElementById('changeBtn').addEventListener('click', () => {
+      const oldPwd = document.getElementById('oldPassword').value;
+      const newPwd = document.getElementById('newPassword').value;
+      const confirmPwd = document.getElementById('confirmPassword').value;
+      const msg = document.getElementById('changeMsg');
+      if (newPwd !== confirmPwd) {
+        msg.textContent = isEnglish ? 'Passwords do not match!' : '两次密码不一致！';
+        return;
+      }
+      if (newPwd.length < 6) {
+        msg.textContent = isEnglish ? 'New password must be at least 6 characters!' : '新密码至少6位！';
+        return;
+      }
+      if (oldPwd !== localStorage.getItem('adminPassword')) {
+        msg.textContent = isEnglish ? 'Incorrect old password!' : '旧密码不正确！';
+        return;
+      }
+      localStorage.setItem('adminPassword', newPwd);
+      msg.className = 'success';
+      msg.textContent = isEnglish ? 'Password changed successfully!' : '密码修改成功！';
+      document.getElementById('oldPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+    });
 
-    storedPassword = newPwd;
-    localStorage.setItem('adminPassword', storedPassword);
-    msg.style.color="green";
-    msg.innerText="密码修改成功！";
-    document.getElementById('oldPassword').value="";
-    document.getElementById('newPassword').value="";
-    document.getElementById('confirmPassword').value="";
-});
-</script>
+    // 创建订单
+    document.getElementById('orderForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const clientName = document.getElementById('clientName').value;
+      const clientEmail = document.getElementById('clientEmail').value;
+      const projectValue = parseFloat(document.getElementById('projectValue').value);
+      const projectType = document.getElementById('projectType').value;
+      const orderStatus = document.getElementById('orderStatus').value;
+      const deadline = document.getElementById('deadline').value;
+      const providerName = document.getElementById('providerName').value;
+      const notes = document.getElementById('notes').value;
+      const msg = document.getElementById('orderMsg');
+      if (projectValue < 100 || projectValue > 10000) {
+        msg.textContent = isEnglish ? 'Project value must be between $100 and $10000!' : '项目价值必须在$100-$10000之间！';
+        return;
+      }
+      const fees = calculateFees(projectValue);
+      const orders = JSON.parse(localStorage.getItem('orders'));
+      const order = {
+        id: orders.length + 1,
+        client_name: clientName,
+        client_email: clientEmail,
+        project_value: projectValue,
+        project_type: projectType,
+        status: orderStatus,
+        deadline,
+        provider_name: providerName,
+        notes,
+        client_fee: fees.clientFee,
+        provider_fee: fees.providerFee,
+        provider_deposit: fees.providerDeposit,
+        provider_balance: fees.providerBalance,
+        provider_net: fees.providerNet,
+        client_cost: fees.clientCost,
+        created_at: new Date().toLocaleString(),
+        updated_at: new Date().toLocaleString()
+      };
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+      msg.className = 'success';
+      msg.textContent = isEnglish ? 'Order created successfully!' : '订单创建成功！';
+      document.getElementById('orderForm').reset();
+    });
+
+    // 获取订单
+    function fetchOrders() {
+      const clientName = document.getElementById('filterClientName').value;
+      const status = document.getElementById('filterStatus').value;
+      const orders = JSON.parse(localStorage.getItem('orders'));
+      const filtered = orders.filter(o =>
+        (!clientName || o.client_name.toLowerCase().includes(clientName.toLowerCase())) &&
+        (!status || o.status === status)
+      );
+      const tbody = document.getElementById('orderTable');
+      tbody.innerHTML = '';
+      filtered.forEach(order => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${order.id}</td>
+          <td>${order.client_name}</td>
+          <td>$${order.project_value.toFixed(2)}</td>
+          <td>${isEnglish ? order.project_type : {'video': '短视频', 'animation': '动画', 'uiux': 'UI/UX设计'}[order.project_type]}</td>
+          <td>
+            <select onchange="updateOrderStatus(${order.id}, this.value)">
+              <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>${isEnglish ? 'Pending' : '待处理'}</option>
+              <option value="in-progress" ${order.status === 'in-progress' ? 'selected' : ''}>${isEnglish ? 'In Progress' : '进行中'}</option>
+              <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>${isEnglish ? 'Completed' : '已完成'}</option>
+            </select>
+          </td>
+          <td>${order.provider_name}</td>
+          <td>${order.notes}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="generateContract(${order.id}, 'client')">客户合同</button>
+            <button class="btn btn-sm btn-primary" onclick="generateContract(${order.id}, 'provider')">团队合同</button>
+            <button class="btn btn-sm btn-primary" onclick="generateContract(${order.id}, 'project')">项目合同</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 更新订单状态
+    function updateOrderStatus(orderId, status) {
+      const orders = JSON.parse(localStorage.getItem('orders'));
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        order.status = status;
+        order.updated_at = new Date().toLocaleString();
+        localStorage.setItem('orders', JSON.stringify(orders));
+        alert(isEnglish ? 'Order status updated!' : '订单状态更新成功！');
+        fetchOrders();
+      }
+    }
+
+    // 生成合同
+    function generateContract(orderId, type) {
+      const orders = JSON.parse(localStorage.getItem('orders'));
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return alert(isEnglish ? 'Order not found!' : '订单不存在！');
+      const contracts = JSON.parse(localStorage.getItem('contracts'));
+      const contract = {
+        id: contracts.length + 1,
+        order_id: orderId,
+        client_name: order.client_name,
+        project_value: order.project_value,
+        client_fee: order.client_fee,
+        provider_fee: order.provider_fee,
+        contract_type: type,
+        file_path: `contract_order_${orderId}_${type}.pdf`,
+        created_at: new Date().toLocaleString()
+      };
+      contracts.push(contract);
+      localStorage.setItem('contracts', JSON.stringify(contracts));
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(16);
+      doc.text('Goaoxor 合同', 105, 20, { align: 'center' });
+      doc.setFontSize(12);
+      doc.text(`订单ID: ${order.id}`, 20, 40);
+      doc.text(`客户: ${order.client_name}`, 20, 50);
+      doc.text(`项目价值: $${order.project_value.toFixed(2)}`, 20, 60);
+      doc.text(`类型: ${type === 'client' ? (isEnglish ? 'Client Intermediary Contract' : '客户中介服务合同') : type === 'provider' ? (isEnglish ? 'Provider Referral Contract' : '服务团队介绍费合同') : (isEnglish ? 'Project Contract Template' : '客户-服务团队项目合同模板')}`, 20, 70);
+      if (type === 'client') {
+        doc.text(`中介费: $${order.client_fee.toFixed(2)} (通过Wise支付)`, 20, 90);
+        doc.text('服务内容: 团队匹配、项目监督、2次免费修改。', 20, 100);
+        doc.text('备注: 项目款（20%-50%定金）与团队直接协商。', 20, 110);
+      } else if (type === 'provider') {
+        doc.text(`介绍费: $${order.provider_fee.toFixed(2)} (从项目款扣除)`, 20, 90);
+        doc.text(`保证金 (20%): $${order.provider_deposit.toFixed(2)}`, 20, 100);
+        doc.text(`尾款 (80%): $${order.provider_balance.toFixed(2)} (交付后通过微信/支付宝支付)`, 20, 110);
+        doc.text(`净收入: $${order.provider_net.toFixed(2)}`, 20, 120);
+      } else {
+        doc.text(`定金: 20%-50% (双方协商)`, 20, 90);
+        doc.text('项目内容: 短视频/动画/UI/UX等', 20, 100);
+        doc.text('交付时间: 脚本3天、初稿7天、交付10天', 20, 110);
+        doc.text('修改: 2次免费', 20, 120);
+      }
+      doc.text('条款: 知识产权归客户所有。仲裁地: 新加坡。', 20, 140);
+      doc.save(`contract_order_${orderId}_${type}.pdf`);
+
+      alert(isEnglish ? 'Contract generated and downloaded!' : '合同生成并下载成功！');
+      fetchContracts();
+    }
+
+    // 获取合同
+    function fetchContracts() {
+      const clientName = document.getElementById('filterContractClient').value;
+      const date = document.getElementById('filterContractDate').value;
+      const contracts = JSON.parse(localStorage.getItem('contracts'));
+      const filtered = contracts.filter(c =>
+        (!clientName || c.client_name.toLowerCase().includes(clientName.toLowerCase())) &&
+        (!date || c.created_at.includes(date))
+      );
+      const tbody = document.getElementById('contractTable');
+      tbody.innerHTML = '';
+      filtered.forEach(contract => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${contract.id}</td>
+          <td>${contract.order_id}</td>
+          <td>${contract.client_name}</td>
+          <td>${isEnglish ? contract.contract_type : contract.contract_type === 'client' ? '客户中介合同' : contract.contract_type === 'provider' ? '团队介绍合同' : '项目合同模板'}</td>
+          <td>${contract.created_at}</td>
+          <td><a href="#" onclick="generateContract(${contract.order_id}, '${contract.contract_type}')">${isEnglish ? 'Regenerate/Download' : '重新生成/下载'}</a></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 显示统计
+    function showStatistics() {
+      const orders = JSON.parse(localStorage.getItem('orders'));
+      const totalOrders = orders.length;
+      const totalIncome = orders.reduce((sum, o) => sum + o.client_fee + o.provider_fee, 0);
+      const pending = orders.filter(o => o.status === 'pending').length;
+      const inProgress = orders.filter(o => o.status === 'in-progress').length;
+      const completed = orders.filter(o => o.status === 'completed').length;
+      alert(isEnglish ? `Total Orders: ${totalOrders}\nTotal Income: $${totalIncome.toFixed(2)}\nPending: ${pending}\nIn Progress: ${inProgress}\nCompleted: ${completed}` : `订单总数: ${totalOrders}\n总收入: $${totalIncome.toFixed(2)}\n待处理: ${pending}\n进行中: ${inProgress}\n已完成: ${completed}`);
+    }
+
+    // 导出数据
+    function exportData() {
+      const data = {
+        users: localStorage.getItem('users'),
+        orders: localStorage.getItem('orders'),
+        contracts: localStorage.getItem('contracts')
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'goaoxor_data.json';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      alert(isEnglish ? 'Data exported successfully!' : '数据导出成功！');
+    }
+
+    // 显示设置
+    function showSettings() {
+      alert(isEnglish ? 'System Settings: Coming soon (e.g., change pricing, reset data).' : '系统设置: 即将推出（例如修改定价、重置数据）。');
+    }
+
+    // 显示页面
+    function showSection(section) {
+      ['dashboard', 'changePasswordDiv', 'orderDiv', 'orderRecordDiv', 'contractDiv', 'contractRecordDiv'].forEach(id => {
+        document.getElementById(id).style.display = id === section ? 'block' : 'none';
+      });
+      document.querySelectorAll('#sidebar button').forEach(b => b.classList.remove('active'));
+      const navId = 'nav' + (section === 'dashboard' ? 'Dashboard' : section.charAt(0).toUpperCase() + section.slice(1));
+      document.getElementById(navId).classList.add('active');
+      if (section === 'orderRecordDiv') fetchOrders();
+      if (section === 'contractRecordDiv') fetchContracts();
+    }
+
+    // 绑定导航事件
+    document.getElementById('navDashboard').addEventListener('click', () => showSection('dashboard'));
+    document.getElementById('navChange').addEventListener('click', () => showSection('changePasswordDiv'));
+    document.getElementById('navOrder').addEventListener('click', () => showSection('orderDiv'));
+    document.getElementById('navOrderRecord').addEventListener('click', () => showSection('orderRecordDiv'));
+    document.getElementById('navContract').addEventListener('click', () => showSection('contractDiv'));
+    document.getElementById('navContractRecord').addEventListener('click', () => showSection('contractRecordDiv'));
+    document.getElementById('navLogout').addEventListener('click', () => {
+      document.getElementById('mainDiv').style.display = 'none';
+      document.getElementById('loginDiv').style.display = 'flex';
+      document.getElementById('passwordInput').value = '';
+    });
+
+    // 合同生成按钮（三个模块）
+    document.getElementById('contractForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const orderId = parseInt(document.getElementById('contractOrderId').value);
+      const type = document.getElementById('contractType').value;
+      generateContract(orderId, type);
+    });
+
+    // 更新时间
+    function updateTime() {
+      document.getElementById('currentTime').textContent = new Date().toLocaleString();
+    }
+    setInterval(updateTime, 1000);
+
+    // 初始化
+    window.onload = () => {
+      document.getElementById('loginDiv').style.display = 'flex';
+      updateTime();
+      document.getElementById('lastLogin').textContent = localStorage.getItem('lastLogin');
+    };
+  </script>
 </body>
 </html>
