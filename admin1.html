@@ -7,47 +7,222 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
   <style>
-    body { font-family: "微软雅黑", Arial, sans-serif; background: #f0f2f5; color: #333; }
-    #loginDiv { display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #4facfe, #00f2fe); }
-    #loginCard { background: white; padding: 40px; border-radius: 15px; width: 400px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); text-align: center; }
-    #loginCard h2 { margin-bottom: 25px; color: #2c3e50; font-weight: 600; }
-    #loginCard input, #loginCard select { width: 100%; padding: 12px; margin: 15px 0; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; transition: border 0.3s; }
-    #loginCard input:focus, #loginCard select:focus { border-color: #4facfe; outline: none; }
-    #loginCard button { width: 100%; padding: 12px; background: linear-gradient(90deg, #4facfe, #00f2fe); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: opacity 0.3s; }
-    #loginCard button:hover { opacity: 0.9; }
-    #loginMsg { margin-top: 15px; color: red; font-size: 14px; }
-
-    #mainDiv { display: none; height: 100vh; overflow: hidden; }
-    #sidebar { width: 250px; background: linear-gradient(180deg, #2c3e50, #1a252f); color: white; flex-shrink: 0; display: flex; flex-direction: column; padding-top: 30px; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
-    #sidebar h3 { text-align: center; margin-bottom: 30px; font-weight: 500; font-size: 20px; letter-spacing: 1px; }
-    #sidebar button { width: 100%; padding: 15px; border: none; background: none; color: white; text-align: left; padding-left: 30px; font-size: 16px; cursor: pointer; transition: background 0.3s, padding-left 0.3s; }
-    #sidebar button:hover { background: #34495e; padding-left: 35px; }
-    #sidebar .active { background: #34495e; padding-left: 35px; border-left: 4px solid #4facfe; }
-
-    #content { flex: 1; padding: 30px; background: #f0f2f5; overflow-y: auto; }
-    #topBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    #topBar .welcome { font-size: 18px; color: #2c3e50; font-weight: 500; }
-    #topBar .time { font-size: 14px; color: #7f8c8d; }
-
-    .toolCard { background: white; padding: 20px; border-radius: 10px; display: inline-block; margin: 15px; width: 250px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
-    .toolCard:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-    .toolCard a { text-decoration: none; color: #3498db; display: block; margin-top: 10px; font-weight: 500; }
-    .toolCard h4 { margin-bottom: 10px; color: #2c3e50; font-size: 18px; }
-    .toolCard p { color: #7f8c8d; font-size: 14px; }
-
-    .form-group { margin-bottom: 20px; }
-    .form-control, .form-select { border-radius: 8px; border: 1px solid #ddd; transition: border 0.3s; }
-    .form-control:focus, .form-select:focus { border-color: #4facfe; box-shadow: 0 0 0 0.25rem rgba(79, 172, 254, 0.25); }
-    .btn-primary { background: linear-gradient(90deg, #4facfe, #00f2fe); border: none; padding: 10px 20px; border-radius: 8px; transition: opacity 0.3s; }
-    .btn-primary:hover { opacity: 0.9; }
-    .btn-secondary { background: #6c757d; border: none; padding: 10px 20px; border-radius: 8px; transition: opacity 0.3s; }
-    .btn-secondary:hover { opacity: 0.9; }
-    .btn-danger { background: #dc3545; border: none; padding: 10px 20px; border-radius: 8px; transition: opacity 0.3s; }
-    .btn-danger:hover { opacity: 0.9; }
-    .error { color: red; font-size: 14px; margin-top: 10px; }
-    .success { color: green; font-size: 14px; margin-top: 10px; }
-    #adminTable th, #adminTable td { vertical-align: middle; }
+    body { 
+      font-family: "Inter", "微软雅黑", Arial, sans-serif; 
+      background: linear-gradient(135deg, #1e1b4b, #3b3a7e, #2c2a5b); 
+      color: #e0e0ff; 
+      overflow-x: hidden;
+    }
+    #loginDiv { 
+      background: linear-gradient(135deg, #4facfe, #00f2fe, #7b2cbf); 
+      animation: gradientShift 15s ease infinite; 
+      display: flex; justify-content: center; align-items: center; height: 100vh;
+    }
+    @keyframes gradientShift { 
+      0% { background-position: 0% 50%; } 
+      50% { background-position: 100% 50%; } 
+      100% { background-position: 0% 50%; } 
+    }
+    #loginCard { 
+      background: rgba(255, 255, 255, 0.05); 
+      border: 1px solid rgba(255, 255, 255, 0.2); 
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2); 
+      backdrop-filter: blur(12px); 
+      border-radius: 20px; 
+      animation: float 6s ease-in-out infinite; 
+      padding: 40px; width: 400px; text-align: center;
+    }
+    @keyframes float { 
+      0% { transform: translateY(0px); } 
+      50% { transform: translateY(-10px); } 
+      100% { transform: translateY(0px); } 
+    }
+    #loginCard h2 { 
+      color: #e0e0ff; 
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3); 
+      font-weight: 700; 
+      letter-spacing: 1.5px; 
+      margin-bottom: 25px;
+    }
+    #loginCard select, #loginCard input { 
+      width: 100%; padding: 12px; margin: 15px 0; font-size: 16px; 
+      background: rgba(255,255,255,0.08); 
+      border: 1px solid rgba(255,255,255,0.3); 
+      color: #e0e0ff; 
+      border-radius: 8px; 
+      transition: all 0.3s ease; 
+    }
+    #loginCard select:focus, #loginCard input:focus { 
+      border-color: #4facfe; 
+      box-shadow: 0 0 12px rgba(79, 172, 254, 0.5); 
+      outline: none; 
+    }
+    #loginCard button { 
+      width: 100%; padding: 12px; 
+      background: linear-gradient(90deg, #4facfe, #00f2fe, #7b2cbf); 
+      color: white; border: none; border-radius: 12px; 
+      font-size: 16px; font-weight: 600; 
+      text-transform: uppercase; 
+      cursor: pointer; 
+      transition: transform 0.3s ease; 
+    }
+    #loginCard button:hover { 
+      transform: scale(1.05); 
+    }
+    #loginMsg { 
+      margin-top: 15px; color: #ff6b6b; font-size: 14px; 
+    }
+    #mainDiv { 
+      display: none; height: 100vh; overflow: hidden; 
+      flex-direction: row; 
+    }
+    #sidebar { 
+      width: 250px; 
+      background: linear-gradient(180deg, #2c2a5b, #1e1b4b); 
+      color: white; 
+      flex-shrink: 0; 
+      display: flex; 
+      flex-direction: column; 
+      padding-top: 30px; 
+      box-shadow: 5px 0 20px rgba(0,0,0,0.3); 
+      border-right: 1px solid rgba(255,255,255,0.1); 
+    }
+    #sidebar h3 { 
+      text-align: center; margin-bottom: 30px; 
+      font-weight: 500; font-size: 20px; 
+      letter-spacing: 1px; 
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3); 
+    }
+    #sidebar button { 
+      width: 100%; padding: 15px; border: none; 
+      background: none; color: white; 
+      text-align: left; padding-left: 30px; 
+      font-size: 16px; cursor: pointer; 
+      transition: all 0.3s ease; 
+      border-radius: 0 12px 12px 0; 
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+    }
+    #sidebar button:hover, #sidebar .active { 
+      background: linear-gradient(90deg, #4facfe, #00f2fe); 
+      padding-left: 40px; 
+      box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3); 
+    }
+    #content { 
+      flex: 1; padding: 30px; 
+      background: linear-gradient(135deg, #1e1b4b, #3b3a7e, #2c2a5b); 
+      overflow-y: auto; 
+    }
+    #topBar { 
+      display: flex; justify-content: space-between; align-items: center; 
+      margin-bottom: 30px; 
+      background: rgba(255,255,255,0.05); 
+      padding: 15px; 
+      border-radius: 15px; 
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2); 
+      backdrop-filter: blur(12px); 
+      border: 1px solid rgba(255,255,255,0.1); 
+    }
+    #topBar .welcome { 
+      font-size: 18px; color: #e0e0ff; font-weight: 500; 
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+    }
+    #topBar .time { 
+      font-size: 14px; color: #a0a0ff; 
+    }
+    .toolCard { 
+      background: rgba(255,255,255,0.05); 
+      padding: 20px; border-radius: 15px; 
+      display: inline-block; margin: 15px; width: 250px; 
+      text-align: center; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+      cursor: pointer; 
+      transition: all 0.3s ease; 
+      animation: fadeIn 0.5s ease-in; 
+      backdrop-filter: blur(12px); 
+      border: 1px solid rgba(255,255,255,0.1); 
+    }
+    .toolCard:hover { 
+      transform: translateY(-8px); 
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3); 
+    }
+    .toolCard a { 
+      text-decoration: none; 
+      background: linear-gradient(90deg, #4facfe, #00f2fe); 
+      color: white; 
+      border-radius: 10px; 
+      padding: 8px 16px; 
+      display: block; margin-top: 10px; 
+      font-weight: 500; 
+      transition: transform 0.3s ease; 
+    }
+    .toolCard a:hover { 
+      transform: scale(1.05); 
+    }
+    .toolCard h4 { 
+      margin-bottom: 10px; color: #e0e0ff; 
+      font-size: 18px; 
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+    }
+    .toolCard p { 
+      color: #a0a0ff; font-size: 14px; 
+    }
+    .form-group { 
+      margin-bottom: 20px; 
+    }
+    .form-control, .form-select { 
+      border-radius: 8px; 
+      border: 1px solid rgba(255,255,255,0.3); 
+      background: rgba(255,255,255,0.08); 
+      color: #e0e0ff; 
+      transition: all 0.3s ease; 
+    }
+    .form-control:focus, .form-select:focus { 
+      border-color: #4facfe; 
+      box-shadow: 0 0 12px rgba(79, 172, 254, 0.5); 
+      outline: none; 
+    }
+    .btn-primary { 
+      background: linear-gradient(90deg, #4facfe, #00f2fe, #7b2cbf); 
+      border: none; padding: 10px 20px; 
+      border-radius: 12px; 
+      font-weight: 600; 
+      transition: transform 0.3s ease; 
+    }
+    .btn-primary:hover { 
+      transform: scale(1.05); 
+    }
+    .btn-secondary, .btn-danger { 
+      border: none; padding: 10px 20px; 
+      border-radius: 12px; 
+      transition: transform 0.3s ease; 
+    }
+    .btn-secondary:hover, .btn-danger:hover { 
+      transform: scale(1.05); 
+    }
+    .error { 
+      color: #ff6b6b; font-size: 14px; margin-top: 10px; 
+    }
+    .success { 
+      color: #4facfe; font-size: 14px; margin-top: 10px; 
+    }
+    .table { 
+      background: rgba(255,255,255,0.05); 
+      border: 1px solid rgba(255,255,255,0.1); 
+      color: #e0e0ff; 
+    }
+    .table th { 
+      background: rgba(255,255,255,0.1); 
+      color: #e0e0ff; 
+    }
+    #adminTable th, #adminTable td { 
+      vertical-align: middle; 
+    }
+    #footer { 
+      color: #a0a0ff; text-align: center; padding: 20px; 
+      font-size: 14px; text-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+    }
     @media (max-width: 900px) {
       #mainDiv { flex-direction: column; }
       #sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; padding: 10px 0; }
@@ -62,6 +237,7 @@
   <div id="loginDiv">
     <div id="loginCard">
       <h2>Goaoxor 管理后台</h2>
+      <button id="googleAuthBtn" class="btn btn-primary mt-3">使用 Google 登录</button>
       <select id="usernameInput" class="form-select" required>
         <option value="" disabled selected>选择管理员账户</option>
       </select>
@@ -76,13 +252,13 @@
     <div id="sidebar">
       <h3>后台导航</h3>
       <button id="navDashboard" class="active">首页</button>
-      <button id="navOrder">订单管理</button>
+      <button id="navOrder">添加订单</button>
       <button id="navOrderRecord">订单记录</button>
       <button id="navContract">合同生成器</button>
       <button id="navContractRecord">合同记录</button>
       <button id="navAdmin">管理员管理</button>
       <button id="navChange">修改密码</button>
-      <button id="navLogout">退出登录</button>
+      <button id="navLogout">退出并上传数据</button>
     </div>
     <div id="content">
       <div id="topBar">
@@ -101,7 +277,7 @@
             <a href="http://goaoxor.com/pricing_calculator.html" target="_blank" class="btn btn-primary btn-sm">打开计算器</a>
           </div>
           <div class="toolCard col-md-4">
-            <h4>订单管理</h4>
+            <h4>添加订单</h4>
             <p>添加新订单，设置类型和状态。</p>
             <a href="#" onclick="showSection('orderDiv')" class="btn btn-primary btn-sm">添加订单</a>
           </div>
@@ -176,16 +352,34 @@
 
       <!-- 订单管理 -->
       <div id="orderDiv" style="display:none;">
-        <h2>订单管理</h2>
+        <h2>添加订单</h2>
         <form id="orderForm">
           <input type="text" id="clientName" class="form-control" placeholder="客户姓名" required>
           <input type="email" id="clientEmail" class="form-control" placeholder="客户邮箱" required>
           <input type="number" id="projectValue" class="form-control" placeholder="项目价值（$100-$10000）" min="100" max="10000" required>
           <select id="projectType" class="form-select" required>
             <option value="" disabled selected>选择项目类型</option>
-            <option value="video">短视频</option>
+            <option value="film_video">影视与视频</option>
+            <option value="film_production">影视制作</option>
+            <option value="short_video">短视频内容</option>
+            <option value="post_production">后期制作</option>
             <option value="animation">动画</option>
-            <option value="uiux">UI/UX设计</option>
+            <option value="2d3d_animation">2D/3D动画</option>
+            <option value="mg_effects">MG特效</option>
+            <option value="role_design">角色设计</option>
+            <option value="visual_design">视觉与设计</option>
+            <option value="illustration">插图</option>
+            <option value="brand_visual">品牌视觉</option>
+            <option value="graphic_design">平面设计</option>
+            <option value="audio">音频</option>
+            <option value="sound_design">声音设计</option>
+            <option value="dubbing">配音</option>
+            <option value="music_creation">音乐创作</option>
+            <option value="more">更多</option>
+            <option value="game_art">游戏美术</option>
+            <option value="vr">虚拟现实</option>
+            <option value="creative_consulting">创意咨询</option>
+            <option value="other">其他项目</option>
           </select>
           <select id="orderStatus" class="form-select" required>
             <option value="" disabled selected>选择订单状态</option>
@@ -249,20 +443,27 @@
           </select>
           <select id="contractServiceType" class="form-select" required>
             <option value="" disabled selected>选择服务类型</option>
-            <option value="video">短视频内容</option>
-            <option value="animation">2D/3D动画</option>
-            <option value="uiux">UI/UX设计</option>
-            <option value="film">电影制作</option>
-            <option value="postproduction">后期制作</option>
+            <option value="film_video">影视与视频</option>
+            <option value="film_production">影视制作</option>
+            <option value="short_video">短视频内容</option>
+            <option value="post_production">后期制作</option>
+            <option value="animation">动画</option>
+            <option value="2d3d_animation">2D/3D动画</option>
+            <option value="mg_effects">MG特效</option>
+            <option value="role_design">角色设计</option>
+            <option value="visual_design">视觉与设计</option>
             <option value="illustration">插图</option>
-            <option value="branding">品牌视觉效果</option>
-            <option value="graphic">平面设计</option>
-            <option value="audio">声音设计</option>
-            <option value="voiceover">画外音</option>
-            <option value="music">音乐创作</option>
-            <option value="gameart">游戏艺术</option>
+            <option value="brand_visual">品牌视觉</option>
+            <option value="graphic_design">平面设计</option>
+            <option value="audio">音频</option>
+            <option value="sound_design">声音设计</option>
+            <option value="dubbing">配音</option>
+            <option value="music_creation">音乐创作</option>
+            <option value="more">更多</option>
+            <option value="game_art">游戏美术</option>
             <option value="vr">虚拟现实</option>
-            <option value="consulting">创意咨询</option>
+            <option value="creative_consulting">创意咨询</option>
+            <option value="other">其他项目</option>
           </select>
           <button type="submit" class="btn btn-primary">生成合同</button>
         </form>
@@ -296,32 +497,194 @@
         </table>
       </div>
 
-      <div id="footer">Goaoxor © 2025 管理后台 | 版本 1.3</div>
+      <div id="footer">Goaoxor © 2025 管理后台 | 版本 1.4</div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // 初始化 localStorage 数据
-    if (!localStorage.getItem('admins')) {
-      sha256('123456').then(hash => {
-        localStorage.setItem('admins', JSON.stringify([
-          { username: 'admin', password: hash, lastLogin: '未记录' }
-        ]));
-        console.log('初始化默认管理员账户: admin / 123456');
-        loadAdminList();
+    // Google Drive API 配置
+    const CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com'; // 替换为您的 client_id
+    const API_KEY = 'YOUR_API_KEY'; // 可选，替换为您的 API key（或留空）
+    const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
+    const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+    let gapiLoaded = false;
+    let tokenClient;
+    let accessToken = null;
+
+    // 初始化 Google API
+    function initGoogleAPI() {
+      return new Promise((resolve, reject) => {
+        gapi.load('client', async () => {
+          try {
+            await gapi.client.init({
+              apiKey: API_KEY,
+              discoveryDocs: DISCOVERY_DOCS,
+            });
+            gapiLoaded = true;
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
       });
     }
-    if (!localStorage.getItem('orders')) {
-      localStorage.setItem('orders', JSON.stringify([]));
-      console.log('初始化订单存储: Memory/Order/orders.json');
+
+    // 初始化 Google Sign-In
+    function initGoogleSignIn() {
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (response) => {
+          if (response.error) {
+            document.getElementById('loginMsg').textContent = 'Google 登录失败：' + response.error;
+            return;
+          }
+          accessToken = response.access_token;
+          sessionStorage.setItem('googleAccessToken', accessToken);
+          await loadFromDrive();
+        },
+      });
     }
-    if (!localStorage.getItem('contracts')) {
-      localStorage.setItem('contracts', JSON.stringify([]));
-      console.log('初始化合同存储: Memory/Contract/contracts.json');
+
+    // 从 Google Drive 加载数据
+    async function loadFromDrive() {
+      const msg = document.getElementById('loginMsg');
+      if (!gapiLoaded || !accessToken) {
+        msg.textContent = '请先完成 Google 登录！';
+        return;
+      }
+      try {
+        // 查找 contracts 文件夹
+        let folderId = await getOrCreateFolder('contracts');
+        // 查找 goaoxor_data.json 文件
+        const response = await gapi.client.drive.files.list({
+          q: "name contains 'goaoxor_data' and mimeType='application/json' and trashed=false",
+          fields: 'files(id, name, modifiedTime)',
+          orderBy: 'modifiedTime desc',
+        });
+        const files = response.result.files;
+        if (files && files.length > 0) {
+          const latestFile = files[0];
+          const fileResponse = await gapi.client.drive.files.get({
+            fileId: latestFile.id,
+            alt: 'media',
+          });
+          appData = JSON.parse(fileResponse.body);
+          loadAdminList();
+          msg.className = 'success';
+          msg.textContent = '从 Google Drive 加载数据成功！';
+        } else {
+          initializeDefaultData();
+          msg.textContent = '未找到云端数据，初始化默认数据！';
+        }
+      } catch (e) {
+        initializeDefaultData();
+        msg.textContent = '从 Google Drive 加载数据失败，初始化默认数据！';
+        console.error('Drive 加载错误:', e);
+      }
     }
-    if (!localStorage.getItem('logs')) {
-      localStorage.setItem('logs', JSON.stringify([]));
+
+    // 上传数据到 Google Drive
+    async function uploadToDrive() {
+      if (!gapiLoaded || !accessToken) {
+        alert('请先完成 Google 登录！');
+        return false;
+      }
+      const lastModified = new Date().toISOString().split('T')[0];
+      const fileContent = JSON.stringify(appData, null, 2);
+      const fileSize = (new Blob([fileContent]).size / 1024).toFixed(1);
+      const fileName = `goaoxor_data_${lastModified}_${fileSize.replace('.', '-')}_KB.json`;
+      try {
+        // 查找现有文件
+        const response = await gapi.client.drive.files.list({
+          q: "name contains 'goaoxor_data' and mimeType='application/json' and trashed=false",
+          fields: 'files(id, name)',
+        });
+        const files = response.result.files;
+        let fileId = files.find(f => f.name === fileName)?.id;
+
+        const metadata = {
+          name: fileName,
+          mimeType: 'application/json',
+        };
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        form.append('file', new Blob([fileContent], { type: 'application/json' }));
+
+        const headers = {
+          Authorization: `Bearer ${accessToken}`,
+        };
+        const url = fileId
+          ? `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`
+          : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+
+        const uploadResponse = await fetch(url, {
+          method: fileId ? 'PATCH' : 'POST',
+          headers,
+          body: form,
+        });
+        if (!uploadResponse.ok) throw new Error('上传失败');
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([fileContent], { type: 'application/json' }));
+        a.download = fileName;
+        a.click();
+        logAction(`上传数据到 Google Drive: ${fileName}`, sessionStorage.getItem('currentUser'));
+        return true;
+      } catch (e) {
+        alert('数据上传到 Google Drive 失败！');
+        console.error('Drive 上传错误:', e);
+        return false;
+      }
+    }
+
+    // 获取或创建 contracts 文件夹
+    async function getOrCreateFolder(folderName) {
+      try {
+        const response = await gapi.client.drive.files.list({
+          q: `name='${folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
+          fields: 'files(id, name)',
+        });
+        const folders = response.result.files;
+        if (folders && folders.length > 0) {
+          return folders[0].id;
+        }
+        const folderMetadata = {
+          name: folderName,
+          mimeType: 'application/vnd.google-apps.folder',
+        };
+        const folderResponse = await gapi.client.drive.files.create({
+          resource: folderMetadata,
+          fields: 'id',
+        });
+        return folderResponse.result.id;
+      } catch (e) {
+        console.error('创建文件夹错误:', e);
+        throw e;
+      }
+    }
+
+    // 全局数据存储
+    let appData = {
+      admins: [],
+      orders: [],
+      contracts: [],
+      logs: []
+    };
+
+    // 初始化默认数据
+    async function initializeDefaultData() {
+      const defaultAdmin = {
+        username: 'admin',
+        password: await sha256('123456'),
+        lastLogin: '未记录'
+      };
+      appData.admins = [defaultAdmin];
+      appData.orders = [];
+      appData.contracts = [];
+      appData.logs = [];
+      console.log('初始化默认管理员账户: admin / 123456');
+      loadAdminList();
     }
 
     // SHA-256 哈希函数
@@ -339,24 +702,21 @@
 
     // 记录日志
     function logAction(action, username) {
-      const logs = JSON.parse(localStorage.getItem('logs') || '[]');
-      logs.push({ action, username, timestamp: new Date().toLocaleString() });
-      localStorage.setItem('logs', JSON.stringify(logs));
+      appData.logs.push({ action, username, timestamp: new Date().toLocaleString() });
       console.log('日志记录:', action, username);
     }
 
     // 加载管理员列表到登录下拉框
     function loadAdminList() {
-      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
       const select = document.getElementById('usernameInput');
       select.innerHTML = '<option value="" disabled selected>选择管理员账户</option>';
-      admins.forEach(admin => {
+      appData.admins.forEach(admin => {
         const option = document.createElement('option');
         option.value = admin.username;
         option.textContent = admin.username;
         select.appendChild(option);
       });
-      console.log('管理员列表:', admins);
+      console.log('管理员列表:', appData.admins);
     }
 
     // 费用计算逻辑
@@ -394,12 +754,10 @@
       const pwd = document.getElementById('passwordInput').value;
       const msg = document.getElementById('loginMsg');
       console.log('尝试登录，用户:', username);
-      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
-      console.log('管理员列表:', admins);
       try {
         const hashedPwd = await sha256(pwd);
         console.log('输入密码哈希:', hashedPwd);
-        const admin = admins.find(a => a.username === username && a.password === hashedPwd);
+        const admin = appData.admins.find(a => a.username === username && a.password === hashedPwd);
         if (!admin) {
           msg.textContent = '用户名或密码错误！';
           console.log('登录失败：未找到匹配的管理员');
@@ -407,8 +765,8 @@
         }
         sessionStorage.setItem('currentUser', username);
         admin.lastLogin = new Date().toLocaleString();
-        localStorage.setItem('admins', JSON.stringify(admins));
         logAction(`登录`, username);
+        await uploadToDrive(); // 登录后立即上传更新后的数据
         document.getElementById('loginDiv').style.display = 'none';
         document.getElementById('mainDiv').style.display = 'flex';
         document.getElementById('currentUser').textContent = username;
@@ -419,6 +777,15 @@
         msg.textContent = '登录失败：加密错误！';
         console.error('登录加密错误:', e);
       }
+    });
+
+    // Google 登录按钮
+    document.getElementById('googleAuthBtn').addEventListener('click', () => {
+      if (!gapiLoaded) {
+        document.getElementById('loginMsg').textContent = 'Google API 正在加载，请稍后！';
+        return;
+      }
+      tokenClient.requestAccessToken();
     });
 
     // 添加管理员
@@ -436,16 +803,15 @@
         msg.textContent = '密码至少6位！';
         return;
       }
-      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
-      if (admins.find(a => a.username === username)) {
+      if (appData.admins.find(a => a.username === username)) {
         msg.textContent = '用户名已存在！';
         return;
       }
       try {
         const hashedPwd = await sha256(pwd);
-        admins.push({ username, password: hashedPwd, lastLogin: '未记录' });
-        localStorage.setItem('admins', JSON.stringify(admins));
+        appData.admins.push({ username, password: hashedPwd, lastLogin: '未记录' });
         logAction(`添加管理员: ${username}`, sessionStorage.getItem('currentUser'));
+        await uploadToDrive(); // 添加管理员后上传
         msg.className = 'success';
         msg.textContent = '管理员添加成功！';
         document.getElementById('adminForm').reset();
@@ -459,8 +825,7 @@
 
     // 删除管理员
     function deleteAdmin(username) {
-      let admins = JSON.parse(localStorage.getItem('admins') || '[]');
-      if (admins.length <= 1) {
+      if (appData.admins.length <= 1) {
         alert('无法删除最后一个管理员！');
         return;
       }
@@ -468,18 +833,17 @@
         alert('无法删除当前账户！');
         return;
       }
-      admins = admins.filter(a => a.username !== username);
-      localStorage.setItem('admins', JSON.stringify(admins));
+      appData.admins = appData.admins.filter(a => a.username !== username);
       logAction(`删除管理员: ${username}`, sessionStorage.getItem('currentUser'));
+      uploadToDrive(); // 删除管理员后上传
       fetchAdmins();
     }
 
     // 获取管理员列表
     function fetchAdmins() {
-      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
       const tbody = document.getElementById('adminTableBody');
       tbody.innerHTML = '';
-      admins.forEach(admin => {
+      appData.admins.forEach(admin => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${admin.username}</td>
@@ -505,8 +869,7 @@
         msg.textContent = '新密码至少6位！';
         return;
       }
-      const admins = JSON.parse(localStorage.getItem('admins') || '[]');
-      const admin = admins.find(a => a.username === username);
+      const admin = appData.admins.find(a => a.username === username);
       try {
         const hashedOldPwd = await sha256(oldPwd);
         if (admin.password !== hashedOldPwd) {
@@ -514,8 +877,8 @@
           return;
         }
         admin.password = await sha256(newPwd);
-        localStorage.setItem('admins', JSON.stringify(admins));
         logAction(`修改密码: ${username}`, username);
+        await uploadToDrive(); // 修改密码后上传
         msg.className = 'success';
         msg.textContent = '密码修改成功！';
         document.getElementById('oldPassword').value = '';
@@ -528,7 +891,7 @@
     });
 
     // 创建订单
-    document.getElementById('orderForm').addEventListener('submit', (e) => {
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const clientName = DOMPurify.sanitize(document.getElementById('clientName').value);
       const clientEmail = DOMPurify.sanitize(document.getElementById('clientEmail').value);
@@ -544,9 +907,8 @@
         return;
       }
       const fees = calculateFees(projectValue);
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
       const order = {
-        id: orders.length + 1,
+        id: appData.orders.length + 1,
         client_name: clientName,
         client_email: clientEmail,
         project_value: projectValue,
@@ -565,9 +927,9 @@
         updated_at: new Date().toLocaleString(),
         file_path: `Memory/Order/orders.json`
       };
-      orders.push(order);
-      localStorage.setItem('orders', JSON.stringify(orders));
+      appData.orders.push(order);
       logAction(`创建订单: ${order.id} (Memory/Order/orders.json)`, sessionStorage.getItem('currentUser'));
+      await uploadToDrive(); // 创建订单后上传
       msg.className = 'success';
       msg.textContent = '订单创建成功！';
       document.getElementById('orderForm').reset();
@@ -578,8 +940,7 @@
       const clientName = DOMPurify.sanitize(document.getElementById('filterClientName').value);
       const providerName = DOMPurify.sanitize(document.getElementById('filterProviderName').value);
       const status = document.getElementById('filterStatus').value;
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      const filtered = orders.filter(o =>
+      const filtered = appData.orders.filter(o =>
         (!clientName || o.client_name.toLowerCase().includes(clientName.toLowerCase())) &&
         (!providerName || o.provider_name.toLowerCase().includes(providerName.toLowerCase())) &&
         (!status || o.status === status)
@@ -592,7 +953,7 @@
           <td>${order.id}</td>
           <td>${order.client_name}</td>
           <td>$${order.project_value.toFixed(2)}</td>
-          <td>${{'video': '短视频', 'animation': '动画', 'uiux': 'UI/UX设计'}[order.project_type]}</td>
+          <td>${order.project_type}</td>
           <td>
             <select onchange="updateOrderStatus(${order.id}, this.value)">
               <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>待处理</option>
@@ -613,23 +974,25 @@
     }
 
     // 更新订单状态
-    function updateOrderStatus(orderId, status) {
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      const order = orders.find(o => o.id === orderId);
+    async function updateOrderStatus(orderId, status) {
+      const order = appData.orders.find(o => o.id === orderId);
       if (order) {
         order.status = status;
         order.updated_at = new Date().toLocaleString();
-        localStorage.setItem('orders', JSON.stringify(orders));
         logAction(`更新订单状态: ${orderId} 到 ${status} (Memory/Order/orders.json)`, sessionStorage.getItem('currentUser'));
+        await uploadToDrive(); // 更新订单状态后上传
         alert('订单状态更新成功！');
         fetchOrders();
       }
     }
 
     // 生成合同
-    function generateContract(orderId, type, clientName = null, providerName = null, projectValue = null, serviceType = null) {
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      const order = orderId ? orders.find(o => o.id === orderId) : null;
+    async function generateContract(orderId, type, clientName = null, providerName = null, projectValue = null, serviceType = null) {
+      if (!gapiLoaded || !accessToken) {
+        document.getElementById('contractMsg').textContent = '请先完成 Google 登录！';
+        return;
+      }
+      const order = orderId ? appData.orders.find(o => o.id === orderId) : null;
       if (orderId && !order) {
         document.getElementById('contractMsg').textContent = '订单不存在！';
         return;
@@ -646,7 +1009,7 @@
         provider_net: order.provider_net,
         service_type: order.project_type
       } : {
-        id: orders.length + 1,
+        id: appData.orders.length + 1,
         client_name: DOMPurify.sanitize(clientName),
         provider_name: DOMPurify.sanitize(providerName),
         project_value: parseFloat(projectValue),
@@ -657,9 +1020,8 @@
         document.getElementById('contractMsg').textContent = '项目价值必须在$100-$10000之间！';
         return;
       }
-      const contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
       const contract = {
-        id: contracts.length + 1,
+        id: appData.contracts.length + 1,
         order_id: contractData.id,
         client_name: contractData.client_name,
         provider_name: contractData.provider_name,
@@ -668,12 +1030,11 @@
         provider_fee: contractData.provider_fee,
         contract_type: type,
         service_type: contractData.service_type,
-        file_path: `Memory/Contract/contracts.json`,
+        file_path: `contracts/contract_order_${contractData.id}_${type}.pdf`,
         created_at: new Date().toLocaleString()
       };
-      contracts.push(contract);
-      localStorage.setItem('contracts', JSON.stringify(contracts));
-      logAction(`生成合同: 订单 ${contractData.id}, 类型 ${type} (Memory/Contract/contracts.json)`, sessionStorage.getItem('currentUser'));
+      appData.contracts.push(contract);
+      logAction(`生成合同: 订单 ${contractData.id}, 类型 ${type} (contracts/contract_order_${contractData.id}_${type}.pdf)`, sessionStorage.getItem('currentUser'));
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
@@ -685,20 +1046,27 @@
       doc.text(`团队: ${contractData.provider_name}`, 20, 60);
       doc.text(`项目价值: $${contractData.project_value.toFixed(2)}`, 20, 70);
       doc.text(`服务类型: ${{
-        'video': '短视频内容',
-        'animation': '2D/3D动画',
-        'uiux': 'UI/UX设计',
-        'film': '电影制作',
-        'postproduction': '后期制作',
+        'film_video': '影视与视频',
+        'film_production': '影视制作',
+        'short_video': '短视频内容',
+        'post_production': '后期制作',
+        'animation': '动画',
+        '2d3d_animation': '2D/3D动画',
+        'mg_effects': 'MG特效',
+        'role_design': '角色设计',
+        'visual_design': '视觉与设计',
         'illustration': '插图',
-        'branding': '品牌视觉效果',
-        'graphic': '平面设计',
-        'audio': '声音设计',
-        'voiceover': '画外音',
-        'music': '音乐创作',
-        'gameart': '游戏艺术',
+        'brand_visual': '品牌视觉',
+        'graphic_design': '平面设计',
+        'audio': '音频',
+        'sound_design': '声音设计',
+        'dubbing': '配音',
+        'music_creation': '音乐创作',
+        'more': '更多',
+        'game_art': '游戏美术',
         'vr': '虚拟现实',
-        'consulting': '创意咨询'
+        'creative_consulting': '创意咨询',
+        'other': '其他项目'
       }[contractData.service_type] || contractData.service_type}`, 20, 80);
       doc.text(`合同类型: ${type === 'client' ? '客户中介服务合同' : type === 'provider' ? '服务团队介绍费合同' : '客户-服务团队项目合同'}`, 20, 90);
       if (type === 'client') {
@@ -717,10 +1085,36 @@
         doc.text('修改: 2次免费', 20, 140);
       }
       doc.text('条款: 知识产权归客户所有。仲裁地: 新加坡。', 20, 160);
-      doc.save(`contract_order_${contractData.id}_${type}.pdf`);
 
-      document.getElementById('contractMsg').className = 'success';
-      document.getElementById('contractMsg').textContent = '合同生成并下载成功！';
+      const pdfBlob = doc.output('blob');
+      const pdfFileName = `contract_order_${contractData.id}_${type}.pdf`;
+      try {
+        const folderId = await getOrCreateFolder('contracts');
+        const metadata = {
+          name: pdfFileName,
+          mimeType: 'application/pdf',
+          parents: [folderId],
+        };
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        form.append('file', pdfBlob);
+        await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${accessToken}` },
+          body: form,
+        });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(pdfBlob);
+        a.download = pdfFileName;
+        a.click();
+        logAction(`上传合同到 Google Drive: ${pdfFileName}`, sessionStorage.getItem('currentUser'));
+        await uploadToDrive(); // 生成合同后上传 appData
+        document.getElementById('contractMsg').className = 'success';
+        document.getElementById('contractMsg').textContent = '合同生成并上传到 Google Drive 成功！';
+      } catch (e) {
+        document.getElementById('contractMsg').textContent = '合同上传失败！';
+        console.error('Drive 上传合同错误:', e);
+      }
       fetchContracts();
     }
 
@@ -730,8 +1124,7 @@
       const providerName = DOMPurify.sanitize(document.getElementById('filterContractProvider').value);
       const orderId = document.getElementById('filterContractOrderId').value;
       const date = document.getElementById('filterContractDate').value;
-      const contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
-      const filtered = contracts.filter(c =>
+      const filtered = appData.contracts.filter(c =>
         (!clientName || c.client_name.toLowerCase().includes(clientName.toLowerCase())) &&
         (!providerName || c.provider_name.toLowerCase().includes(providerName.toLowerCase())) &&
         (!orderId || c.order_id === parseInt(orderId)) &&
@@ -746,22 +1139,7 @@
           <td>${contract.order_id}</td>
           <td>${contract.client_name}</td>
           <td>${contract.provider_name}</td>
-          <td>${{
-            'video': '短视频内容',
-            'animation': '2D/3D动画',
-            'uiux': 'UI/UX设计',
-            'film': '电影制作',
-            'postproduction': '后期制作',
-            'illustration': '插图',
-            'branding': '品牌视觉效果',
-            'graphic': '平面设计',
-            'audio': '声音设计',
-            'voiceover': '画外音',
-            'music': '音乐创作',
-            'gameart': '游戏艺术',
-            'vr': '虚拟现实',
-            'consulting': '创意咨询'
-          }[contract.service_type] || contract.service_type}</td>
+          <td>${contract.service_type}</td>
           <td>${contract.contract_type === 'client' ? '客户中介合同' : contract.contract_type === 'provider' ? '团队介绍合同' : '项目合同'}</td>
           <td>${contract.created_at}</td>
           <td><a href="#" onclick="generateContract(${contract.order_id}, '${contract.contract_type}')">重新生成/下载</a></td>
@@ -772,32 +1150,18 @@
 
     // 显示统计
     function showStatistics() {
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      const totalOrders = orders.length;
-      const totalIncome = orders.reduce((sum, o) => sum + o.client_fee + o.provider_fee, 0);
-      const pending = orders.filter(o => o.status === 'pending').length;
-      const inProgress = orders.filter(o => o.status === 'in-progress').length;
-      const completed = orders.filter(o => o.status === 'completed').length;
+      const totalOrders = appData.orders.length;
+      const totalIncome = appData.orders.reduce((sum, o) => sum + o.client_fee + o.provider_fee, 0);
+      const pending = appData.orders.filter(o => o.status === 'pending').length;
+      const inProgress = appData.orders.filter(o => o.status === 'in-progress').length;
+      const completed = appData.orders.filter(o => o.status === 'completed').length;
       alert(`订单总数: ${totalOrders}\n总收入: $${totalIncome.toFixed(2)}\n待处理: ${pending}\n进行中: ${inProgress}\n已完成: ${completed}`);
     }
 
     // 导出数据
-    function exportData() {
-      const data = {
-        orders: JSON.parse(localStorage.getItem('orders') || '[]'),
-        contracts: JSON.parse(localStorage.getItem('contracts') || '[]'),
-        admins: JSON.parse(localStorage.getItem('admins') || '[]'),
-        logs: JSON.parse(localStorage.getItem('logs') || '[]')
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'goaoxor_data.json';
-      a.click();
-      window.URL.revokeObjectURL(url);
-      logAction('导出数据 (Memory/Order/orders.json, Memory/Contract/contracts.json)', sessionStorage.getItem('currentUser'));
-      alert('数据导出成功！');
+    async function exportData() {
+      await uploadToDrive();
+      alert('数据已上传到 Google Drive 并下载！');
     }
 
     // 显示设置
@@ -826,16 +1190,20 @@
     document.getElementById('navOrderRecord').addEventListener('click', () => showSection('orderRecordDiv'));
     document.getElementById('navContract').addEventListener('click', () => showSection('contractDiv'));
     document.getElementById('navContractRecord').addEventListener('click', () => showSection('contractRecordDiv'));
-    document.getElementById('navLogout').addEventListener('click', () => {
+    document.getElementById('navLogout').addEventListener('click', async () => {
+      await uploadToDrive();
       sessionStorage.removeItem('currentUser');
+      sessionStorage.removeItem('googleAccessToken');
+      accessToken = null;
       document.getElementById('mainDiv').style.display = 'none';
       document.getElementById('loginDiv').style.display = 'flex';
       document.getElementById('passwordInput').value = '';
       document.getElementById('usernameInput').value = '';
+      await loadFromDrive(); // 重新加载最新数据
     });
 
     // 合同生成表单
-    document.getElementById('contractForm').addEventListener('submit', (e) => {
+    document.getElementById('contractForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const orderId = parseInt(document.getElementById('contractOrderId').value || 0);
       const clientName = document.getElementById('contractClientName').value;
@@ -843,7 +1211,7 @@
       const projectValue = parseFloat(document.getElementById('contractProjectValue').value);
       const type = document.getElementById('contractType').value;
       const serviceType = document.getElementById('contractServiceType').value;
-      generateContract(orderId, type, clientName, providerName, projectValue, serviceType);
+      await generateContract(orderId, type, clientName, providerName, projectValue, serviceType);
     });
 
     // 更新时间
@@ -853,20 +1221,24 @@
     setInterval(updateTime, 1000);
 
     // 初始化
-    window.onload = () => {
-      if (sessionStorage.getItem('currentUser')) {
+    window.onload = async () => {
+      await initGoogleAPI();
+      initGoogleSignIn();
+      accessToken = sessionStorage.getItem('googleAccessToken');
+      if (accessToken) {
+        await loadFromDrive();
+      }
+      if (sessionStorage.getItem('currentUser') && appData.admins.length) {
         document.getElementById('loginDiv').style.display = 'none';
         document.getElementById('mainDiv').style.display = 'flex';
         const username = sessionStorage.getItem('currentUser');
-        const admins = JSON.parse(localStorage.getItem('admins') || '[]');
-        const admin = admins.find(a => a.username === username);
+        const admin = appData.admins.find(a => a.username === username);
         document.getElementById('currentUser').textContent = username;
         document.getElementById('lastLogin').textContent = admin ? admin.lastLogin : '未记录';
       } else {
         document.getElementById('loginDiv').style.display = 'flex';
       }
       updateTime();
-      loadAdminList();
     };
   </script>
 </body>
