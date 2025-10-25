@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>服务匹配与监督协议生成器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        h1 { text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #preview { margin-top: 20px; border: 1px solid #ccc; padding: 20px; }
+        .contract-section { margin-bottom: 15px; }
+        .contract-section p { margin: 5px 0; }
+        .contract-section p:nth-child(odd) { font-family: Arial, sans-serif; }
+        .contract-section p:nth-child(even) { font-family: 'Noto Sans CJK', sans-serif; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>服务匹配与监督协议生成器</h1>
+        
+        <!-- 用户输入表单 -->
+        <form id="contractForm">
+            <div class="form-group">
+                <label>客户姓名 / Client Name</label>
+                <input type="text" id="clientName" required>
+            </div>
+            <div class="form-group">
+                <label>项目总额 / Project Total Amount ($)</label>
+                <input type="number" id="projectTotal" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>项目类型 / Project Type</label>
+                <select id="projectType" required>
+                    <option value="Video">视频 / Video</option>
+                    <option value="Animation">动画 / Animation</option>
+                    <option value="Design">设计 / Design</option>
+                    <option value="Other">其他 / Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>开始日期 / Start Date</label>
+                <input type="date" id="startDate" required>
+            </div>
+            <div class="form-group">
+                <label>支付方式 / Payment Method</label>
+                <select id="paymentMethod" required>
+                    <option value="Wise">Wise</option>
+                    <option value="Bank Transfer">银行转账 / Bank Transfer</option>
+                    <option value="Other">其他 / Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>备注 / Additional Notes (可选)</label>
+                <textarea id="notes" rows="4"></textarea>
+            </div>
+            <button type="button" onclick="generateContract()">生成合同预览</button>
+            <button type="button" onclick="downloadPDF()">下载 PDF</button>
+        </form>
+
+        <!-- 合同预览区域 -->
+        <div id="preview"></div>
+    </div>
+
+    <script>
+        // 计算中介费
+        function calculateFees(projectTotal) {
+            const startupFee = 30;
+            let remainingFee = 0;
+            if (projectTotal <= 300) {
+                remainingFee = 0;
+            } else if (projectTotal <= 800) {
+                remainingFee = (0.10 * projectTotal) - startupFee;
+            } else if (projectTotal <= 2000) {
+                remainingFee = (0.08 * projectTotal) - startupFee;
+            } else if (projectTotal <= 5000) {
+                remainingFee = (0.06 * projectTotal) - startupFee;
+            } else {
+                remainingFee = (0.05 * projectTotal) - startupFee;
+            }
+            return { startupFee, remainingFee: remainingFee.toFixed(2) };
+        }
+
+        // 生成合同预览
+        function generateContract() {
+            const clientName = document.getElementById('clientName').value;
+            const projectTotal = parseFloat(document.getElementById('projectTotal').value);
+            const projectType = document.getElementById('projectType').value;
+            const startDate = document.getElementById('startDate').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const notes = document.getElementById('notes').value;
+
+            // 验证输入
+            if (!clientName || !projectTotal || !projectType || !startDate || !paymentMethod) {
+                alert('请填写所有必填字段！');
+                return;
+            }
+
+            // 计算费用
+            const { startupFee, remainingFee } = calculateFees(projectTotal);
+
+            // 合同模板
+            const contract = `
+                <div class="contract-section">
+                    <h2>Service Matching and Supervision Agreement</h2>
+                    <h2>服务匹配与监督协议</h2>
+                </div>
+                <div class="contract-section">
+                    <h3>1. Parties / 签署方</h3>
+                    <p>Client / 客户: ${clientName}</p>
+                    <p>Goaoxor (Intermediation Platform / 基于 Goaoxor.com 的中介平台): Goaoxor</p>
+                </div>
+                <div class="contract-section">
+                    <h3>2. Governing Law / 司法管辖</h3>
+                    <p>This Agreement shall be governed by and construed in accordance with the laws of Hong Kong.</p>
+                    <p>本协议适用香港法律，并按其解释。</p>
+                </div>
+                <div class="contract-section">
+                    <h3>3. Scope of Services / 服务范围</h3>
+                    <p>Goaoxor shall:</p>
+                    <p>Goaoxor 应：</p>
+                    <p>1. Match the Client with suitable Project Production Parties based on the Client’s project requirements.</p>
+                    <p>根据客户项目需求，将客户与合适的项目制作方进行匹配。</p>
+                    <p>2. Provide supervision services to ensure the agreed project milestones are communicated and tracked.</p>
+                    <p>提供监督服务，确保项目各阶段按约沟通并跟进。</p>
+                    <p>3. Not engage in project execution funds or manage the payment between Client and Project Production Party.</p>
+                    <p>不参与项目执行款或管理客户与项目制作方之间的支付。</p>
+                </div>
+                <div class="contract-section">
+                    <h3>4. Client Obligations / 客户义务</h3>
+                    <p>• Provide accurate project requirements, expected deliverables, and budget information.</p>
+                    <p>提供准确的项目需求、预期成果及预算信息。</p>
+                    <p>• Respond timely to communications from Goaoxor and Project Production Party.</p>
+                    <p>及时回复来自Goaoxor及项目制作方的沟通。</p>
+                    <p>• Pay the Intermediation Fee (including supervision services) according to this Agreement.</p>
+                    <p>按本协议规定支付中介服务费（含监督服务）。</p>
+                </div>
+                <div class="contract-section">
+                    <h3>5. Intermediation Fee / 中介服务费（含代监督服务）</h3>
+                    <p>Project Value / 项目总额: $${projectTotal}</p>
+                    <p>Start-up Fee / 启动费: $${startupFee}</p>
+                    <p>Remaining Intermediation Fee / 剩余中介费: $${remainingFee}</p>
+                    <p>Payment Method / 支付方式: ${paymentMethod}</p>
+                    <p>Payment Terms / 支付条款:</p>
+                    <p>支付条款：</p>
+                    <p>1. Start-up Fee / 启动费: $30 payable upon signing this Agreement.</p>
+                    <p>首付启动费：签署协议时支付30美元。</p>
+                    <p>2. Remaining Intermediation Fee / 剩余中介费: After Client and Project Production Party agree on the project total, Client shall pay the remaining fee calculated according to the table above minus the $30 already paid.</p>
+                    <p>剩余中介服务费：客户与项目制作方确认项目总额后，按上表百分比计算中介费，并减去已支付的$30。</p>
+                    <p>3. Payment Method / 支付方式: Via ${paymentMethod} or other agreed international transfer.</p>
+                    <p>支付方式：通过${paymentMethod}或其他双方约定的国际转账方式。</p>
+                    <p>4. Non-refundable / 不可退款: All paid fees are non-refundable.</p>
+                    <p>已支付费用不可退还。</p>
+                </div>
+                <div class="contract-section">
+                    <h3>6. Limitation of Liability / 责任限制</h3>
+                    <p>Goaoxor shall exercise reasonable care in providing intermediation and supervision services.</p>
+                    <p>Goaoxor 在提供匹配和监督服务时将尽合理注意义务。</p>
+                    <p>However, Goaoxor shall not be liable for any direct, indirect, or consequential loss, delay, or failure arising from the performance or non-performance of the Project Production Party.</p>
+                    <p>但对于项目制作方履约或未履约导致的任何直接、间接或连带损失、延误或失败，Goaoxor 不承担责任。</p>
+                </div>
+                <div class="contract-section">
+                    <h3>7. Confidentiality / 保密</h3>
+                    <p>Both parties shall maintain the confidentiality of any information obtained during the course of this Agreement.</p>
+                    <p>双方须对在协议期间获知的所有信息保密。</p>
+                </div>
+                <div class="contract-section">
+                    <h3>8. Dispute Resolution / 争议解决</h3>
+                    <p>• Parties shall first attempt to resolve disputes through friendly negotiation.</p>
+                    <p>双方应首先通过友好协商解决争议。</p>
+                    <p>• Failing negotiation, Hong Kong courts shall have exclusive jurisdiction.</p>
+                    <p>协商不成时，香港法院享有专属管辖权。</p>
+                </div>
+                <div class="contract-section">
+                    <h3>9. Signatures / 签署</h3>
+                    <p>Client / 客户: ________________________  Date / 日期: ${startDate}</p>
+                    <p>Goaoxor (Intermediation Platform / 基于 Goaoxor.com 的中介平台): Goaoxor  Date / 日期: ${startDate}</p>
+                </div>
+                <div class="contract-section">
+                    <p>Note: The Intermediation Fee includes supervision services. The Agreement becomes effective upon Client’s signature. Goaoxor, as the fixed signing party, does not require repeated signatures.</p>
+                    <p>注：中介服务费包含代监督服务，客户签名后协议生效，Goaoxor为固定签署方，无需重复签名。</p>
+                </div>
+                ${notes ? `<div class="contract-section"><h3>Additional Notes / 备注</h3><p>${notes}</p></div>` : ''}
+            `;
+            document.getElementById('preview').innerHTML = contract;
+        }
+
+        // 生成 PDF
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // 设置字体（jsPDF 默认不支持中文，需手动处理或使用外部字体）
+            doc.setFont("helvetica");
+            doc.setFontSize(12);
+
+            // 获取预览内容
+            const preview = document.getElementById('preview').innerText;
+            const lines = preview.split('\n').filter(line => line.trim() !== '');
+
+            let y = 10;
+            lines.forEach(line => {
+                doc.text(line, 10, y);
+                y += 10;
+                if (y > 280) { // 换页
+                    doc.addPage();
+                    y = 10;
+                }
+            });
+
+            doc.save('Service_Matching_and_Supervision_Agreement.pdf');
+        }
+    </script>
+</body>
+</html>
