@@ -1,0 +1,334 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOAOXOR 合同生成器</title>
+<style>
+body { font-family:"Times New Roman", serif; max-width:800px; margin:0 auto; padding:20px; line-height:1.4; }
+.contract-section { margin-bottom:40px; }
+.form-group { margin-bottom:15px; }
+.form-group label { display:block; margin-bottom:5px; }
+.form-group input, .form-group select { width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; }
+.generate-btn { padding:10px 20px; background-color:#00b4d8; color:#fff; border:none; border-radius:4px; cursor:pointer; margin-top:10px; }
+.generate-btn:hover { background-color:#0095b6; }
+.generated-contract { margin-top:20px; padding:20px; border:1px solid #ccc; background-color:#fff; border-radius:4px; display:none; white-space:pre-wrap; }
+.contract-title { text-align:center; font-weight:bold; margin-bottom:20px; font-size:28pt; }
+.section { margin-bottom:15px; font-size:13pt; }
+table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13pt; }
+table, th, td { border:1pt solid #333; padding:8px; text-align:left; }
+th { background-color:#e0e0e0; font-weight:bold; }
+.signature { margin-top:30px; font-size:13pt; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<h1>GOAOXOR 合同生成器</h1>
+<!-- 合同1 -->
+<div class="contract-section">
+<h2>服务匹配与监督协议</h2>
+<div class="form-group">
+<label for="project-type1">Project Type / 项目类型:</label>
+<select id="project-type1">
+<option value="影视与视频">Film and Video / 影视与视频</option>
+<option value="影视制作">Film Production / 影视制作</option>
+<option value="短视频内容">Short Video Content / 短视频内容</option>
+<option value="后期制作">Post-Production / 后期制作</option>
+<option value="动画">Animation / 动画</option>
+<option value="2D/3D动画">2D/3D Animation / 2D/3D动画</option>
+<option value="MG特效">MG Effects / MG特效</option>
+<option value="角色设计">Character Design / 角色设计</option>
+<option value="视觉与设计">Visual Design / 视觉与设计</option>
+<option value="插图">Illustration / 插图</option>
+<option value="品牌视觉">Brand Visual / 品牌视觉</option>
+<option value="平面设计">Graphic Design / 平面设计</option>
+<option value="音频">Audio / 音频</option>
+<option value="声音设计">Sound Design / 声音设计</option>
+<option value="配音">Dubbing / 配音</option>
+<option value="音乐创作">Music Creation / 音乐创作</option>
+<option value="更多">More / 更多</option>
+<option value="游戏美术">Game Art / 游戏美术</option>
+<option value="虚拟现实">Virtual Reality / 虚拟现实</option>
+<option value="创意咨询">Creative Consulting / 创意咨询</option>
+<option value="其他项目">Other Projects / 其他项目</option>
+</select>
+</div>
+<div class="form-group">
+<label for="client-name1">Client Name / 客户名称:</label>
+<input type="text" id="client-name1" placeholder="输入客户名称">
+</div>
+<div class="form-group">
+<label for="date1">Date / 日期:</label>
+<input type="date" id="date1">
+</div>
+<button class="generate-btn" onclick="generateContract1()">生成</button>
+<button class="generate-btn" onclick="downloadPDF('contract1','Service_Matching_and_Supervision_Agreement.pdf')">下载 PDF</button>
+<div id="contract1" class="generated-contract"></div>
+</div>
+<!-- 合同2 -->
+<div class="contract-section">
+<h2>项目制作团队介绍协议</h2>
+<div class="form-group">
+<label for="project-type2">Project Type / 项目类型:</label>
+<select id="project-type2">
+<option value="影视与视频">Film and Video / 影视与视频</option>
+<option value="影视制作">Film Production / 影视制作</option>
+<option value="短视频内容">Short Video Content / 短视频内容</option>
+<option value="后期制作">Post-Production / 后期制作</option>
+<option value="动画">Animation / 动画</option>
+<option value="2D/3D动画">2D/3D Animation / 2D/3D动画</option>
+<option value="MG特效">MG Effects / MG特效</option>
+<option value="角色设计">Character Design / 角色设计</option>
+<option value="视觉与设计">Visual Design / 视觉与设计</option>
+<option value="插图">Illustration / 插图</option>
+<option value="品牌视觉">Brand Visual / 品牌视觉</option>
+<option value="平面设计">Graphic Design / 平面设计</option>
+<option value="音频">Audio / 音频</option>
+<option value="声音设计">Sound Design / 声音设计</option>
+<option value="配音">Dubbing / 配音</option>
+<option value="音乐创作">Music Creation / 音乐创作</option>
+<option value="更多">More / 更多</option>
+<option value="游戏美术">Game Art / 游戏美术</option>
+<option value="虚拟现实">Virtual Reality / 虚拟现实</option>
+<option value="创意咨询">Creative Consulting / 创意咨询</option>
+<option value="其他项目">Other Projects / 其他项目</option>
+</select>
+</div>
+<div class="form-group">
+<label for="team-name">Team Name / 项目制作团队名称:</label>
+<input type="text" id="team-name" placeholder="输入团队名称">
+</div>
+<div class="form-group">
+<label for="date2">Date / 日期:</label>
+<input type="date" id="date2">
+</div>
+<button class="generate-btn" onclick="generateContract2()">生成</button>
+<button class="generate-btn" onclick="downloadPDF('contract2','Project_Production_Team_Introduction_Agreement.pdf')">下载 PDF</button>
+<div id="contract2" class="generated-contract"></div>
+</div>
+<script>
+const { jsPDF } = window.jspdf;
+function generateContractNumber() {
+const now = new Date();
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const day = String(now.getDate()).padStart(2, '0');
+const random = Math.random().toString(36).substring(2, 7).toUpperCase();
+return `GOA-${year}${month}${day}-${random}`;
+}
+// 合同1生成
+function generateContract1(){
+const contractNo = generateContractNumber();
+const projectType = document.getElementById('project-type1').value || '______________________';
+const clientName = document.getElementById('client-name1').value || '______________________';
+const date = document.getElementById('date1').value || '______';
+const contract = `
+<div class="contract-title"> Service Matching and Supervision Agreement<br> 服务匹配与监督协议</div>
+<div class="section">
+Contract No. / 合同编号: ${contractNo}<br>
+Project Type / 项目类型: ${projectType}
+</div>
+<div class="section">
+1. Parties / 签署方<br>
+Client / 客户: ${clientName}<br>
+Goaoxor (Intermediation Platform / 基于 Goaoxor.com 的中介平台): Goaoxor
+</div>
+<div class="section">
+2. Governing Law / 司法管辖<br>
+This Agreement shall be governed by and construed in accordance with the laws of Hong Kong.<br>
+本协议适用香港法律，并按其解释。
+</div>
+<div class="section">
+3. Scope of Services / 服务范围<br>
+Goaoxor shall:<br>
+1. Match the Client with suitable Project Production Parties based on the Client’s project requirements.<br>
+根据客户项目需求，将客户与合适的项目制作方进行匹配。<br>
+2. Provide supervision services to ensure the agreed project milestones are communicated and tracked.<br>
+提供监督服务，确保项目各阶段按约沟通并跟进。<br>
+3. Not engage in project execution funds or manage the payment between Client and Project Production Party.<br>
+不参与项目执行款或管理客户与项目制作方之间的支付。
+</div>
+<div class="section">
+4. Client Obligations / 客户义务<br>
+• Provide accurate project requirements, expected deliverables, and budget information.<br><br>
+提供准确的项目需求、预期成果及预算信息。<br>
+• Respond timely to communications from Goaoxor and Project Production Party.<br><br>
+及时回复来自Goaoxor及项目制作方的沟通。<br>
+• Pay the Intermediation Fee (including supervision services) according to this Agreement.<br><br>
+按本协议规定支付中介服务费（含监督服务）。
+</div>
+<div class="section" id="intermediation-fee">
+5. Intermediation Fee / 中介服务费（含代监督服务）<br>
+<table>
+<tr><th>Project Value / 项目总额</th><th>Intermediation Fee / 中介服务费</th></tr>
+<tr><td>$0 – $300</td><td>$30 (fixed) / 固定30美元</td></tr>
+<tr><td>$301 – $800</td><td>10% of project total / 项目总额的10%</td></tr>
+<tr><td>$801 – $2,000</td><td>8% of project total / 项目总额的8%</td></tr>
+<tr><td>$2,001 – $5,000</td><td>6% of project total / 项目总额的6%</td></tr>
+<tr><td>$5,001+</td><td>5% of project total / 项目总额的5%</td></tr>
+</table>
+</div>
+<div class="section" id="payment-terms">
+6. Payment Terms / 支付条款:<br>
+1. Start-up Fee / 启动费: $30 payable upon signing this Agreement.<br>
+首付启动费：签署协议时支付30美元。<br><br>
+2. Remaining Intermediation Fee / 剩余中介费: After Client and Project Production Party agree on the project total, Client shall pay the remaining fee calculated according to the table above minus the $30 already paid.<br>
+剩余中介服务费：客户与项目制作方确认项目总额后，按上表百分比计算中介费，并减去已支付的$30。<br><br>
+3. Payment Method / 支付方式: Via Wise or other agreed international transfer.<br>
+支付方式：通过Wise或其他双方约定的国际转账方式。<br><br>
+4. Non-refundable / 不可退款: All paid fees are non-refundable.<br>
+已支付费用不可退还。
+</div>
+<div class="section">
+7. Limitation of Liability / 责任限制<br>
+Goaoxor shall exercise reasonable care in providing intermediation and supervision services.<br><br>
+Goaoxor 在提供匹配和监督服务时将尽合理注意义务。<br><br>
+However, Goaoxor shall not be liable for any direct, indirect, or consequential loss, delay, or failure arising from the performance or non-performance of the Project Production Party.<br>
+但对于项目制作方履约或未履约导致的任何直接、间接或连带损失、延误或失败，Goaoxor 不承担责任。
+</div>
+<div class="section">
+8. Confidentiality / 保密<br>
+Both parties shall maintain the confidentiality of any information obtained during the course of this Agreement.<br>
+双方须对在协议期间获知的所有信息保密。
+</div>
+<div class="section">
+9. Dispute Resolution / 争议解决<br>
+• Parties shall first attempt to resolve disputes through friendly negotiation.<br><br>
+双方应首先通过友好协商解决争议。<br>
+• Failing negotiation, Hong Kong courts shall have exclusive jurisdiction.<br><br>
+协商不成时，香港法院享有专属管辖权。
+</div>
+<div class="section signature">
+Client / 客户: _________________________________ Date / 日期: ${date}<br>
+Goaoxor (Intermediation Platform / 基于 Goaoxor.com 的中介平台): Goaoxor <br>
+Date / 日期: ${date}
+</div>
+<div class="section">
+Note: The Intermediation Fee includes supervision services. The Agreement becomes effective upon Client’s signature. Goaoxor, as the fixed signing party, does not require repeated signatures.<br>
+注：中介服务费包含代监督服务，客户签名后协议生效，Goaoxor为固定签署方，无需重复签名。
+</div>
+`;
+const container = document.getElementById('contract1');
+container.innerHTML = contract;
+container.style.display = 'block';
+}
+// 合同2生成
+function generateContract2(){
+const contractNo = generateContractNumber();
+const projectType = document.getElementById('project-type2').value || '______________________';
+const teamName = document.getElementById('team-name').value || '______________________';
+const date = document.getElementById('date2').value || '______';
+const contract = `
+<div class="contract-title"> 项目制作团队介绍协议</div>
+<div class="section">
+Contract No. / 合同编号: ${contractNo}-----
+Project Type / 项目类型: ${projectType}
+</div>
+<div class="section">
+签署方：<br>
+甲方（项目制作团队）：${teamName}<br>
+乙方（Goaoxor中介平台）：Goaoxor
+</div>
+<div class="section">
+司法管辖：<br>
+本协议适用中华人民共和国法律，并按其解释。
+</div>
+<div class="section">
+1. 服务内容<br>
+乙方将根据甲方的专业领域和能力，将其匹配给适合的客户项目，并提供协调服务，确保沟通顺畅，项目顺利推进。<br>
+甲方同意接受乙方的客户匹配安排，并按协议支付介绍费用。
+</div>
+<div class="section">
+2. 项目制作团队义务<br>
+• 提供真实的专业信息、作品及报价。<br>
+• 积极配合客户及乙方的沟通协调。<br>
+• 确认匹配客户并签署相关项目合同后，按协议支付介绍费用。
+</div>
+<div class="section">
+3. 介绍费用及支付方式<br>
+<table>
+<tr><th>项目总额</th><th>团队介绍费（微信/支付宝，从项目费用扣除）</th><th>备注</th></tr>
+<tr><td>$300以下</td><td>10% ($10-$30，签约时支付20%保证金)</td><td>保证金计入尾款</td></tr>
+<tr><td>$301-800</td><td>10% ($30-$80，签约时支付20%保证金)</td><td>保证金计入尾款</td></tr>
+<tr><td>$801-2000</td><td>8% ($64-$160，签约时支付20%保证金)</td><td>保证金计入尾款</td></tr>
+<tr><td>$2001-5000</td><td>6% (上限$150，签约时支付20%保证金)</td><td>保证金计入尾款</td></tr>
+<tr><td>$5001+</td><td>5% (上限$200，签约时支付20%保证金)</td><td>保证金计入尾款</td></tr>
+</table>
+支付方式：通过微信或支付宝支付给乙方指定账户。<br>
+支付阶段：签约后支付保证金，项目完成后支付剩余介绍费尾款。
+</div>
+<div class="section">
+4. 责任限制<br>
+乙方仅提供项目匹配及协调服务，对于项目制作团队履约或未履约引起的直接、间接或连带损失，乙方不承担责任。
+</div>
+<div class="section">
+5. 保密条款<br>
+双方须对在合作过程中获取的所有信息保密，不得向第三方泄露。
+</div>
+<div class="section">
+6. 争议解决<br>
+双方应首先通过友好协商解决争议。协商不成时，由中华人民共和国法院管辖。
+</div>
+<div class="section signature">
+7. 签署<br>
+甲方（项目制作团队）：_________________________________ 日期：${date}<br>
+乙方（Goaoxor中介平台）：Goaoxor 日期：${date}
+</div>
+<div class="section">
+说明：本合同签署后生效，团队介绍费包含客户匹配及沟通协调服务。Goaoxor为固定签署方，无需重复签名。
+</div>
+`;
+const container = document.getElementById('contract2');
+container.innerHTML = contract;
+container.style.display = 'block';
+}
+// 下载PDF
+async function downloadPDF(elementId, filename){
+const element = document.getElementById(elementId);
+if(element.style.display === 'none' || element.innerText.trim() === ''){alert("请先生成合同"); return;}
+const margin = 30;
+const pageWidth = 420;
+const pageHeight = 595;
+const pdf = new jsPDF({unit: 'pt', format: [pageWidth, pageHeight]});
+const dpiRatio = 96 / 72;
+const pdfContentWidthPt = pageWidth - 2 * margin;
+const contentWidthPx = Math.round(pdfContentWidthPt * dpiRatio);
+const temp = document.createElement('div');
+temp.style.position = 'absolute';
+temp.style.left = '-9999px';
+temp.style.width = contentWidthPx + 'px';
+temp.style.padding = '20px';
+temp.style.backgroundColor = '#fff';
+temp.style.fontFamily = '"Times New Roman", serif';
+temp.style.lineHeight = '1.4';
+temp.innerHTML = element.innerHTML;
+document.body.appendChild(temp);
+const canvas = await html2canvas(temp, {scale: 2, backgroundColor: '#fff'});
+document.body.removeChild(temp);
+const imgW = pdfContentWidthPt;
+const imgH = (canvas.height * imgW) / canvas.width;
+let heightLeft = imgH;
+let position = 0;
+pdf.addImage(canvas.toDataURL('image/png'), 'PNG', margin, margin, imgW, imgH);
+heightLeft -= (pageHeight - 2 * margin);
+position += (pageHeight - 2 * margin);
+let pageNum = 1;
+pdf.setFontSize(8);
+pdf.text('Provided by Goaoxor.com', margin, pageHeight - 10);
+const totalPages = Math.ceil(imgH / (pageHeight - 2 * margin));
+pdf.text('Page 1 of ' + totalPages, pageWidth / 2, pageHeight - 10, {align: 'center'});
+while (heightLeft > 0) {
+pdf.addPage();
+pageNum++;
+pdf.addImage(canvas.toDataURL('image/png'), 'PNG', margin, margin - position, imgW, imgH);
+pdf.setFontSize(8);
+pdf.text('Provided by Goaoxor.com', margin, pageHeight - 10);
+pdf.text('Page ' + pageNum + ' of ' + totalPages, pageWidth / 2, pageHeight - 10, {align: 'center'});
+position += (pageHeight - 2 * margin);
+heightLeft -= (pageHeight - 2 * margin);
+}
+pdf.save(filename);
+}
+</script>
+</body>
+</html>
