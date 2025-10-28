@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GOAOXOR Contract Generator</title>
+<title>GOAOXOR 合同生成器</title>
 <style>
 body { font-family:"Times New Roman", serif; max-width:800px; margin:0 auto; padding:20px; line-height:1.4; }
 .contract-section { margin-bottom:40px; }
@@ -24,10 +24,10 @@ th { background-color:#e0e0e0; font-weight:bold; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-<h1>GOAOXOR Contract Generator</h1>
+<h1>GOAOXOR 合同生成器</h1>
 <!-- 合同1 -->
 <div class="contract-section">
-<h2>Service Matching and Supervision Agreement</h2>
+<h2>服务匹配与监督协议</h2>
 <div class="form-group">
 <label for="project-type1">Project Type / 项目类型:</label>
 <select id="project-type1">
@@ -47,7 +47,6 @@ th { background-color:#e0e0e0; font-weight:bold; }
   <option value="声音设计">声音设计</option>
   <option value="配音">配音</option>
   <option value="音乐创作">音乐创作</option>
-  <option value="更多">更多</option>
   <option value="游戏美术">游戏美术</option>
   <option value="虚拟现实">虚拟现实</option>
   <option value="创意咨询">创意咨询</option>
@@ -56,19 +55,19 @@ th { background-color:#e0e0e0; font-weight:bold; }
 </div>
 <div class="form-group">
 <label for="client-name1">Client Name / 客户名称:</label>
-<input type="text" id="client-name1" placeholder="Enter client name">
+<input type="text" id="client-name1" placeholder="输入客户名称">
 </div>
 <div class="form-group">
 <label for="date1">Date / 日期:</label>
 <input type="date" id="date1">
 </div>
-<button class="generate-btn" onclick="generateContract1()">Generate Contract</button>
-<button class="generate-btn" onclick="downloadPDF('contract1','Service_Matching_and_Supervision_Agreement.pdf',true)">Download PDF</button>
+<button class="generate-btn" onclick="generateContract1()">生成</button>
+<button class="generate-btn" onclick="downloadPDF('contract1','Service_Matching_and_Supervision_Agreement.pdf',true)">下载 PDF</button>
 <div id="contract1" class="generated-contract"></div>
 </div>
 <!-- 合同2 -->
 <div class="contract-section">
-<h2>Project Production Team Introduction Agreement</h2>
+<h2>项目制作团队介绍协议</h2>
 <div class="form-group">
 <label for="project-type2">Project Type / 项目类型:</label>
 <select id="project-type2">
@@ -88,7 +87,6 @@ th { background-color:#e0e0e0; font-weight:bold; }
   <option value="声音设计">声音设计</option>
   <option value="配音">配音</option>
   <option value="音乐创作">音乐创作</option>
-  <option value="更多">更多</option>
   <option value="游戏美术">游戏美术</option>
   <option value="虚拟现实">虚拟现实</option>
   <option value="创意咨询">创意咨询</option>
@@ -97,14 +95,14 @@ th { background-color:#e0e0e0; font-weight:bold; }
 </div>
 <div class="form-group">
 <label for="team-name">Team Name / 项目制作团队名称:</label>
-<input type="text" id="team-name" placeholder="Enter team name">
+<input type="text" id="team-name" placeholder="输入团队名称">
 </div>
 <div class="form-group">
 <label for="date2">Date / 日期:</label>
 <input type="date" id="date2">
 </div>
-<button class="generate-btn" onclick="generateContract2()">Generate Contract</button>
-<button class="generate-btn" onclick="downloadPDF('contract2','Project_Production_Team_Introduction_Agreement.pdf',false)">Download PDF</button>
+<button class="generate-btn" onclick="generateContract2()">生成</button>
+<button class="generate-btn" onclick="downloadPDF('contract2','Project_Production_Team_Introduction_Agreement.pdf',false)">下载 PDF</button>
 <div id="contract2" class="generated-contract"></div>
 </div>
 <script>
@@ -202,7 +200,7 @@ Both parties shall maintain the confidentiality of any information obtained duri
 协商不成时，香港法院享有专属管辖权。
 </div>
 <div class="section signature">
-Client / 客户: ______________________ Date / 日期: ${date}<br>
+Client / 客户: _________________________________ Date / 日期: ${date}<br>
 Goaoxor (Intermediation Platform / 基于 Goaoxor.com 的中介平台): Goaoxor Date / 日期: ${date}
 </div>
 <div class="section">
@@ -273,7 +271,7 @@ Project Type / 项目类型: ${projectType}
 </div>
 <div class="section signature">
 7. 签署<br>
-甲方（项目制作团队）：______________________ 日期：${date}<br>
+甲方（项目制作团队）：_________________________________ 日期：${date}<br>
 乙方（Goaoxor中介平台）：Goaoxor 日期：${date}
 </div>
 <div class="section">
