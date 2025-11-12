@@ -4,30 +4,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>GOAOXOR - Find the Most Reliable Creative Team</title>
-
     <meta name="description" content="GOAOXOR connects global clients with top Chinese film, animation, and short video teams, offering full project management at 20%-50% lower cost." />
     <meta name="keywords" content="creative outsourcing, film production, animation, short video, project matching" />
     <link rel="canonical" href="https://goaoxor.com" />
     <link rel="icon" href="image/favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="32x32" href="image/logo.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
     <style>
     :root {
         /* New Dark/Premium Color Palette */
-        --bg-dark: #0D1117;         /* Deep background */
+        --bg-dark: #0D1117; /* Deep background */
         --bg-glass: rgba(20, 26, 36, 0.6); /* Glassy card background */
         --border-glass: rgba(255, 255, 255, 0.1); /* Glassy border */
-        --text-primary: #F0F2F5;     /* Main text */
-        --text-secondary: #9CA3AF;   /* Muted text */
-        --accent-primary: #8A42F5;   /* Vibrant Purple */
+        --text-primary: #F0F2F5; /* Main text */
+        --text-secondary: #9CA3AF; /* Muted text */
+        --accent-primary: #8A42F5; /* Vibrant Purple */
         --accent-secondary: #00F5D4; /* Vibrant Teal */
         --accent-glow: rgba(138, 66, 245, 0.5); /* Glow effect */
-        --accent-coral: #ff6f61;   /* Kept for stats, as it's a good highlight */
-        
+        --accent-coral: #ff6f61; /* Kept for stats, as it's a good highlight */
+       
         /* Modern Sizing & Effects */
         --radius-sm: 8px;
         --radius-md: 16px;
@@ -36,17 +33,14 @@
         --shadow-card: 0 4px 6px rgba(0,0,0,0.1);
         --blur-glass: 12px;
     }
-
     *, *:before, *:after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
-
     html {
         scroll-behavior: smooth;
     }
-
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: var(--bg-dark);
@@ -54,26 +48,22 @@
         line-height: 1.7;
         overflow-x: hidden;
     }
-
     .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 24px;
     }
-
     h1, h2, h3, h4 {
         color: var(--text-primary);
         font-weight: 700;
         letter-spacing: -0.5px;
     }
-
     h1 {
         font-size: clamp(2.5rem, 5vw, 3.5rem);
         font-weight: 800;
         line-height: 1.2;
         margin-bottom: 20px;
     }
-
     h2 {
         font-size: clamp(2rem, 4vw, 2.75rem);
         font-weight: 700;
@@ -81,7 +71,7 @@
         margin-bottom: 48px;
         position: relative;
     }
-    
+   
     /* Section Title Underline */
     h2::after {
         content: '';
@@ -94,7 +84,6 @@
         background: var(--accent-primary);
         border-radius: 4px;
     }
-
     /* Glassmorphism Card Base */
     .glass-card {
         background: var(--bg-glass);
@@ -109,7 +98,6 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
-
     /* Button Styles */
     .btn {
         padding: 12px 24px;
@@ -122,7 +110,6 @@
         border: none;
         cursor: pointer;
     }
-
     .btn-primary {
         background: var(--accent-primary);
         color: white;
@@ -133,7 +120,7 @@
         transform: translateY(-2px);
         box-shadow: var(--shadow-glow);
     }
-    
+   
     /* Section Padding */
     section {
         padding: 80px 0;
@@ -143,10 +130,8 @@
         border-top: 1px solid var(--border-glass);
         border-bottom: 1px solid var(--border-glass);
     }
-
-
     /* ----------------- */
-    /* Header (New)      */
+    /* Header (New) */
     /* ----------------- */
     header {
         background: rgba(13, 17, 23, 0.7);
@@ -200,7 +185,7 @@
     nav a:hover::after {
         transform: scaleX(1);
     }
-    
+   
     /* Header CTA Button */
     nav button[data-modal="open"] {
         background: var(--accent-primary);
@@ -216,7 +201,6 @@
         box-shadow: var(--shadow-glow);
         transform: translateY(-2px);
     }
-
     .language-switcher {
         display: flex;
         gap: 8px;
@@ -241,7 +225,6 @@
         border-color: var(--accent-primary);
     }
     .menu-toggle { display: none; }
-
     /* ----------------- */
     /* Hero (Redesigned) */
     /* ----------------- */
@@ -293,7 +276,6 @@
         padding: 14px 28px;
         font-size: 18px;
     }
-
     /* Hero Bento Grid (Stats) */
     .hero-stats-bento {
         display: grid;
@@ -329,7 +311,6 @@
     .stat-item:nth-child(1) .stat-number {
         font-size: clamp(2.5rem, 6vw, 3.5rem);
     }
-
     /* ----------------- */
     /* Video (New Style) */
     /* ----------------- */
@@ -359,9 +340,8 @@
         margin-left: auto;
         margin-right: auto;
     }
-
     /* ----------------- */
-    /* Process (New)     */
+    /* Process (New) */
     /* ----------------- */
     .process {
         padding-bottom: 100px;
@@ -372,7 +352,7 @@
         gap: 20px;
         position: relative;
     }
-    
+   
     /* Process timeline line */
     @media (min-width: 768px) {
         .process-grid::before {
@@ -386,7 +366,7 @@
             z-index: -1;
         }
     }
-    
+   
     .process-step {
         background: var(--bg-glass);
         border: 1px solid var(--border-glass);
@@ -424,9 +404,8 @@
         color: var(--text-secondary);
         font-size: 0.95rem;
     }
-
     /* ----------------- */
-    /* Services (Bento)  */
+    /* Services (Bento) */
     /* ----------------- */
     .services-bento-grid {
         display: grid;
@@ -467,7 +446,7 @@
         position: absolute;
         left: 0;
     }
-    
+   
     /* Bento Grid Layout */
     .service-category.span-2-col {
         grid-column: span 2;
@@ -481,9 +460,8 @@
     .service-category:nth-child(3) { grid-column: 1 / 2; } /* Visuals */
     .service-category:nth-child(4) { grid-column: 2 / 3; } /* Audio */
     .service-category:nth-child(5) { grid-column: 1 / 3; } /* More */
-
     /* ----------------- */
-    /* Advantages (New)  */
+    /* Advantages (New) */
     /* ----------------- */
     .advantages-grid {
         display: grid;
@@ -514,7 +492,6 @@
         color: var(--text-secondary);
         font-size: 0.95rem;
     }
-
     /* ----------------- */
     /* Testimonials (New)*/
     /* ----------------- */
@@ -537,7 +514,7 @@
         transform: translateY(-5px);
         border-color: var(--accent-primary);
     }
-    
+   
     /* Client Testimonial Style */
     .testimonial-stars {
         color: #ffd700;
@@ -561,10 +538,9 @@
         color: var(--text-secondary);
         font-size: 0.9rem;
     }
-
     /* Success Story Style (Now unified) */
     .success-story-icon {
-        display: none; 
+        display: none;
     }
     .success-story-quote {
         font-size: 1rem;
@@ -583,10 +559,8 @@
         color: var(--text-secondary);
         font-size: 0.9rem;
     }
-
-
     /* ----------------- */
-    /* FAQ (Accordion)   */
+    /* FAQ (Accordion) */
     /* ----------------- */
     .faq { max-width: 800px; margin: 40px auto; }
     .faq-item {
@@ -618,7 +592,7 @@
     .faq-item.active .faq-question::after {
         transform: translateY(-50%) rotate(45deg);
     }
-    
+   
     /* FAQ FIX - CSS controls height and padding */
     .faq-answer {
         color: var(--text-secondary);
@@ -636,10 +610,8 @@
         padding-top: 12px;
         padding-bottom: 18px;
     }
-
-
     /* ----------------- */
-    /* CTA (New Style)   */
+    /* CTA (New Style) */
     /* ----------------- */
     .cta {
         text-align: center;
@@ -670,7 +642,7 @@
         font-size: clamp(1.8rem, 4vw, 2.5rem);
         margin-bottom: 16px;
         position: relative; /* Ensure H2 is above background effect */
-        z-index: 2; 
+        z-index: 2;
     }
     .cta h2::after { display: none; } /* Hide underline in CTA */
     .cta p {
@@ -715,7 +687,6 @@
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         transform: translateY(-2px);
     }
-
     /* ----------------- */
     /* Footer (New Style)*/
     /* ----------------- */
@@ -784,7 +755,6 @@
         padding-top: 24px;
         text-align: center;
     }
-
     /* ----------------- */
     /* Modal (New Style) */
     /* ----------------- */
@@ -845,8 +815,6 @@
         border: 1px solid var(--border-glass);
         border-radius: var(--radius-sm);
     }
-
-
     /* ----------------- */
     /* Responsive Design */
     /* ----------------- */
@@ -870,7 +838,7 @@
         .hero-content ul {
             max-width: 400px;
         }
-        
+       
         .services-bento-grid {
             grid-template-columns: 1fr 1fr;
         }
@@ -881,13 +849,12 @@
         .service-category:nth-child(4) { grid-column: 2 / 3; }
         .service-category:nth-child(5) { grid-column: 1 / 3; }
     }
-
     @media (max-width: 768px) {
         body {
             -webkit-tap-highlight-color: transparent;
         }
         .container { padding: 0 16px; }
-        
+       
         /* Mobile Menu */
         nav {
             display: none;
@@ -905,7 +872,7 @@
         nav.active { display: flex; }
         nav a { font-size: 1.2rem; }
         nav button[data-modal="open"] { width: 100%; }
-        
+       
         .menu-toggle {
             display: block;
             font-size: 28px;
@@ -921,10 +888,10 @@
             padding-top: 20px;
             width: 100%;
         }
-        
-        .process-grid, 
-        .services-bento-grid, 
-        .advantages-grid, 
+       
+        .process-grid,
+        .services-bento-grid,
+        .advantages-grid,
         .testimonials-grid {
             grid-template-columns: 1fr;
         }
@@ -933,16 +900,55 @@
             grid-column: 1 / -1;
             grid-row: auto;
         }
-
         .process-grid::before { display: none; } /* Hide timeline line */
-        
+       
+        /* MOBILE FOOTER CENTERING - ADDED */
         .footer-content {
             grid-template-columns: 1fr;
-            text-align: left;
+            text-align: center; /* 全部居中 */
         }
-        .footer-section { text-align: left; }
-        .footer-section h4::after { left: 0; }
-        
+        .footer-section {
+            text-align: center;
+        }
+        .footer-section h4 {
+            text-align: center;
+        }
+        .footer-section p,
+        .footer-section a {
+            text-align: center;
+            margin-left: 0;
+            margin-right: 0;
+            display: inline-block; /* 使链接与段落能居中包裹 */
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        .footer-section h4::after { 
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* 保证 icon 与文字垂直对齐 */
+        .footer-section a .icon {
+            vertical-align: middle;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        /* 订阅按钮居中 */
+        .newsletter-signup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        /* 底部版权保证居中（通常已是居中，这里保险处理） */
+        .footer-bottom {
+            text-align: center;
+            padding-top: 18px;
+        }
+        /* END MOBILE FOOTER CENTERING */
+
         .modal-content {
             width: 95%;
             height: 90vh;
@@ -952,7 +958,6 @@
     </style>
 </head>
 <body>
-
     <header>
       <div class="topbar container">
         <div class="brand">GOAOXOR</div>
@@ -965,7 +970,7 @@
           <a href="#testimonials" class="translatable" data-en="Clients" data-zh="客户">Clients</a>
           <a href="#faq" class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</a>
           <button class="translatable" data-modal="open" data-en="Submit Requirements" data-zh="提交需求">Submit Requirements</button>
-          
+         
           <div class="language-switcher">
             <button data-lang="en" class="active" aria-label="Switch to English">English</button>
             <button data-lang="zh" aria-label="Switch to Chinese">中文</button>
@@ -973,7 +978,6 @@
         </nav>
       </div>
     </header>
-
     <main>
         <section class="hero" id="hero">
             <div class="container hero-grid">
@@ -1003,7 +1007,6 @@
                 </div>
             </div>
         </section>
-
         <section class="video-intro container" id="video">
             <h2 class="translatable" data-en="Discover GOAOXOR" data-zh="了解GOAOXOR">Discover GOAOXOR</h2>
             <div class="video-wrapper">
@@ -1019,7 +1022,6 @@
             </div>
             <p class="video-caption translatable" data-en="Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects." data-zh="探索GOAOXOR如何为您连接影视、动画和视频项目的顶级创意人才。">Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects.</p>
         </section>
-
         <section class="process container section-bg" id="process">
             <h2 class="translatable" data-en="Our Proven System for Matching A-Players" data-zh="我们匹配顶尖团队的验证系统">Our Proven System for Matching A-Players</h2>
             <div class="process-grid">
@@ -1050,13 +1052,11 @@
                 </div>
             </div>
         </section>
-
         <section class="cta container" id="mid-cta">
             <h2 class="translatable" data-en="Ready to Start Your Project?" data-zh="准备好开始您的项目了吗？">Ready to Start Your Project?</h2>
             <p class="translatable" data-en="We'll guide you every step of the way - from defining the project to successful delivery." data-zh="我们将全程指导您 - 从定义项目到成功交付。">We'll guide you every step of the way - from defining the project to successful delivery.</p>
             <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
         </section>
-
         <section class="services container" id="services">
             <h2 class="translatable" data-en="The Talent We Deliver" data-zh="我们提供的创意人才">The Talent We Deliver</h2>
             <div class="services-bento-grid">
@@ -1097,7 +1097,6 @@
                 </div>
             </div>
         </section>
-
         <section class="advantages container section-bg" id="advantages">
             <h2 class="translatable" data-en="We Remove the Barriers to Global Creative Collaboration" data-zh="我们消除全球创意协作的障碍">We Remove the Barriers to Global Creative Collaboration</h2>
             <div class="advantages-grid">
@@ -1123,7 +1122,6 @@
                 </div>
             </div>
         </section>
-
         <section class="testimonials clients container" id="testimonials">
             <h2 class="translatable" data-en="Trusted by Global Teams" data-zh="全球团队的信赖">Trusted by Global Teams</h2>
             <div class="testimonials-grid">
@@ -1151,7 +1149,7 @@
                     <div class="testimonial-author">Nick Wingo</div>
                     <div class="testimonial-company translatable" data-en="Architectural Visualization Supervisor" data-zh="建筑可视化主管">Architectural Visualization Supervisor</div>
                 </div>
-                
+               
                 <div class="success-story">
                     <div class="testimonial-stars">★★★★★</div>
                     <p class="success-story-quote translatable" data-en="GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost—truly game-changing!" data-zh="GOAOXOR简化了我们的影视项目，以极低的成本交付了卓越的质量—真正改变了游戏规则！">GOAOXOR streamlined our film project...</p>
@@ -1178,7 +1176,6 @@
                 </div>
             </div>
         </section>
-
         <section class="cta container">
             <h2 class="translatable" data-en="Save Time, Energy and the Headache of Team Hunting" data-zh="节省时间、精力和寻找团队的麻烦">Save Time, Energy and the Headache of Team Hunting</h2>
             <p class="translatable" data-en="One-time Matching Fee" data-zh="一次性匹配费用">One-time Matching Fee</p>
@@ -1189,7 +1186,6 @@
             </ul>
             <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
         </section>
-
         <section class="faq container" id="faq">
             <h2 class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</h2>
             <div class="faq-item">
@@ -1224,7 +1220,6 @@
             </div>
         </section>
     </main>
-
     <footer>
         <div class="footer-content container">
             <div class="footer-section">
@@ -1242,7 +1237,7 @@
             <div class="footer-section">
                 <h4 class="translatable" data-en="Connect With Us" data-zh="联系我们">Connect With Us</h4>
                 <a href="mailto:info@goaoxor.com" class="translatable" data-en="Email: info@goaoxor.com" data-zh="邮箱：info@goaoxor.com"><span class="icon">✉️</span>Email: info@goaoxor.com</a>
-                <a href="https://www.tiktok.com/@emmamanlay" target="_blank" class="translatable" data-en="TikTok: @emmamanlay" data-zh="TikTok：@emmamanlay"><span class="icon">🎵</span>TikTok: @emmamanlay</a>
+                <a href="https://www.tiktok.com/@emmamanlay" target="_blank" class="translatable" data-en="TikTok: @emmamanlay" data-zh="TikTok：@emmamanlay"><span class="icon">♪</span>TikTok: @emmamanlay</a>
             </div>
             <div class="footer-section">
                 <h4 class="translatable" data-en="Stay Updated" data-zh="保持更新">Stay Updated</h4>
@@ -1254,7 +1249,6 @@
         </div>
         <div class="footer-bottom container translatable" data-en="© 2025 GOAOXOR. All Rights Reserved." data-zh="© 2025 GOAOXOR。版权所有。">© 2025 GOAOXOR. All Rights Reserved.</div>
     </footer>
-
     <div class="modal" id="form-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1266,7 +1260,6 @@
             </div>
         </div>
     </div>
-
     <script>
     // --- Language Switcher ---
     let currentLang = 'en';
@@ -1275,7 +1268,7 @@
             currentLang = lang;
             localStorage.setItem('preferredLang', lang);
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-            
+           
             const elements = document.querySelectorAll('.translatable');
             elements.forEach(el => {
                 const translation = el.dataset[lang];
@@ -1288,7 +1281,7 @@
                     }
                 }
             });
-            
+           
             document.querySelectorAll('.language-switcher button').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.lang === lang);
             });
@@ -1301,14 +1294,13 @@
     document.querySelectorAll('.language-switcher button').forEach(btn => {
         btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
     });
-
     // --- Smooth Scroll ---
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', e => {
             e.preventDefault();
             const targetId = anchor.getAttribute('href');
-            if (targetId === '#') return; 
-            
+            if (targetId === '#') return;
+           
             const target = document.querySelector(targetId);
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
@@ -1318,7 +1310,6 @@
             }
         });
     });
-
     // --- Mobile Menu Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('nav');
@@ -1333,25 +1324,21 @@
             }
         }
     });
-
-
     // --- MODAL TOGGLE (FIXED LOGIC) ---
     const modal = document.querySelector('#form-modal');
     const modalOpenButtons = document.querySelectorAll('[data-modal="open"]');
     const modalCloseButton = document.querySelector('.modal-close');
-
     // Listener for ALL open buttons (including the one you reported)
     modalOpenButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
             if (modal) {
                 // Critical step: Ensure the button is enabled and the modal exists
-                console.log('Modal Button Clicked:', btn.textContent); 
+                console.log('Modal Button Clicked:', btn.textContent);
                 modal.style.display = 'flex';
             }
         });
     });
-
     // Listener for the close button
     if (modalCloseButton) {
         modalCloseButton.addEventListener('click', () => {
@@ -1360,7 +1347,6 @@
             }
         });
     }
-
     // Listener for the modal background (to close on click outside)
     if (modal) {
         modal.addEventListener('click', e => {
@@ -1369,8 +1355,6 @@
             }
         });
     }
-
-
     // --- Video Fallback ---
     const iframe = document.querySelector('.video-wrapper iframe');
     if (iframe) {
@@ -1380,17 +1364,15 @@
             iframe.style.display = 'none';
         });
     }
-
     // --- FAQ Accordion (CSS Controlled) ---
     function setupFAQListeners() {
         const faqItems = document.querySelectorAll('.faq-item');
-        
+       
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
-
             question.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
-                
+               
                 // Toggle the clicked item
                 if (!isActive) {
                     item.classList.add('active');
@@ -1402,10 +1384,9 @@
             });
         });
     }
-    
+   
     // Initial setup on page load
     setupFAQListeners();
-
     </script>
 </body>
 </html>
