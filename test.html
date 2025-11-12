@@ -866,53 +866,124 @@
             max-width: 100%;
         }
        
-        /* Mobile Menu - Make full-screen for app-like navigation */
-        nav {
-            display: none;
-            flex-direction: column;
-            position: fixed; /* Changed to fixed for overlay effect */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bg-dark);
-            border: none; /* Remove border for cleaner look */
-            padding: 40px 20px; /* Increased padding */
-            gap: 32px; /* Larger gaps */
-            align-items: center; /* Center items */
-            justify-content: center; /* Vertical center */
-            z-index: 999; /* High z-index */
-            overflow-y: auto; /* Scroll if needed */
-        }
-        nav.active { display: flex; }
-        nav a { 
-            font-size: 1.5rem; /* Larger text for touch */
-            padding: 12px 0; /* Vertical padding */
-        }
-        nav button[data-modal="open"] { 
-            width: 100%; 
-            padding: 16px; /* Larger padding */
-            font-size: 1.2rem;
-        }
-       
+        /* ===== 移动端导航菜单 - 全屏毛玻璃弹层 ===== */
         .menu-toggle {
             display: block;
-            font-size: 32px; /* Larger icon */
+            font-size: 32px;
             cursor: pointer;
             color: var(--text-primary);
             background: none;
             border: none;
+            padding: 8px;
+            z-index: 1001;
         }
+
+        #mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 24px 40px;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        #mobile-nav.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 36px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .nav-close:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .nav-links a {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 12px 0;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .nav-links button[data-modal="open"] {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
         .language-switcher {
-            /* Position at bottom of menu */
+            display: flex;
+            gap: 16px;
             margin-top: auto;
-            padding-top: 20px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-glass);
             width: 100%;
             justify-content: center;
         }
+
         .language-switcher button {
-            padding: 12px 24px; /* Larger buttons */
+            padding: 12px 28px;
             font-size: 1.2rem;
+            min-width: 100px;
+        }
+
+        /* 点击外部关闭菜单 */
+        #mobile-nav::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
         }
        
         /* App-like adjustments */
@@ -971,16 +1042,18 @@
     <header>
       <div class="topbar container">
         <div class="brand">GOAOXOR</div>
-        <div class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</div>
-        <nav>
-          <a href="#hero" class="translatable" data-en="Home" data-zh="首页">Home</a>
-          <a href="#video" class="translatable" data-en="Introduction" data-zh="介绍">Introduction</a>
-          <a href="#process" class="translatable" data-en="Process" data-zh="流程">Process</a>
-          <a href="#services" class="translatable" data-en="Services" data-zh="服务">Services</a>
-          <a href="#testimonials" class="translatable" data-en="Clients" data-zh="客户">Clients</a>
-          <a href="#faq" class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</a>
-          <button class="translatable" data-modal="open" data-en="Submit Requirements" data-zh="提交需求">Submit Requirements</button>
-         
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <nav id="mobile-nav" class="mobile-nav">
+          <button class="nav-close" aria-label="Close menu">×</button>
+          <div class="nav-links">
+            <a href="#hero" class="translatable" data-en="Home" data-zh="首页">Home</a>
+            <a href="#video" class="translatable" data-en="Introduction" data-zh="介绍">Introduction</a>
+            <a href="#process" class="translatable" data-en="Process" data-zh="流程">Process</a>
+            <a href="#services" class="translatable" data-en="Services" data-zh="服务">Services</a>
+            <a href="#testimonials" class="translatable" data-en="Clients" data-zh="客户">Clients</a>
+            <a href="#faq" class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</a>
+            <button class="translatable" data-modal="open" data-en="Submit Requirements" data-zh="提交需求">Submit Requirements</button>
+          </div>
           <div class="language-switcher">
             <button data-lang="en" class="active" aria-label="Switch to English">English</button>
             <button data-lang="zh" aria-label="Switch to Chinese">中文</button>
@@ -1320,19 +1393,41 @@
             }
         });
     });
-    // --- Mobile Menu Toggle ---
+    // --- Mobile Menu Toggle (修复版) ---
     const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
-    menuToggle.addEventListener('click', () => {
-        nav.classList.toggle('active');
-        const isActive = nav.classList.contains('active');
-        menuToggle.setAttribute('aria-expanded', isActive);
-        if (window.innerWidth <= 768) {
-            const langSwitcher = document.querySelector('.language-switcher');
-            if (isActive) {
-                nav.appendChild(langSwitcher);
-            }
+    const mobileNav = document.querySelector('#mobile-nav');
+    const navClose = document.querySelector('.nav-close');
+
+    function openMenu() {
+        mobileNav.classList.add('active');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+    }
+
+    function closeMenu() {
+        mobileNav.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+
+    // 打开菜单
+    menuToggle.addEventListener('click', openMenu);
+
+    // 关闭按钮
+    navClose.addEventListener('click', closeMenu);
+
+    // 点击菜单外部关闭
+    mobileNav.addEventListener('click', (e) => {
+        if (e.target === mobileNav) {
+            closeMenu();
         }
+    });
+
+    // 点击导航链接后自动关闭菜单
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
     });
     // --- MODAL TOGGLE (FIXED LOGIC) ---
     const modal = document.querySelector('#form-modal');
