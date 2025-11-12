@@ -5,642 +5,958 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>GOAOXOR - Find the Most Reliable Creative Team</title>
 
-    <!-- SEO Optimization -->
     <meta name="description" content="GOAOXOR connects global clients with top Chinese film, animation, and short video teams, offering full project management at 20%-50% lower cost." />
     <meta name="keywords" content="creative outsourcing, film production, animation, short video, project matching" />
     <link rel="canonical" href="https://goaoxor.com" />
-    <!-- 添加 favicon 链接 -->
-    <link rel="icon" href="image/favicon.ico" type="image/x-icon">  <!-- ICO 文件，优先使用 -->
-    <link rel="icon" type="image/png" sizes="32x32" href="image/logo.png">  <!-- PNG 文件，作为备选 -->
+    <link rel="icon" href="image/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/logo.png">
 
-    <!-- Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
     :root {
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --accent: #00b4d8;
-      --accent-2: #ff6f61;
-      --muted: #6b7280;
-      --text: #111827;
-      --radius: 12px;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-      --shadow-md: 0 6px 16px rgba(0,0,0,0.1);
-      --gradient-bg: linear-gradient(135deg, #e6f7ff, #f0f9ff);
-      --gradient-accent: linear-gradient(90deg, #00b4d8, #3db6f0);
-      --success-bg: #f1f5f9;
-      --success-accent: #3b82f6;
+        /* New Dark/Premium Color Palette */
+        --bg-dark: #0D1117;         /* Deep background */
+        --bg-glass: rgba(20, 26, 36, 0.6); /* Glassy card background */
+        --border-glass: rgba(255, 255, 255, 0.1); /* Glassy border */
+        --text-primary: #F0F2F5;     /* Main text */
+        --text-secondary: #9CA3AF;   /* Muted text */
+        --accent-primary: #8A42F5;   /* Vibrant Purple */
+        --accent-secondary: #00F5D4; /* Vibrant Teal */
+        --accent-glow: rgba(138, 66, 245, 0.5); /* Glow effect */
+        --accent-coral: #ff6f61;   /* Kept for stats, as it's a good highlight */
+        
+        /* Modern Sizing & Effects */
+        --radius-sm: 8px;
+        --radius-md: 16px;
+        --radius-lg: 20px;
+        --shadow-glow: 0 0 15px rgba(138, 66, 245, 0.4), 0 0 30px rgba(138, 66, 245, 0.2);
+        --shadow-card: 0 4px 6px rgba(0,0,0,0.1);
+        --blur-glass: 12px;
     }
 
-    *,*:before,*:after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *:before, *:after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        line-height: 1.7;
+        overflow-x: hidden;
     }
 
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
 
-    /* Header */
+    h1, h2, h3, h4 {
+        color: var(--text-primary);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 48px;
+        position: relative;
+    }
+    
+    /* Section Title Underline */
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: var(--accent-primary);
+        border-radius: 4px;
+    }
+
+    /* Glassmorphism Card Base */
+    .glass-card {
+        background: var(--bg-glass);
+        backdrop-filter: blur(var(--blur-glass));
+        -webkit-backdrop-filter: blur(var(--blur-glass));
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Button Styles */
+    .btn {
+        padding: 12px 24px;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: var(--accent-primary);
+        color: white;
+        box-shadow: 0 0 15px rgba(138, 66, 245, 0.4);
+    }
+    .btn-primary:hover {
+        background: var(--accent-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-glow);
+    }
+    
+    /* Section Padding */
+    section {
+        padding: 80px 0;
+    }
+    .section-bg {
+        background: rgba(0,0,0,0.1);
+        border-top: 1px solid var(--border-glass);
+        border-bottom: 1px solid var(--border-glass);
+    }
+
+
+    /* ----------------- */
+    /* Header (New)      */
+    /* ----------------- */
     header {
-      background: #ffffff;
-      box-shadow: var(--shadow-sm);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+        background: rgba(13, 17, 23, 0.7);
+        backdrop-filter: blur(var(--blur-glass));
+        -webkit-backdrop-filter: blur(var(--blur-glass));
+        border-bottom: 1px solid var(--border-glass);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 16px 0;
     }
     .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      max-width: 1200px;
-      margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     .brand {
-      font-size: clamp(24px, 5vw, 28px);
-      font-weight: 700;
-      color: var(--accent-2);
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--accent-coral);
     }
     nav {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
     }
     nav a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: clamp(14px, 2.5vw, 16px);
-      transition: color 0.3s ease;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        transition: color 0.3s ease;
+        position: relative;
     }
-    nav a:hover { color: var(--accent); }
-    .language-switcher button {
-      background: var(--card);
-      border: 1px solid var(--accent);
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: var(--accent);
-      font-weight: 500;
-      font-size: clamp(12px, 2vw, 14px);
-      transition: background 0.3s ease, color 0.3s ease;
+    nav a:hover {
+        color: var(--text-primary);
     }
-    .language-switcher button.active, .language-switcher button:hover {
-      background: var(--accent);
-      color: white;
+    /* Nav link underline effect */
+    nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--accent-primary);
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.3s ease;
     }
-    .menu-toggle {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--text);
+    nav a:hover::after {
+        transform: scaleX(1);
+    }
+    
+    /* Header CTA Button */
+    nav button[data-modal="open"] {
+        background: var(--accent-primary);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    nav button[data-modal="open"]:hover {
+        box-shadow: var(--shadow-glow);
+        transform: translateY(-2px);
     }
 
-    /* Hero */
+    .language-switcher {
+        display: flex;
+        gap: 8px;
+    }
+    .language-switcher button {
+        background: none;
+        border: 1px solid var(--border-glass);
+        padding: 6px 12px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .language-switcher button:hover {
+        background: var(--border-glass);
+        color: var(--text-primary);
+    }
+    .language-switcher button.active {
+        background: var(--accent-primary);
+        color: white;
+        border-color: var(--accent-primary);
+    }
+    .menu-toggle { display: none; }
+
+    /* ----------------- */
+    /* Hero (Redesigned) */
+    /* ----------------- */
     .hero {
-      background: var(--gradient-bg);
-      padding: clamp(60px, 10vw, 80px) 16px clamp(40px, 8vw, 60px);
-      text-align: center;
-      border-radius: var(--radius);
-      margin: 16px auto;
-      box-shadow: var(--shadow-md);
+        padding: 80px 0;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
     }
-    h1 {
-      font-size: clamp(28px, 6vw, 36px);
-      font-weight: 700;
-      margin-bottom: 20px;
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
     }
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: clamp(20px, 4vw, 30px);
-      margin: 24px auto;
-      flex-wrap: wrap;
+    .hero-content {
+        /* Left side content */
+    }
+    .hero-content p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin: 24px 0;
+        max-width: 500px;
+    }
+    .hero-content ul {
+        list-style: none;
+        margin: 24px 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .hero-content ul li {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        position: relative;
+        padding-left: 28px;
+    }
+    .hero-content ul li::before {
+        content: '✓';
+        color: var(--accent-secondary);
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: 700;
+    }
+    .hero .btn-primary {
+        margin-top: 20px;
+        padding: 14px 28px;
+        font-size: 18px;
+    }
+
+    /* Hero Bento Grid (Stats) */
+    .hero-stats-bento {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 20px;
     }
     .stat-item {
-      background: var(--card);
-      padding: 16px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      min-width: 160px;
-      transition: transform 0.3s ease;
+        padding: 24px;
+        background: var(--bg-glass);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-md);
+        transition: transform 0.3s ease;
     }
-    .stat-item:hover { transform: translateY(-4px); }
-    .stat-number { font-size: clamp(28px, 5vw, 32px); font-weight: 700; color: var(--accent-2); }
-    .stat-label { font-size: clamp(14px, 2.5vw, 16px); color: var(--muted); }
-    .hero ul {
-      list-style: none;
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .stat-item:hover {
+        transform: scale(1.05);
+        border-color: var(--accent-primary);
     }
-    .hero ul li { font-size: clamp(14px, 2.5vw, 16px); }
-    .hero ul li::before { content: '✓'; color: var(--accent); margin-right: 10px; }
-    .btn {
-      padding: clamp(10px, 2vw, 12px) clamp(20px, 3vw, 24px);
-      border-radius: var(--radius);
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-block;
-      transition: background 0.3s ease;
-      font-size: clamp(14px, 2.5vw, 16px);
-      border: none;
-      cursor: pointer;
+    .stat-number {
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        font-weight: 800;
+        color: var(--accent-coral);
     }
-    .btn-primary {
-      background: var(--gradient-accent);
-      color: white;
-      margin-top: 20px;
+    .stat-label {
+        font-size: 1rem;
+        color: var(--text-secondary);
     }
-    .btn-primary:hover { background: #0095b6; }
+    /* Make the first stat span 2 columns */
+    .stat-item:nth-child(1) {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+    .stat-item:nth-child(1) .stat-number {
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+    }
 
-    /* Video Introduction */
-    .video-intro {
-      margin: 60px auto;
-      text-align: center;
-      max-width: 1200px;
-      padding: 0 16px;
-    }
-    .video-intro h2 {
-      font-size: clamp(24px, 5vw, 28px);
-      margin-bottom: 24px;
-      position: relative;
-    }
-    .video-intro h2::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: var(--accent);
-    }
+    /* ----------------- */
+    /* Video (New Style) */
+    /* ----------------- */
+    .video-intro { text-align: center; }
     .video-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 640px;
-      margin: 0 auto;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      aspect-ratio: 16 / 9;
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        border: 1px solid var(--border-glass);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        aspect-ratio: 16 / 9;
     }
     .video-wrapper iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+        width: 100%;
+        height: 100%;
+        border: none;
     }
-    .video-fallback {
-      display: none;
-      margin-top: 16px;
-      font-size: clamp(14px, 2.5vw, 16px);
-      color: var(--muted);
-    }
-    .video-fallback a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .video-fallback a:hover {
-      text-decoration: underline;
-    }
+    .video-fallback { display: none; } /* Kept logic */
     .video-caption {
-      margin-top: 16px;
-      font-size: clamp(14px, 2.5vw, 16px);
-      color: var(--muted);
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
+        margin-top: 24px;
+        font-size: 1rem;
+        color: var(--text-secondary);
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    /* Process */
-    .process { margin: 40px auto; }
-    h2 {
-      font-size: clamp(24px, 5vw, 28px);
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 32px;
-      position: relative;
-    }
-    h2::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: var(--accent);
+    /* ----------------- */
+    /* Process (New)     */
+    /* ----------------- */
+    .process {
+        padding-bottom: 100px;
     }
     .process-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        position: relative;
     }
+    
+    /* Process timeline line */
+    @media (min-width: 768px) {
+        .process-grid::before {
+            content: '';
+            position: absolute;
+            top: 36px; /* Align with the number */
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: var(--border-glass);
+            z-index: -1;
+        }
+    }
+    
     .process-step {
-      background: var(--card);
-      padding: 20px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.3s ease;
-      position: relative;
+        background: var(--bg-glass);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        z-index: 1;
     }
-    .process-step:hover { transform: translateY(-4px); }
+    .process-step:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent-primary);
+    }
     .step-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: var(--accent);
-      color: white;
-      font-size: clamp(16px, 3vw, 18px);
-      font-weight: 600;
-      border-radius: 50%;
-      margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background: var(--accent-primary);
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-radius: 50%;
+        margin-bottom: 16px;
+        border: 4px solid var(--bg-dark);
+        box-shadow: 0 0 10px var(--accent-glow);
     }
-    .step-title { font-size: clamp(18px, 3vw, 20px); font-weight: 600; margin: 8px 0; }
-    .step-desc { color: var(--muted); font-size: clamp(14px, 2.5vw, 16px); }
+    .step-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+    }
+    .step-desc {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
 
-    /* Services - Updated with new 'More' card */
-    .services { margin: 40px auto; background: var(--gradient-bg); padding: 40px 0; }
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-      margin-top: 24px;
+    /* ----------------- */
+    /* Services (Bento)  */
+    /* ----------------- */
+    .services-bento-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto auto auto;
+        gap: 20px;
+        margin-top: 32px;
     }
     .service-category {
-      background: var(--card);
-      padding: 20px;
-      border-radius: var(--radius);
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 1px solid #e5e7eb;
+        background: var(--bg-glass);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
     }
     .service-category:hover {
-      transform: scale(1.03);
-      box-shadow: var(--shadow-md);
+        transform: translateY(-5px);
+        border-color: var(--accent-secondary);
     }
     .service-title {
-      font-size: clamp(18px, 3vw, 20px);
-      font-weight: 600;
-      color: var(--accent);
-      margin-bottom: 12px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--accent-secondary);
+        margin-bottom: 16px;
     }
-    .service-list {
-      list-style: none;
-      padding: 0;
-    }
+    .service-list { list-style: none; padding: 0; }
     .service-list li {
-      margin: 8px 0;
-      color: var(--muted);
-      font-size: clamp(14px, 2.5vw, 16px);
+        margin: 8px 0;
+        color: var(--text-secondary);
+        font-size: 1rem;
+        position: relative;
+        padding-left: 24px;
     }
     .service-list li::before {
-      content: '→';
-      color: var(--accent-2);
-      margin-right: 8px;
+        content: '→';
+        color: var(--accent-secondary);
+        margin-right: 8px;
+        position: absolute;
+        left: 0;
     }
+    
+    /* Bento Grid Layout */
+    .service-category.span-2-col {
+        grid-column: span 2;
+    }
+    .service-category.span-2-row {
+        grid-row: span 2;
+    }
+    /* Specific layout for 5 items */
+    .service-category:nth-child(1) { grid-column: 1 / 3; } /* Film */
+    .service-category:nth-child(2) { grid-column: 3 / 4; grid-row: 1 / 3; } /* Animation */
+    .service-category:nth-child(3) { grid-column: 1 / 2; } /* Visuals */
+    .service-category:nth-child(4) { grid-column: 2 / 3; } /* Audio */
+    .service-category:nth-child(5) { grid-column: 1 / 3; } /* More */
 
-    /* Testimonials - Clients */
-    .testimonials.clients { margin: 40px auto; }
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 30px;
-      justify-content: center;
-    }
-    .testimonial {
-      background: var(--card);
-      padding: 24px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      position: relative;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .testimonial:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-    }
-    .testimonial::before {
-      content: '“';
-      font-size: 60px;
-      color: var(--accent);
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0.1;
-    }
-    .testimonial-quote { 
-      font-style: italic; 
-      margin-bottom: 16px; 
-      color: var(--text); 
-      font-size: clamp(14px, 2.5vw, 16px); 
-      line-height: 1.5;
-    }
-    .testimonial-author { 
-      font-weight: 600; 
-      color: var(--accent); 
-      font-size: clamp(16px, 3vw, 18px); 
-    }
-    .testimonial-company { 
-      color: var(--muted); 
-      font-size: clamp(12px, 2vw, 14px); 
-    }
-    .testimonial-stars {
-      color: #ffd700;
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
-
-    /* Testimonials - Success Stories */
-    .testimonials.success-stories {
-      margin: 40px auto;
-      background: var(--success-bg);
-      padding: 40px 0;
-    }
-    .success-stories-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 30px;
-      justify-content: center;
-    }
-    .success-story {
-      background: white;
-      padding: 20px;
-      border-radius: var(--radius);
-      border-left: 4px solid var(--success-accent);
-      max-width: 360px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      text-align: left;
-    }
-    .success-story:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-    }
-    .success-story-quote {
-      font-size: clamp(14px, 2.5vw, 16px);
-      color: var(--text);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .success-story-author {
-      font-weight: 600;
-      color: var(--success-accent);
-      font-size: clamp(16px, 3vw, 18px);
-    }
-    .success-story-company {
-      color: var(--muted);
-      font-size: clamp(12px, 2vw, 14px);
-      font-style: italic;
-    }
-    .success-story-icon {
-      font-size: 24px;
-      color: var(--success-accent);
-      margin-bottom: 8px;
-    }
-
-    /* Advantages */
-    .advantages { margin: 40px auto; padding: 40px 0; background: var(--gradient-bg); }
+    /* ----------------- */
+    /* Advantages (New)  */
+    /* ----------------- */
     .advantages-grid {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 32px;
     }
     .advantage-item {
-      text-align: center;
-      max-width: 260px;
-      padding: 16px;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
+        background: var(--bg-glass);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        text-align: left;
     }
-    .advantage-icon { font-size: clamp(28px, 5vw, 32px); color: var(--accent-2); margin-bottom: 12px; }
-    .advantage-title { font-size: clamp(16px, 3vw, 18px); font-weight: 600; }
-    .advantage-desc { color: var(--muted); font-size: clamp(14px, 2.5vw, 16px); }
+    .advantage-icon {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+        display: inline-block;
+        filter: grayscale(100%) contrast(200%) opacity(0.6); /* Modern style for emojis */
+    }
+    .advantage-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+    }
+    .advantage-desc {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
 
-    /* FAQ */
-    .faq { margin: 40px auto; }
-    .faq-item { margin-bottom: 16px; padding: 16px; background: var(--card); border-radius: var(--radius); }
-    .faq-question { font-size: clamp(16px, 3vw, 18px); font-weight: 600; color: var(--accent); }
-    .faq-answer { color: var(--muted); font-size: clamp(14px, 2.5vw, 16px); }
+    /* ----------------- */
+    /* Testimonials (New)*/
+    /* ----------------- */
+    /* Combined Clients + Success Stories */
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 30px;
+    }
+    .testimonial, .success-story {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+    }
+    .testimonial:hover, .success-story:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-primary);
+    }
+    
+    /* Client Testimonial Style */
+    .testimonial-stars {
+        color: #ffd700;
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+    .testimonial-quote {
+        font-style: italic;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        line-height: 1.6;
+        flex-grow: 1; /* Makes cards same height */
+    }
+    .testimonial-author {
+        font-weight: 600;
+        color: var(--accent-primary);
+        font-size: 1.1rem;
+    }
+    .testimonial-company {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
 
-    /* CTA */
+    /* Success Story Style (Now unified) */
+    .success-story-icon {
+        display: none; 
+    }
+    .success-story-quote {
+        font-size: 1rem;
+        color: var(--text-primary);
+        line-height: 1.6;
+        margin-bottom: 12px;
+        flex-grow: 1; /* Makes cards same height */
+        font-style: italic; /* Match other quotes */
+    }
+    .success-story-author {
+        font-weight: 600;
+        color: var(--accent-primary);
+        font-size: 1.1rem;
+    }
+    .success-story-company {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+
+    /* ----------------- */
+    /* FAQ (Accordion)   */
+    /* ----------------- */
+    .faq { max-width: 800px; margin: 40px auto; }
+    .faq-item {
+        margin-bottom: 12px;
+        background: var(--bg-glass);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+    }
+    .faq-question {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        padding: 18px 24px;
+        cursor: pointer;
+        position: relative;
+    }
+    /* Accordion Arrow */
+    .faq-question::after {
+        content: '+';
+        position: absolute;
+        right: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        color: var(--accent-primary);
+        transition: transform 0.3s ease;
+    }
+    .faq-item.active .faq-question::after {
+        transform: translateY(-50%) rotate(45deg);
+    }
+    
+    /* FAQ FIX - CSS controls height and padding */
+    .faq-answer {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        padding: 0 24px; /* Horizontal padding ONLY */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out, padding-top 0.4s ease-out, padding-bottom 0.4s ease-out;
+    }
+    .faq-answer p {
+        margin: 0; /* Remove default p margins */
+    }
+    .faq-item.active .faq-answer {
+        max-height: 500px; /* Use a large magic number */
+        padding-top: 12px;
+        padding-bottom: 18px;
+    }
+
+
+    /* ----------------- */
+    /* CTA (New Style)   */
+    /* ----------------- */
     .cta {
-      text-align: center;
-      background: var(--gradient-accent);
-      color: white;
-      padding: 40px 16px;
-      border-radius: var(--radius);
-      margin: 40px auto;
+        text-align: center;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: var(--bg-dark);
+        padding: 60px 24px;
+        border-radius: var(--radius-lg);
+        margin: 40px auto;
+        overflow: hidden;
+        position: relative;
     }
-    .cta p { max-width: 600px; margin: 0 auto 16px; font-size: clamp(16px, 3vw, 18px); }
-    .cta ul { 
-      list-style: none; 
-      max-width: 600px; 
-      margin: 16px auto 24px;
-      padding: 0; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 10px; 
+    /* BG Glow Effect - Z-INDEX 1 */
+    .cta::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.1);
+        filter: blur(100px);
+        transform: translate(-50%, -50%);
+        opacity: 0.5;
+        z-index: 1; /* <-- NEW: Explicitly low Z-index */
     }
-    .cta ul li { font-size: clamp(14px, 2.5vw, 16px); }
-    .cta ul li::before { content: '✓'; margin-right: 10px; }
-    .cta .btn-primary { margin-top: 20px; }
+    .cta h2 {
+        color: var(--bg-dark);
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        margin-bottom: 16px;
+        position: relative; /* Ensure H2 is above background effect */
+        z-index: 2; 
+    }
+    .cta h2::after { display: none; } /* Hide underline in CTA */
+    .cta p {
+        max-width: 600px;
+        margin: 0 auto 16px;
+        font-size: 1.1rem;
+        color: var(--bg-dark);
+        opacity: 0.9;
+        position: relative; /* Ensure P is above background effect */
+        z-index: 2;
+    }
+    .cta ul {
+        list-style: none;
+        max-width: 600px;
+        margin: 24px auto;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+        z-index: 2;
+    }
+    .cta ul li { font-size: 1rem; color: var(--bg-dark); opacity: 0.9; }
+    .cta ul li::before {
+        content: '✓';
+        margin-right: 10px;
+        font-weight: 700;
+    }
+    /* BUTTON - Z-INDEX 5 */
+    .cta .btn-primary {
+        margin-top: 20px;
+        background: var(--text-primary);
+        color: var(--accent-primary);
+        font-size: 18px;
+        padding: 14px 28px;
+        position: relative; /* <-- CRITICAL FIX: Ensure z-index works */
+        z-index: 5; /* <-- CRITICAL FIX: Ensure button is clickable */
+    }
+    .cta .btn-primary:hover {
+        background: white;
+        color: var(--accent-primary);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transform: translateY(-2px);
+    }
 
-    /* Footer */
+    /* ----------------- */
+    /* Footer (New Style)*/
+    /* ----------------- */
     footer {
-      background: var(--text);
-      color: #f1f5f9;
-      padding: clamp(32px, 6vw, 48px) 16px;
-      text-align: center;
+        background: #000;
+        color: var(--text-secondary);
+        padding: 60px 0 30px;
+        border-top: 1px solid var(--border-glass);
+        margin-top: 80px;
     }
     .footer-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto 32px;
-    }
-    .footer-section {
-      text-align: left;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 32px;
+        margin-bottom: 40px;
     }
     .footer-section h4 {
-      font-size: clamp(18px, 3vw, 20px);
-      margin-bottom: 16px;
-      color: white;
-      position: relative;
-      padding-bottom: 8px;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+        position: relative;
+        padding-bottom: 8px;
     }
     .footer-section h4::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 3px;
-      background: var(--accent);
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 30px;
+        height: 3px;
+        background: var(--accent-primary);
     }
     .footer-section p, .footer-section a {
-      font-size: clamp(14px, 2.5vw, 16px);
-      color: #cbd5e1;
-      margin-bottom: 12px;
-      display: block;
-      text-decoration: none;
-      transition: color 0.3s ease;
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+        display: block;
+        text-decoration: none;
+        transition: color 0.3s ease;
     }
     .footer-section a:hover {
-      color: var(--accent);
+        color: var(--accent-primary);
     }
     .footer-section .icon {
-      font-size: clamp(20px, 4vw, 24px);
-      margin-right: 8px;
-      color: var(--accent);
-    }
-    .newsletter-signup {
-      margin-top: 16px;
-    }
-    .newsletter-signup p {
-      margin-bottom: 10px;
+        font-size: 1.2rem;
+        margin-right: 8px;
+        color: var(--accent-primary);
     }
     .newsletter-signup button {
-      background: var(--gradient-accent);
-      color: white;
-      padding: clamp(8px, 2vw, 10px) clamp(16px, 3vw, 20px);
-      border-radius: var(--radius);
-      border: none;
-      cursor: pointer;
-      font-size: clamp(14px, 2.5vw, 16px);
+        background: var(--accent-primary);
+        color: white;
+        padding: 10px 20px;
+        border-radius: var(--radius-sm);
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
     }
     .newsletter-signup button:hover {
-      background: #0095b6;
+        box-shadow: var(--shadow-glow);
     }
     .footer-bottom {
-      font-size: clamp(12px, 2vw, 14px);
-      color: #94a3b8;
-      border-top: 1px solid #334155;
-      padding-top: 16px;
-      max-width: 1200px;
-      margin: 0 auto;
+        font-size: 0.9rem;
+        color: #6B7280;
+        border-top: 1px solid var(--border-glass);
+        padding-top: 24px;
+        text-align: center;
     }
 
-    /* Modal Styles */
+    /* ----------------- */
+    /* Modal (New Style) */
+    /* ----------------- */
     .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
     }
     .modal-content {
-      background: var(--card);
-      border-radius: var(--radius);
-      max-width: 800px;
-      width: 90%;
-      height: 80vh;
-      padding: 24px;
-      position: relative;
-      box-shadow: var(--shadow-md);
+        background: var(--bg-dark);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-md);
+        max-width: 900px;
+        width: 90%;
+        height: 85vh;
+        padding: 24px;
+        position: relative;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        display: flex;
+        flex-direction: column;
     }
     .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
     }
     .modal-header h3 {
-      font-size: clamp(18px, 3vw, 20px);
-      font-weight: 600;
-      color: var(--text);
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
     }
     .modal-close {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--muted);
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
     }
-    .modal-close:hover { color: var(--accent); }
+    .modal-close:hover { color: var(--accent-coral); }
     .modal-body {
-      height: calc(100% - 40px);
-      overflow: auto;
+        height: 100%;
+        overflow: auto;
+        flex-grow: 1;
     }
     .modal-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-sm);
     }
 
+
+    /* ----------------- */
     /* Responsive Design */
+    /* ----------------- */
+    @media (max-width: 992px) {
+        .hero-grid {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+        .hero-content {
+            order: 2;
+        }
+        .hero-stats-bento {
+            order: 1;
+            margin-bottom: 40px;
+        }
+        .hero-content p, .hero-content ul {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        .hero-content ul {
+            max-width: 400px;
+        }
+        
+        .services-bento-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        /* Reset bento layout for tablets */
+        .service-category:nth-child(1) { grid-column: 1 / 3; }
+        .service-category:nth-child(2) { grid-column: 1 / 3; grid-row: auto; }
+        .service-category:nth-child(3) { grid-column: 1 / 2; }
+        .service-category:nth-child(4) { grid-column: 2 / 3; }
+        .service-category:nth-child(5) { grid-column: 1 / 3; }
+    }
+
     @media (max-width: 768px) {
-      .container { padding: 0 12px; }
-      h1 { font-size: clamp(24px, 6vw, 28px); }
-      .stats, .advantages-grid { flex-direction: column; align-items: center; }
-      .process-grid, .services-grid { grid-template-columns: 1fr; }
-      .video-wrapper { max-width: 100%; }
-      .footer-content { grid-template-columns: 1fr; text-align: center; }
-      .footer-section { text-align: center; }
-      .footer-section h4::after { left: 50%; transform: translateX(-50%); }
-      nav { display: none; }
-      nav.active { 
-        display: flex; 
-        flex-direction: column; 
-        position: absolute; 
-        top: 60px; 
-        left: 0; 
-        right: 0;
-        background: #ffffff; 
-        padding: 16px; 
-        box-shadow: var(--shadow-sm); 
-      }
-      .menu-toggle { display: block; }
-      .testimonials-grid, .success-stories-grid { flex-direction: column; align-items: center; }
-      .testimonial, .success-story { max-width: 100%; }
-      .modal-content { width: 95%; height: 90vh; padding: 16px; }
-      .modal-body { height: calc(100% - 40px); }
-      .hero { padding-top: clamp(80px, 12vw, 100px); }
-    }
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .container { padding: 0 16px; }
-      h1 { font-size: clamp(28px, 5vw, 32px); }
-      .stats { gap: 24px; }
-      .process-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-      .services-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
-      .success-stories-grid { flex-wrap: wrap; justify-content: center; }
-      .success-story { max-width: 45%; }
-      .footer-content { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-      .video-wrapper { max-width: 560px; }
-    }
-    @media (min-width: 1025px) {
-      .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
-      .success-stories-grid { flex-wrap: wrap; justify-content: center; }
-      .success-story { max-width: 30%; }
-      .video-wrapper { max-width: 640px; }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        .container { padding: 0 16px; }
+        
+        /* Mobile Menu */
+        nav {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 73px; /* Header height */
+            left: 0;
+            right: 0;
+            background: var(--bg-dark);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 24px;
+            gap: 24px;
+            align-items: flex-start;
+        }
+        nav.active { display: flex; }
+        nav a { font-size: 1.2rem; }
+        nav button[data-modal="open"] { width: 100%; }
+        
+        .menu-toggle {
+            display: block;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-primary);
+            background: none;
+            border: none;
+        }
+        .language-switcher {
+            /* Move to mobile nav */
+            margin-top: 20px;
+            border-top: 1px solid var(--border-glass);
+            padding-top: 20px;
+            width: 100%;
+        }
+        
+        .process-grid, 
+        .services-bento-grid, 
+        .advantages-grid, 
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+        /* Reset bento for mobile */
+        .service-category:nth-child(n) {
+            grid-column: 1 / -1;
+            grid-row: auto;
+        }
+
+        .process-grid::before { display: none; } /* Hide timeline line */
+        
+        .footer-content {
+            grid-template-columns: 1fr;
+            text-align: left;
+        }
+        .footer-section { text-align: left; }
+        .footer-section h4::after { left: 0; }
+        
+        .modal-content {
+            width: 95%;
+            height: 90vh;
+            padding: 16px;
+        }
     }
     </style>
 </head>
 <body>
+
     <header>
       <div class="topbar container">
         <div class="brand">GOAOXOR</div>
+        <div class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</div>
         <nav>
           <a href="#hero" class="translatable" data-en="Home" data-zh="首页">Home</a>
           <a href="#video" class="translatable" data-en="Introduction" data-zh="介绍">Introduction</a>
@@ -649,375 +965,447 @@
           <a href="#testimonials" class="translatable" data-en="Clients" data-zh="客户">Clients</a>
           <a href="#faq" class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</a>
           <button class="translatable" data-modal="open" data-en="Submit Requirements" data-zh="提交需求">Submit Requirements</button>
+          
+          <div class="language-switcher">
+            <button data-lang="en" class="active" aria-label="Switch to English">English</button>
+            <button data-lang="zh" aria-label="Switch to Chinese">中文</button>
+          </div>
         </nav>
-        <div class="language-switcher">
-          <button data-lang="en" class="active" aria-label="Switch to English">English</button>
-          <button data-lang="zh" aria-label="Switch to Chinese">中文</button>
-        </div>
-        <div class="menu-toggle" aria-label="Toggle menu">☰</div>
       </div>
     </header>
 
     <main>
-      <section class="hero container" id="hero">
-        <h1 class="translatable" data-en="Find the Most Reliable Team at 20%-50% Lower Cost Than Global Rates" data-zh="以比全球费率低20%-50%的成本找到最可靠的团队">Find the Most Reliable Team at 20%-50% Lower Cost Than Global Rates</h1>
-        <div class="stats">
-          <div class="stat-item">
-            <div class="stat-number">500+</div>
-            <div class="stat-label translatable" data-en="Projects Delivered" data-zh="成功交付项目">Projects Delivered</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">120+</div>
-            <div class="stat-label translatable" data-en="Certified Teams" data-zh="认证创意团队">Certified Teams</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">$500k+</div>
-            <div class="stat-label translatable" data-en="Client Savings" data-zh="客户节省">Client Savings</div>
-          </div>
-        </div>
-        <p class="translatable" data-en="Our proven matching process connects you with elite creative professionals to scale your projects while you focus on what matters most." data-zh="我们经过验证的匹配流程将您与顶尖创意专业人士联系起来，扩展您的项目，同时让您专注于最重要的事情。">Our proven matching process connects you with elite creative professionals to scale your projects while you focus on what matters most.</p>
-        <ul>
-          <li class="translatable" data-en="Pay only for successful matches - no upfront fees" data-zh="仅为成功匹配支付费用 - 无前期费用">Pay only for successful matches - no upfront fees</li>
-          <li class="translatable" data-en="Done-for-you team matching that actually works" data-zh="为您完成的团队匹配，真正有效">Done-for-you team matching that actually works</li>
-          <li class="translatable" data-en="Full project guarantee with supervision" data-zh="全程监督的项目保证">Full project guarantee with supervision</li>
-        </ul>
-        <button class="btn btn-primary translatable" data-modal="open" data-en="Start in 1 Minute" data-zh="1分钟开始">Start in 1 Minute</button>
-      </section>
+        <section class="hero" id="hero">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <h1 class="translatable" data-en="Find the Most Reliable Team at 20%-50% Lower Cost Than Global Rates" data-zh="以比全球费率低20%-50%的成本找到最可靠的团队">Find the Most Reliable Team at 20%-50% Lower Cost Than Global Rates</h1>
+                    <p class="translatable" data-en="Our proven matching process connects you with elite creative professionals to scale your projects while you focus on what matters most." data-zh="我们经过验证的匹配流程将您与顶尖创意专业人士联系起来，扩展您的项目，同时让您专注于最重要的事情。">Our proven matching process connects you with elite creative professionals to scale your projects while you focus on what matters most.</p>
+                    <ul>
+                        <li class="translatable" data-en="Pay only for successful matches - no upfront fees" data-zh="仅为成功匹配支付费用 - 无前期费用">Pay only for successful matches - no upfront fees</li>
+                        <li class="translatable" data-en="Done-for-you team matching that actually works" data-zh="为您完成的团队匹配，真正有效">Done-for-you team matching that actually works</li>
+                        <li class="translatable" data-en="Full project guarantee with supervision" data-zh="全程监督的项目保证">Full project guarantee with supervision</li>
+                    </ul>
+                    <button class="btn btn-primary translatable" data-modal="open" data-en="Start in 1 Minute" data-zh="1分钟开始">Start in 1 Minute</button>
+                </div>
+                <div class="hero-stats-bento">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label translatable" data-en="Projects Delivered" data-zh="成功交付项目">Projects Delivered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">120+</div>
+                        <div class="stat-label translatable" data-en="Certified Teams" data-zh="认证创意团队">Certified Teams</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">$500k+</div>
+                        <div class="stat-label translatable" data-en="Client Savings" data-zh="客户节省">Client Savings</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      <section class="video-intro container" id="video">
-        <h2 class="translatable" data-en="Discover GOAOXOR" data-zh="了解GOAOXOR">Discover GOAOXOR</h2>
-        <div class="video-wrapper">
-          <iframe
-            src="https://player.vimeo.com/video/76979871?background=0"
-            title="GOAOXOR Creative Team Introduction Video"
-            loading="lazy"
-            allowfullscreen
-          ></iframe>
-          <div class="video-fallback translatable" data-en="Video unavailable. Visit our website or contact us for more." data-zh="视频不可用。请访问我们的网站或联系我们了解更多。">
-            Video unavailable. Visit our <a href="https://goaoxor.com" target="_blank">website</a> or <a href="mailto:info@goaoxor.com">contact us</a> for more.
-          </div>
-        </div>
-        <p class="video-caption translatable" data-en="Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects." data-zh="探索GOAOXOR如何为您连接影视、动画和视频项目的顶级创意人才。">Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects.</p>
-      </section>
+        <section class="video-intro container" id="video">
+            <h2 class="translatable" data-en="Discover GOAOXOR" data-zh="了解GOAOXOR">Discover GOAOXOR</h2>
+            <div class="video-wrapper">
+                <iframe
+                    src="https://player.vimeo.com/video/76979871?background=0"
+                    title="GOAOXOR Creative Team Introduction Video"
+                    loading="lazy"
+                    allowfullscreen
+                ></iframe>
+                <div class="video-fallback translatable" data-en="Video unavailable. Visit our website or contact us for more." data-zh="视频不可用。请访问我们的网站或联系我们了解更多。">
+                    Video unavailable. Visit our <a href="https://goaoxor.com" target="_blank">website</a> or <a href="mailto:info@goaoxor.com">contact us</a> for more.
+                </div>
+            </div>
+            <p class="video-caption translatable" data-en="Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects." data-zh="探索GOAOXOR如何为您连接影视、动画和视频项目的顶级创意人才。">Explore how GOAOXOR connects you with top-tier creative talent for film, animation, and video projects.</p>
+        </section>
 
-      <section class="process container" id="process">
-        <h2 class="translatable" data-en="Our Proven System for Matching A-Players" data-zh="我们匹配顶尖团队的验证系统">Our Proven System for Matching A-Players</h2>
-        <div class="process-grid">
-          <div class="process-step">
-            <div class="step-number">1</div>
-            <div class="step-title translatable" data-en="Requirement Submission" data-zh="需求提交">Requirement Submission</div>
-            <div class="step-desc translatable" data-en="Fill out the online form or schedule a call to describe project goals, style, budget, and timelines." data-zh="填写在线表单或安排通话，描述项目目标、风格、预算和时间表。">Fill out the online form or schedule a call to describe project goals, style, budget, and timelines.</div>
-          </div>
-          <div class="process-step">
-            <div class="step-number">2</div>
-            <div class="step-title translatable" data-en="Team Matching" data-zh="团队匹配">Team Matching</div>
-            <div class="step-desc translatable" data-en="Screen 2-3 most suitable teams from 120+ certified teams, providing cases, quotes, and schedules." data-zh="从120+认证团队中筛选2-3个最合适的团队，提供案例、报价和时间表。">Screen 2-3 most suitable teams from 120+ certified teams, providing cases, quotes, and schedules.</div>
-          </div>
-          <div class="process-step">
-            <div class="step-number">3</div>
-            <div class="step-title translatable" data-en="Confirmation and Signing" data-zh="确认和签约">Confirmation and Signing</div>
-            <div class="step-desc translatable" data-en="Assist in signing contracts, setting up communication channels, and handling introduction fees." data-zh="协助签订合同，建立沟通渠道，处理介绍费。">Assist in signing contracts, setting up communication channels, and handling introduction fees.</div>
-          </div>
-          <div class="process-step">
-            <div class="step-number">4</div>
-            <div class="step-title translatable" data-en="Project Supervision" data-zh="项目监督">Project Supervision</div>
-            <div class="step-desc translatable" data-en="Set milestone checks, monitor progress in real-time, ensure quality delivery." data-zh="设置里程碑检查，实时监控进度，确保高质量交付。">Set milestone checks, monitor progress in real-time, ensure quality delivery.</div>
-          </div>
-          <div class="process-step">
-            <div class="step-number">5</div>
-            <div class="step-title translatable" data-en="Acceptance and Settlement" data-zh="验收和结算">Acceptance and Settlement</div>
-            <div class="step-desc translatable" data-en="Assist in acceptance, handle final payments and IP transfers." data-zh="协助验收，处理最终付款和知识产权转移。">Assist in acceptance, handle final payments and IP transfers.</div>
-          </div>
-        </div>
-      </section>
+        <section class="process container section-bg" id="process">
+            <h2 class="translatable" data-en="Our Proven System for Matching A-Players" data-zh="我们匹配顶尖团队的验证系统">Our Proven System for Matching A-Players</h2>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title translatable" data-en="Requirement Submission" data-zh="需求提交">Requirement Submission</div>
+                    <div class="step-desc translatable" data-en="Fill out the online form or schedule a call to describe project goals, style, budget, and timelines." data-zh="填写在线表单或安排通话，描述项目目标、风格、预算和时间表。">Fill out the online form or schedule a call...</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title translatable" data-en="Team Matching" data-zh="团队匹配">Team Matching</div>
+                    <div class="step-desc translatable" data-en="Screen 2-3 most suitable teams from 120+ certified teams, providing cases, quotes, and schedules." data-zh="从120+认证团队中筛选2-3个最合适的团队，提供案例、报价和时间表。">Screen 2-3 most suitable teams...</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title translatable" data-en="Confirmation and Signing" data-zh="确认和签约">Confirmation and Signing</div>
+                    <div class="step-desc translatable" data-en="Assist in signing contracts, setting up communication channels, and handling introduction fees." data-zh="协助签订合同，建立沟通渠道，处理介绍费。">Assist in signing contracts...</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title translatable" data-en="Project Supervision" data-zh="项目监督">Project Supervision</div>
+                    <div class="step-desc translatable" data-en="Set milestone checks, monitor progress in real-time, ensure quality delivery." data-zh="设置里程碑检查，实时监控进度，确保高质量交付。">Set milestone checks, monitor progress...</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title translatable" data-en="Acceptance and Settlement" data-zh="验收和结算">Acceptance and Settlement</div>
+                    <div class="step-desc translatable" data-en="Assist in acceptance, handle final payments and IP transfers." data-zh="协助验收，处理最终付款和知识产权转移。">Assist in acceptance, handle final payments...</div>
+                </div>
+            </div>
+        </section>
 
-      <section class="cta container" id="contact-cta">
-        <h2 class="translatable" data-en="Ready to Start Your Project?" data-zh="准备好开始您的项目了吗？">Ready to Start Your Project?</h2>
-        <p class="translatable" data-en="We'll guide you every step of the way - from defining the project to successful delivery." data-zh="我们将全程指导您 - 从定义项目到成功交付。">We'll guide you every step of the way - from defining the project to successful delivery.</p>
-        <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
-      </section>
+        <section class="cta container" id="mid-cta">
+            <h2 class="translatable" data-en="Ready to Start Your Project?" data-zh="准备好开始您的项目了吗？">Ready to Start Your Project?</h2>
+            <p class="translatable" data-en="We'll guide you every step of the way - from defining the project to successful delivery." data-zh="我们将全程指导您 - 从定义项目到成功交付。">We'll guide you every step of the way - from defining the project to successful delivery.</p>
+            <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
+        </section>
 
-      <section class="services container" id="services">
-        <h2 class="translatable" data-en="The Talent We Deliver" data-zh="我们提供的创意人才">The Talent We Deliver</h2>
-        <div class="services-grid">
-          <div class="service-category">
-            <div class="service-title translatable" data-en="Film & Video" data-zh="影视与视频">Film & Video</div>
-            <ul class="service-list">
-              <li class="translatable" data-en="Film Production" data-zh="影视制作">Film Production</li>
-              <li class="translatable" data-en="Short Video Content" data-zh="短视频内容">Short Video Content</li>
-              <li class="translatable" data-en="Post-Production" data-zh="后期制作">Post-Production</li>
+        <section class="services container" id="services">
+            <h2 class="translatable" data-en="The Talent We Deliver" data-zh="我们提供的创意人才">The Talent We Deliver</h2>
+            <div class="services-bento-grid">
+                <div class="service-category"> <div class="service-title translatable" data-en="Film & Video" data-zh="影视与视频">Film & Video</div>
+                    <ul class="service-list">
+                        <li class="translatable" data-en="Film Production" data-zh="影视制作">Film Production</li>
+                        <li class="translatable" data-en="Short Video Content" data-zh="短视频内容">Short Video Content</li>
+                        <li class="translatable" data-en="Post-Production" data-zh="后期制作">Post-Production</li>
+                    </ul>
+                </div>
+                <div class="service-category"> <div class="service-title translatable" data-en="Animation" data-zh="动画">Animation</div>
+                    <ul class="service-list">
+                        <li class="translatable" data-en="2D/3D Animation" data-zh="2D/3D动画">2D/3D Animation</li>
+                        <li class="translatable" data-en="MG Effects" data-zh="MG特效">MG Effects</li>
+                        <li class="translatable" data-en="Character Design" data-zh="角色设计">Character Design</li>
+                    </ul>
+                </div>
+                <div class="service-category"> <div class="service-title translatable" data-en="Visuals & Design" data-zh="视觉与设计">Visuals & Design</div>
+                    <ul class="service-list">
+                        <li class="translatable" data-en="Illustration" data-zh="插图">Illustration</li>
+                        <li class="translatable" data-en="Brand Visuals" data-zh="品牌视觉">Brand Visuals</li>
+                        <li class="translatable" data-en="Graphic Design" data-zh="平面设计">Graphic Design</li>
+                    </ul>
+                </div>
+                <div class="service-category"> <div class="service-title translatable" data-en="Audio" data-zh="音频">Audio</div>
+                    <ul class="service-list">
+                        <li class="translatable" data-en="Sound Design" data-zh="声音设计">Sound Design</li>
+                        <li class="translatable" data-en="Voiceover" data-zh="配音">Voiceover</li>
+                        <li class="translatable" data-en="Music Composition" data-zh="音乐创作">Music Composition</li>
+                    </ul>
+                </div>
+                <div class="service-category"> <div class="service-title translatable" data-en="More" data-zh="更多">More</div>
+                    <ul class="service-list">
+                        <li class="translatable" data-en="Game Art" data-zh="游戏美术">Game Art</li>
+                        <li class="translatable" data-en="Virtual Reality" data-zh="虚拟现实">Virtual Reality</li>
+                        <li class="translatable" data-en="Creative Consulting" data-zh="创意咨询">Creative Consulting</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="advantages container section-bg" id="advantages">
+            <h2 class="translatable" data-en="We Remove the Barriers to Global Creative Collaboration" data-zh="我们消除全球创意协作的障碍">We Remove the Barriers to Global Creative Collaboration</h2>
+            <div class="advantages-grid">
+                <div class="advantage-item">
+                    <div class="advantage-icon">🌍</div>
+                    <div class="advantage-title translatable" data-en="Cross-Border Expertise" data-zh="跨境专业知识">Cross-Border Expertise</div>
+                    <div class="advantage-desc translatable" data-en="Bilingual coordination, time zone management, cultural bridging for seamless remote work." data-zh="双语协调，时区管理，文化桥梁，确保无缝远程工作。">Bilingual coordination, time zone management...</div>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">🛡️</div>
+                    <div class="advantage-title translatable" data-en="Full Project Guarantees" data-zh="全程项目保证">Full Project Guarantees</div>
+                    <div class="advantage-desc translatable" data-en="Dedicated manager, milestone checks, quality assurance throughout." data-zh="专属经理，里程碑检查，全程质量保证。">Dedicated manager, milestone checks...</div>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">🔍</div>
+                    <div class="advantage-title translatable" data-en="Strict Screening" data-zh="严格筛选">Strict Screening</div>
+                    <div class="advantage-desc translatable" data-en="Only 8.3% admission rate from case reviews and tests." data-zh="仅8.3%的案例审查和测试通过率。">Only 8.3% admission rate from case reviews...</div>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">💰</div>
+                    <div class="advantage-title translatable" data-en="Transparent Fees" data-zh="透明费用">Transparent Fees</div>
+                    <div class="advantage-desc translatable" data-en="Fixed introduction fee, no hidden costs, third-party payments." data-zh="固定介绍费，无隐藏成本，第三方支付。">Fixed introduction fee, no hidden costs...</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials clients container" id="testimonials">
+            <h2 class="translatable" data-en="Trusted by Global Teams" data-zh="全球团队的信赖">Trusted by Global Teams</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote translatable" data-en="GOAOXOR's seamless matching saved us 60% on our video campaign, delivering stunning quality on time—absolutely transformative!" data-zh="GOAOXOR的无缝匹配为我们的视频活动节省了60%的成本，按时交付了惊艳的质量—绝对是变革性的！">GOAOXOR's seamless matching saved us 60%...</p>
+                    <div class="testimonial-author">Aiden Clark</div>
+                    <div class="testimonial-company translatable" data-en="ArcStone Founder" data-zh="ArcStone创始人">ArcStone Founder</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote translatable" data-en="Their professional oversight ensured our animation project was flawless, exceeding all expectations with creative brilliance!" data-zh="他们的专业监督确保我们的动画项目完美无瑕，以创意 brilliance 超出了所有期望！">Their professional oversight ensured...</p>
+                    <div class="testimonial-author">Anna Tan</div>
+                    <div class="testimonial-company translatable" data-en="Dynamic Marketing Lead" data-zh="动态营销负责人">Dynamic Marketing Lead</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote translatable" data-en="Top-notch team selection and management cut our production time in half with exceptional, vibrant results!" data-zh="顶尖的团队选择和管理将我们的生产时间缩短了一半，成果卓越且充满活力！">Top-notch team selection and management...</p>
+                    <div class="testimonial-author">Dayne Kamela</div>
+                    <div class="testimonial-company translatable" data-en="LitWithPrayer Creative Director" data-zh="LitWithPrayer创意总监">LitWithPrayer Creative Director</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote translatable" data-en="Impressive cost savings and high-quality output on our short video series—GOAOXOR is a game-changer!" data-zh="我们的短视频系列取得了令人印象深刻的成本节省和高品质输出—GOAOXOR是变革者！">Impressive cost savings and high-quality...</p>
+                    <div class="testimonial-author">Nick Wingo</div>
+                    <div class="testimonial-company translatable" data-en="Architectural Visualization Supervisor" data-zh="建筑可视化主管">Architectural Visualization Supervisor</div>
+                </div>
+                
+                <div class="success-story">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="success-story-quote translatable" data-en="GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost—truly game-changing!" data-zh="GOAOXOR简化了我们的影视项目，以极低的成本交付了卓越的质量—真正改变了游戏规则！">GOAOXOR streamlined our film project...</p>
+                    <div class="success-story-author">Simon Ellery</div>
+                    <div class="success-story-company translatable" data-en="White Rabbit" data-zh="白兔">White Rabbit</div>
+                </div>
+                <div class="success-story">
+                    <div class="testimonial-stars">★★★★☆</div>
+                    <p class="success-story-quote translatable" data-en="Their expert team matching cut our production timeline by 40%, with outstanding, vibrant results that wowed our audience!" data-zh="他们的专家团队匹配将我们的生产时间缩短了40%，成果卓越且充满活力，让我们的观众惊叹！">Their expert team matching cut our...</p>
+                    <div class="success-story-author">Sam Turner</div>
+                    <div class="success-story-company translatable" data-en="GreenTree Real Estate" data-zh="绿树房地产">GreenTree Real Estate</div>
+                </div>
+                <div class="success-story">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="success-story-quote translatable" data-en="Outstanding service and incredible value—GOAOXOR made our brand visuals come to life effortlessly with creative flair!" data-zh="优秀的服务和惊人的价值—GOAOXOR轻松地让我们的品牌视觉活起来，充满创意 flair！">Outstanding service and incredible value...</p>
+                    <div class="success-story-author">Emily Lee</div>
+                    <div class="success-story-company translatable" data-en="Design Studio Owner" data-zh="设计工作室所有者">Design Studio Owner</div>
+                </div>
+                <div class="success-story">
+                    <div class="testimonial-stars">★★★★☆</div>
+                    <p class="success-story-quote translatable" data-en="The sound design team exceeded our expectations, providing high-quality audio at an unbeatable price with immersive soundscapes!" data-zh="声音设计团队超出了我们的期望，以无敌的价格提供高质量音频，沉浸式 soundscapes！">The sound design team exceeded our...</p>
+                    <div class="success-story-author">Michael Zhang</div>
+                    <div class="success-story-company translatable" data-en="Media Production Manager" data-zh="媒体生产经理">Media Production Manager</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta container">
+            <h2 class="translatable" data-en="Save Time, Energy and the Headache of Team Hunting" data-zh="节省时间、精力和寻找团队的麻烦">Save Time, Energy and the Headache of Team Hunting</h2>
+            <p class="translatable" data-en="One-time Matching Fee" data-zh="一次性匹配费用">One-time Matching Fee</p>
+            <ul>
+                <li class="translatable" data-en="No hidden costs - no ongoing fees, just results" data-zh="无隐藏成本 - 无持续费用，仅需成果">No hidden costs - no ongoing fees, just results</li>
+                <li class="translatable" data-en="Pay when you match - never upfront" data-zh="匹配时支付 - 无需预付">Pay when you match - never upfront</li>
+                <li class="translatable" data-en="Full supervision guarantee - risk-free collaboration" data-zh="全程监督保证 - 无风险协作">Full supervision guarantee - risk-free collaboration</li>
             </ul>
-          </div>
-          <div class="service-category">
-            <div class="service-title translatable" data-en="Animation" data-zh="动画">Animation</div>
-            <ul class="service-list">
-              <li class="translatable" data-en="2D/3D Animation" data-zh="2D/3D动画">2D/3D Animation</li>
-              <li class="translatable" data-en="MG Effects" data-zh="MG特效">MG Effects</li>
-              <li class="translatable" data-en="Character Design" data-zh="角色设计">Character Design</li>
-            </ul>
-          </div>
-          <div class="service-category">
-            <div class="service-title translatable" data-en="Visuals & Design" data-zh="视觉与设计">Visuals & Design</div>
-            <ul class="service-list">
-              <li class="translatable" data-en="Illustration" data-zh="插图">Illustration</li>
-              <li class="translatable" data-en="Brand Visuals" data-zh="品牌视觉">Brand Visuals</li>
-              <li class="translatable" data-en="Graphic Design" data-zh="平面设计">Graphic Design</li>
-            </ul>
-          </div>
-          <div class="service-category">
-            <div class="service-title translatable" data-en="Audio" data-zh="音频">Audio</div>
-            <ul class="service-list">
-              <li class="translatable" data-en="Sound Design" data-zh="声音设计">Sound Design</li>
-              <li class="translatable" data-en="Voiceover" data-zh="配音">Voiceover</li>
-              <li class="translatable" data-en="Music Composition" data-zh="音乐创作">Music Composition</li>
-            </ul>
-          </div>
-          <div class="service-category">
-            <div class="service-title translatable" data-en="More" data-zh="更多">More</div>
-            <ul class="service-list">
-              <li class="translatable" data-en="Game Art" data-zh="游戏美术">Game Art</li>
-              <li class="translatable" data-en="Virtual Reality" data-zh="虚拟现实">Virtual Reality</li>
-              <li class="translatable" data-en="Creative Consulting" data-zh="创意咨询">Creative Consulting</li>
-            </ul>
-          </div>
-        </div>
-      </section>
+            <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
+        </section>
 
-      <section class="testimonials clients container" id="testimonials">
-        <h2 class="translatable" data-en="Trusted by Our Clients" data-zh="客户信赖">Trusted by Our Clients</h2>
-        <div class="testimonials-grid">
-          <div class="testimonial">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-quote translatable" data-en="GOAOXOR's seamless matching saved us 60% on our video campaign, delivering stunning quality on time—absolutely transformative!" data-zh="GOAOXOR的无缝匹配为我们的视频活动节省了60%的成本，按时交付了惊艳的质量—绝对是变革性的！">GOAOXOR's seamless matching saved us 60% on our video campaign, delivering stunning quality on time—absolutely transformative!</p>
-            <div class="testimonial-author">Aiden Clark</div>
-            <div class="testimonial-company translatable" data-en="ArcStone Founder" data-zh="ArcStone创始人">ArcStone Founder</div>
-          </div>
-          <div class="testimonial">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-quote translatable" data-en="Their professional oversight ensured our animation project was flawless, exceeding all expectations with creative brilliance!" data-zh="他们的专业监督确保我们的动画项目完美无瑕，以创意 brilliance 超出了所有期望！">Their professional oversight ensured our animation project was flawless, exceeding all expectations with creative brilliance!</p>
-            <div class="testimonial-author">Anna Tan</div>
-            <div class="testimonial-company translatable" data-en="Dynamic Marketing Lead" data-zh="动态营销负责人">Dynamic Marketing Lead</div>
-          </div>
-          <div class="testimonial">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-quote translatable" data-en="Top-notch team selection and management cut our production time in half with exceptional, vibrant results!" data-zh="顶尖的团队选择和管理将我们的生产时间缩短了一半，成果卓越且充满活力！">Top-notch team selection and management cut our production time in half with exceptional, vibrant results!</p>
-            <div class="testimonial-author">Dayne Kamela</div>
-            <div class="testimonial-company translatable" data-en="LitWithPrayer Creative Director" data-zh="LitWithPrayer创意总监">LitWithPrayer Creative Director</div>
-          </div>
-          <div class="testimonial">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-quote translatable" data-en="Impressive cost savings and high-quality output on our short video series—GOAOXOR is a game-changer!" data-zh="我们的短视频系列取得了令人印象深刻的成本节省和高品质输出—GOAOXOR是变革者！">Impressive cost savings and high-quality output on our short video series—GOAOXOR is a game-changer!</p>
-            <div class="testimonial-author">Nick Wingo</div>
-            <div class="testimonial-company translatable" data-en="Architectural Visualization Supervisor" data-zh="建筑可视化主管">Architectural Visualization Supervisor</div>
-          </div>
-          <div class="testimonial">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-quote translatable" data-en="Efficient, reliable, and budget-friendly—GOAOXOR transformed our creative workflow with stunning efficiency!" data-zh="高效、可靠且预算友好—GOAOXOR以惊人的效率改变了我们的创意工作流程！">Efficient, reliable, and budget-friendly—GOAOXOR transformed our creative workflow with stunning efficiency!</p>
-            <div class="testimonial-author">Fady Gamal</div>
-            <div class="testimonial-company translatable" data-en="G-Mobile Marketing Director" data-zh="G-Mobile营销总监">G-Mobile Marketing Director</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="advantages container" id="advantages">
-        <h2 class="translatable" data-en="We Remove the Barriers to Global Creative Collaboration" data-zh="我们消除全球创意协作的障碍">We Remove the Barriers to Global Creative Collaboration</h2>
-        <div class="advantages-grid">
-          <div class="advantage-item">
-            <div class="advantage-icon">🌍</div>
-            <div class="advantage-title translatable" data-en="Cross-Border Expertise" data-zh="跨境专业知识">Cross-Border Expertise</div>
-            <div class="advantage-desc translatable" data-en="Bilingual coordination, time zone management, cultural bridging for seamless remote work." data-zh="双语协调，时区管理，文化桥梁，确保无缝远程工作。">Bilingual coordination, time zone management, cultural bridging for seamless remote work.</div>
-          </div>
-          <div class="advantage-item">
-            <div class="advantage-icon">🛡️</div>
-            <div class="advantage-title translatable" data-en="Full Project Guarantees" data-zh="全程项目保证">Full Project Guarantees</div>
-            <div class="advantage-desc translatable" data-en="Dedicated manager, milestone checks, quality assurance throughout." data-zh="专属经理，里程碑检查，全程质量保证。">Dedicated manager, milestone checks, quality assurance throughout.</div>
-          </div>
-          <div class="advantage-item">
-            <div class="advantage-icon">🔍</div>
-            <div class="advantage-title translatable" data-en="Strict Screening" data-zh="严格筛选">Strict Screening</div>
-            <div class="advantage-desc translatable" data-en="Only 8.3% admission rate from case reviews and tests." data-zh="仅8.3%的案例审查和测试通过率。">Only 8.3% admission rate from case reviews and tests.</div>
-          </div>
-          <div class="advantage-item">
-            <div class="advantage-icon">💰</div>
-            <div class="advantage-title translatable" data-en="Transparent Fees" data-zh="透明费用">Transparent Fees</div>
-            <div class="advantage-desc translatable" data-en="Fixed introduction fee, no hidden costs, third-party payments." data-zh="固定介绍费，无隐藏成本，第三方支付。">Fixed introduction fee, no hidden costs, third-party payments.</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="cta container">
-        <h2 class="translatable" data-en="Save Time, Energy and the Headache of Team Hunting" data-zh="节省时间、精力和寻找团队的麻烦">Save Time, Energy and the Headache of Team Hunting</h2>
-        <p class="translatable" data-en="One-time Matching Fee" data-zh="一次性匹配费用">One-time Matching Fee</p>
-        <ul>
-          <li class="translatable" data-en="No hidden costs - no ongoing fees, just results" data-zh="无隐藏成本 - 无持续费用，仅需成果">No hidden costs - no ongoing fees, just results</li>
-          <li class="translatable" data-en="Pay when you match - never upfront" data-zh="匹配时支付 - 无需预付">Pay when you match - never upfront</li>
-          <li class="translatable" data-en="Full supervision guarantee - risk-free collaboration" data-zh="全程监督保证 - 无风险协作">Full supervision guarantee - risk-free collaboration</li>
-        </ul>
-        <button class="btn btn-primary translatable" data-modal="open" data-en="Submit Your Project Now" data-zh="立即提交您的项目">Submit Your Project Now</button>
-      </section>
-
-      <section class="testimonials success-stories container">
-        <h2 class="translatable" data-en="More Success Stories" data-zh="更多成功案例">More Success Stories</h2>
-        <div class="success-stories-grid">
-          <div class="success-story">
-            <div class="success-story-icon">🏆</div>
-            <p class="success-story-quote translatable" data-en="GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost—truly game-changing!" data-zh="GOAOXOR简化了我们的影视项目，以极低的成本交付了卓越的质量—真正改变了游戏规则！">GOAOXOR streamlined our film project, delivering exceptional quality at a fraction of the cost—truly game-changing!</p>
-            <div class="success-story-author">Simon Ellery</div>
-            <div class="success-story-company translatable" data-en="White Rabbit" data-zh="白兔">White Rabbit</div>
-          </div>
-          <div class="success-story">
-            <div class="success-story-icon">🏆</div>
-            <p class="success-story-quote translatable" data-en="Their expert team matching cut our production timeline by 40%, with outstanding, vibrant results that wowed our audience!" data-zh="他们的专家团队匹配将我们的生产时间缩短了40%，成果卓越且充满活力，让我们的观众惊叹！">Their expert team matching cut our production timeline by 40%, with outstanding, vibrant results that wowed our audience!</p>
-            <div class="success-story-author">Sam Turner</div>
-            <div class="success-story-company translatable" data-en="GreenTree Real Estate" data-zh="绿树房地产">GreenTree Real Estate</div>
-          </div>
-          <div class="success-story">
-            <div class="success-story-icon">🏆</div>
-            <p class="success-story-quote translatable" data-en="Outstanding service and incredible value—GOAOXOR made our brand visuals come to life effortlessly with creative flair!" data-zh="优秀的服务和惊人的价值—GOAOXOR轻松地让我们的品牌视觉活起来，充满创意 flair！">Outstanding service and incredible value—GOAOXOR made our brand visuals come to life effortlessly with creative flair!</p>
-            <div class="success-story-author">Emily Lee</div>
-            <div class="success-story-company translatable" data-en="Design Studio Owner" data-zh="设计工作室所有者">Design Studio Owner</div>
-          </div>
-          <div class="success-story">
-            <div class="success-story-icon">🏆</div>
-            <p class="success-story-quote translatable" data-en="The sound design team exceeded our expectations, providing high-quality audio at an unbeatable price with immersive soundscapes!" data-zh="声音设计团队超出了我们的期望，以无敌的价格提供高质量音频，沉浸式 soundscapes！">The sound design team exceeded our expectations, providing high-quality audio at an unbeatable price with immersive soundscapes!</p>
-            <div class="success-story-author">Michael Zhang</div>
-            <div class="success-story-company translatable" data-en="Media Production Manager" data-zh="媒体生产经理">Media Production Manager</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="faq container" id="faq">
-        <h2 class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</h2>
-        <div class="faq-item">
-          <div class="faq-question translatable" data-en="What kind of platform are you?" data-zh="你们是什么样的平台？">What kind of platform are you?</div>
-          <div class="faq-answer translatable" data-en="A creative project matching platform, matching top Chinese film, animation, short video teams, providing full process guarantees." data-zh="一个创意项目匹配平台，匹配中国顶尖的影视、动画、短视频团队，提供全程保障。">A creative project matching platform, matching top Chinese film, animation, short video teams, providing full process guarantees.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question translatable" data-en="How to handle language communication?" data-zh="如何处理语言沟通？">How to handle language communication?</div>
-          <div class="faq-answer translatable" data-en="Mainly in English, provide Chinese-English translation when necessary, confirm language preferences and time zone arrangements." data-zh="主要使用英语，必要时提供中英翻译，确认语言偏好和时区安排。">Mainly in English, provide Chinese-English translation when necessary, confirm language preferences and time zone arrangements.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question translatable" data-en="How to ensure fund security?" data-zh="如何确保资金安全？">How to ensure fund security?</div>
-          <div class="faq-answer translatable" data-en="Use third-party escrow platforms (e.g., Alipay International, Payoneer), contracts clearly define fund release conditions." data-zh="使用第三方托管平台（如支付宝国际、Payoneer），合同明确规定资金释放条件。">Use third-party escrow platforms (e.g., Alipay International, Payoneer), contracts clearly define fund release conditions.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question translatable" data-en="Can projects be expedited?" data-zh="项目可以加急吗？">Can projects be expedited?</div>
-          <div class="faq-answer translatable" data-en="Expedited available, feasibility assessed during matching, expedited fees explained (usually +20-50%)." data-zh="可加急，在匹配期间评估可行性，解释加急费用（通常+20-50%）。">Expedited available, feasibility assessed during matching, expedited fees explained (usually +20-50%).</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question translatable" data-en="Who owns the intellectual property?" data-zh="知识产权归谁所有？">Who owns the intellectual property?</div>
-          <div class="faq-answer translatable" data-en="After project completion, intellectual property belongs to the client, including source files, contracts clearly state copyright ownership." data-zh="项目完成后，知识产权归客户所有，包括源文件，合同明确规定版权归属。">After project completion, intellectual property belongs to the client, including source files, contracts clearly state copyright ownership.</div>
-        </div>
-      </section>
+        <section class="faq container" id="faq">
+            <h2 class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</h2>
+            <div class="faq-item">
+                <div class="faq-question translatable" data-en="What kind of platform are you?" data-zh="你们是什么样的平台？" role="button" aria-expanded="false">What kind of platform are you?</div>
+                <div class="faq-answer">
+                    <p class="translatable" data-en="A creative project matching platform, matching top Chinese film, animation, short video teams, providing full process guarantees." data-zh="一个创意项目匹配平台，匹配中国顶尖的影视、动画、短视频团队，提供全程保障。">A creative project matching platform...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question translatable" data-en="How to handle language communication?" data-zh="如何处理语言沟通？" role="button" aria-expanded="false">How to handle language communication?</div>
+                <div class="faq-answer">
+                    <p class="translatable" data-en="Mainly in English, provide Chinese-English translation when necessary, confirm language preferences and time zone arrangements." data-zh="主要使用英语，必要时提供中英翻译，确认语言偏好和时区安排。">Mainly in English, provide Chinese-English...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question translatable" data-en="How to ensure fund security?" data-zh="如何确保资金安全？" role="button" aria-expanded="false">How to ensure fund security?</div>
+                <div class="faq-answer">
+                    <p class="translatable" data-en="Use third-party escrow platforms (e.g., Alipay International, Payoneer), contracts clearly define fund release conditions." data-zh="使用第三方托管平台（如支付宝国际、Payoneer），合同明确规定资金释放条件。">Use third-party escrow platforms...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question translatable" data-en="Can projects be expedited?" data-zh="项目可以加急吗？" role="button" aria-expanded="false">Can projects be expedited?</div>
+                <div class="faq-answer">
+                    <p class="translatable" data-en="Expedited available, feasibility assessed during matching, expedited fees explained (usually +20-50%)." data-zh="可加急，在匹配期间评估可行性，解释加急费用（通常+20-50%）。">Expedited available, feasibility assessed...</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question translatable" data-en="Who owns the intellectual property?" data-zh="知识产权归谁所有？" role="button" aria-expanded="false">Who owns the intellectual property?</div>
+                <div class="faq-answer">
+                    <p class="translatable" data-en="After project completion, intellectual property belongs to the client, including source files, contracts clearly state copyright ownership." data-zh="项目完成后，知识产权归客户所有，包括源文件，合同明确规定版权归属。">After project completion, intellectual property...</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
-      <div class="footer-content container">
-        <div class="footer-section">
-          <h4 class="translatable" data-en="About GOAOXOR" data-zh="关于GOAOXOR">About GOAOXOR</h4>
-          <p class="translatable" data-en="GOAOXOR connects global clients with elite Chinese creative teams for film, animation, and video projects, delivering quality at 20%-50% lower costs." data-zh="GOAOXOR将全球客户与中国顶尖创意团队连接起来，专注于影视、动画和视频项目，以20%-50%的成本提供高质量服务。">GOAOXOR connects global clients with elite Chinese creative teams for film, animation, and video projects, delivering quality at 20%-50% lower costs.</p>
+        <div class="footer-content container">
+            <div class="footer-section">
+                <h4 class="translatable" data-en="About GOAOXOR" data-zh="关于GOAOXOR">About GOAOXOR</h4>
+                <p class="translatable" data-en="GOAOXOR connects global clients with elite Chinese creative teams for film, animation, and video projects, delivering quality at 20%-50% lower costs." data-zh="GOAOXOR将全球客户与中国顶尖创意团队连接起来，专注于影视、动画和视频项目，以20%-50%的成本提供高质量服务。">GOAOXOR connects global clients...</p>
+            </div>
+            <div class="footer-section">
+                <h4 class="translatable" data-en="Explore" data-zh="探索">Explore</h4>
+                <a href="#hero" class="translatable" data-en="Home" data-zh="首页">Home</a>
+                <a href="#video" class="translatable" data-en="Introduction" data-zh="介绍">Introduction</a>
+                <a href="#process" class="translatable" data-en="Process" data-zh="流程">Process</a>
+                <a href="#services" class="translatable" data-en="Services" data-zh="服务">Services</a>
+                <a href="#faq" class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</a>
+            </div>
+            <div class="footer-section">
+                <h4 class="translatable" data-en="Connect With Us" data-zh="联系我们">Connect With Us</h4>
+                <a href="mailto:info@goaoxor.com" class="translatable" data-en="Email: info@goaoxor.com" data-zh="邮箱：info@goaoxor.com"><span class="icon">✉️</span>Email: info@goaoxor.com</a>
+                <a href="https://www.tiktok.com/@emmamanlay" target="_blank" class="translatable" data-en="TikTok: @emmamanlay" data-zh="TikTok：@emmamanlay"><span class="icon">🎵</span>TikTok: @emmamanlay</a>
+            </div>
+            <div class="footer-section">
+                <h4 class="translatable" data-en="Stay Updated" data-zh="保持更新">Stay Updated</h4>
+                <p class="translatable" data-en="Subscribe to our newsletter for the latest creative insights." data-zh="订阅我们的时事通讯，获取最新的创意洞察。">Subscribe to our newsletter...</p>
+                <div class="newsletter-signup">
+                    <button class="translatable" data-modal="open" data-en="Join Now" data-zh="立即加入">Join Now</button>
+                </div>
+            </div>
         </div>
-        <div class="footer-section">
-          <h4 class="translatable" data-en="Explore" data-zh="探索">Explore</h4>
-          <a href="#hero" class="translatable" data-en="Home" data-zh="首页">Home</a>
-          <a href="#video" class="translatable" data-en="Introduction" data-zh="介绍">Introduction</a>
-          <a href="#process" class="translatable" data-en="Process" data-zh="流程">Process</a>
-          <a href="#services" class="translatable" data-en="Services" data-zh="服务">Services</a>
-          <a href="#faq" class="translatable" data-en="FAQ" data-zh="常见问题">FAQ</a>
-        </div>
-        <div class="footer-section">
-          <h4 class="translatable" data-en="Connect With Us" data-zh="联系我们">Connect With Us</h4>
-          <a href="mailto:info@goaoxor.com" class="translatable" data-en="Email: info@goaoxor.com" data-zh="邮箱：info@goaoxor.com"><span class="icon">✉️</span>Email: info@goaoxor.com</a>
-          <a href="https://www.tiktok.com/@emmamanlay" target="_blank" class="translatable" data-en="TikTok: @emmamanlay" data-zh="TikTok：@emmamanlay"><span class="icon">🎵</span>TikTok: @emmamanlay</a>
-        </div>
-        <div class="footer-section">
-          <h4 class="translatable" data-en="Stay Updated" data-zh="保持更新">Stay Updated</h4>
-          <p class="translatable" data-en="Subscribe to our newsletter for the latest creative insights." data-zh="订阅我们的时事通讯，获取最新的创意洞察。">Subscribe to our newsletter for the latest creative insights.</p>
-          <div class="newsletter-signup">
-            <button class="translatable" data-modal="open" data-en="Join Now" data-zh="立即加入">Join Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom container translatable" data-en="© 2025 GOAOXOR. All Rights Reserved." data-zh="© 2025 GOAOXOR。版权所有。">© 2025 GOAOXOR. All Rights Reserved.</div>
+        <div class="footer-bottom container translatable" data-en="© 2025 GOAOXOR. All Rights Reserved." data-zh="© 2025 GOAOXOR。版权所有。">© 2025 GOAOXOR. All Rights Reserved.</div>
     </footer>
 
-    <!-- Modal -->
     <div class="modal" id="form-modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="translatable" data-en="Submit Your Project" data-zh="提交您的项目">Submit Your Project</h3>
-          <button class="modal-close" aria-label="Close modal">×</button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="translatable" data-en="Submit Your Project" data-zh="提交您的项目">Submit Your Project</h3>
+                <button class="modal-close" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body">
+                <iframe class="modal-iframe" src="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjp2CGp0EjlfWcPS3U9Z6uFRf" title="GOAOXOR Project Form" allowfullscreen></iframe>
+            </div>
         </div>
-        <div class="modal-body">
-          <iframe class="modal-iframe" src="https://cjp2prduaxqd.jp.larksuite.com/share/base/form/shrjpkMmdSpHDaJ4Wcn2xoQJeqb" title="GOAOXOR Project Form" allowfullscreen></iframe>
-        </div>
-      </div>
     </div>
 
     <script>
-    // Language Switcher
+    // --- Language Switcher ---
+    let currentLang = 'en';
     function switchLanguage(lang) {
-      try {
-        localStorage.setItem('preferredLang', lang);
-        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-        document.querySelectorAll('.translatable').forEach(el => {
-          el.textContent = el.dataset[lang] || el.dataset.en || el.textContent;
-        });
-        document.querySelectorAll('.language-switcher button').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.lang === lang);
-        });
-      } catch (error) {
-        console.error('Language switch error:', error);
-      }
+        try {
+            currentLang = lang;
+            localStorage.setItem('preferredLang', lang);
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+            
+            const elements = document.querySelectorAll('.translatable');
+            elements.forEach(el => {
+                const translation = el.dataset[lang];
+                if (translation) {
+                    if (el.querySelector('.icon')) {
+                        const icon = el.querySelector('.icon').outerHTML;
+                        el.innerHTML = icon + translation;
+                    } else {
+                        el.textContent = translation;
+                    }
+                }
+            });
+            
+            document.querySelectorAll('.language-switcher button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+        } catch (error) {
+            console.error('Language switch error:', error);
+        }
     }
-
-    // Initialize Language
     const preferredLang = localStorage.getItem('preferredLang') || 'en';
     switchLanguage(preferredLang);
-
-    // Attach Language Switcher Events
     document.querySelectorAll('.language-switcher button').forEach(btn => {
-      btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
+        btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
     });
 
-    // Smooth Scroll for Internal Links
+    // --- Smooth Scroll ---
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', e => {
-        e.preventDefault();
-        const target = document.querySelector(anchor.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
+        anchor.addEventListener('click', e => {
+            e.preventDefault();
+            const targetId = anchor.getAttribute('href');
+            if (targetId === '#') return; 
+            
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                // Close mobile nav on link click
+                document.querySelector('nav').classList.remove('active');
+                document.querySelector('.menu-toggle').setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+
+    // --- Mobile Menu Toggle ---
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+    menuToggle.addEventListener('click', () => {
+        nav.classList.toggle('active');
+        const isActive = nav.classList.contains('active');
+        menuToggle.setAttribute('aria-expanded', isActive);
+        if (window.innerWidth <= 768) {
+            const langSwitcher = document.querySelector('.language-switcher');
+            if (isActive) {
+                nav.appendChild(langSwitcher);
+            }
         }
-      });
     });
 
-    // Mobile Menu Toggle
-    document.querySelector('.menu-toggle').addEventListener('click', () => {
-      document.querySelector('nav').classList.toggle('active');
-    });
 
-    // Modal Toggle
+    // --- MODAL TOGGLE (FIXED LOGIC) ---
     const modal = document.querySelector('#form-modal');
-    document.querySelectorAll('[data-modal="open"]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        modal.style.display = 'flex';
-      });
-    });
-    document.querySelector('.modal-close').addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-    modal.addEventListener('click', e => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
+    const modalOpenButtons = document.querySelectorAll('[data-modal="open"]');
+    const modalCloseButton = document.querySelector('.modal-close');
+
+    // Listener for ALL open buttons (including the one you reported)
+    modalOpenButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            if (modal) {
+                // Critical step: Ensure the button is enabled and the modal exists
+                console.log('Modal Button Clicked:', btn.textContent); 
+                modal.style.display = 'flex';
+            }
+        });
     });
 
-    // Video Fallback Handling
+    // Listener for the close button
+    if (modalCloseButton) {
+        modalCloseButton.addEventListener('click', () => {
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
+    // Listener for the modal background (to close on click outside)
+    if (modal) {
+        modal.addEventListener('click', e => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
+
+    // --- Video Fallback ---
     const iframe = document.querySelector('.video-wrapper iframe');
-    iframe.addEventListener('error', () => {
-      document.querySelector('.video-fallback').style.display = 'block';
-      iframe.style.display = 'none';
-    });
+    if (iframe) {
+        iframe.addEventListener('error', () => {
+            const fallback = document.querySelector('.video-fallback');
+            if (fallback) fallback.style.display = 'block';
+            iframe.style.display = 'none';
+        });
+    }
+
+    // --- FAQ Accordion (CSS Controlled) ---
+    function setupFAQListeners() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Toggle the clicked item
+                if (!isActive) {
+                    item.classList.add('active');
+                    question.setAttribute('aria-expanded', 'true');
+                } else {
+                    item.classList.remove('active');
+                    question.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    }
+    
+    // Initial setup on page load
+    setupFAQListeners();
+
     </script>
 </body>
 </html>
