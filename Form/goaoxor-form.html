@@ -1,82 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Submit Your Project Requirements | Goaoxor</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* （样式与之前一致 — 深色玻璃拟态、蓝紫霓虹、翻页动画） */
+  :root{--bg-1:#0b0f17;--bg-2:#101423;--glass:rgba(255,255,255,0.04);--muted:rgba(230,238,248,0.7);--accent1:#00ddeb;--accent2:#7a5bff;--accent-glow:0 8px 30px rgba(106,106,255,0.12);--card-radius:18px;--duration:520ms}
+  *{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:radial-gradient(1200px 600px at 10% 10%, rgba(122,91,255,0.08), transparent 6%),radial-gradient(1000px 500px at 90% 90%, rgba(0,221,235,0.04), transparent 8%),linear-gradient(180deg,var(--bg-1),var(--bg-2));color:#eaf2ff;display:flex;align-items:flex-start;justify-content:center;padding:28px}
+  .wrap{width:100%;max-width:980px;margin:12px auto}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--card-radius);border:1px solid rgba(255,255,255,0.06);padding:18px;backdrop-filter:blur(10px) saturate(120%);box-shadow:0 20px 60px rgba(4,6,15,0.6);position:relative;overflow:hidden}
+  .brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px}
+  .brand img{height:54px; width:auto; object-fit:contain}
+  h1{margin:8px 0 6px;text-align:center;font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  p.lead{margin:0 auto 12px;text-align:center;max-width:820px;color:var(--muted);font-size:14px;line-height:1.5}
+  .step-viewport{position:relative;height:520px;margin-top:12px}
+  .panel{position:absolute;inset:0;padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);box-shadow:var(--accent-glow);display:flex;flex-direction:column;transform-origin:center;backface-visibility:hidden}
+  .panel.hidden{display:none}
+  form{display:flex;flex-direction:column;gap:12px;height:100%}
+  .row{display:flex;gap:12px}
+  .col{flex:1}
+  label{font-size:13px;color:var(--muted);display:block;margin-bottom:8px}
+  input[type="text"], input[type="email"], textarea, select, input[type="date"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.28);color:#fff;outline:none;font-size:14px}
+  textarea{min-height:120px;resize:vertical}
+  .small{font-size:13px;color:var(--muted)}
+  .nav{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .progress{flex:1;height:8px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));border-radius:999px;overflow:hidden;margin-right:16px}
+  .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2));transition:width var(--duration) ease}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:700;color:#04101a;background:linear-gradient(90deg,var(--accent1), var(--accent2));box-shadow:var(--accent-glow);transition:transform 160ms ease}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);box-shadow:none;font-weight:600}
+  @keyframes flipIn{0%{transform:rotateY(-90deg) translateZ(-10px);opacity:0}60%{transform:rotateY(8deg) translateZ(0);opacity:1}100%{transform:rotateY(0deg)}}
+  @keyframes flipOut{0%{transform:rotateY(0deg)}100%{transform:rotateY(90deg) translateZ(-10px);opacity:0}}
+  .animate-in{animation:flipIn var(--duration) ease both}
+  .animate-out{animation:flipOut var(--duration) ease both}
+  .thank{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+  .thank h2{font-size:20px;margin:0}
+  .error{color:#ffb3b3;font-size:13px;margin-top:6px}
+  @media (max-width:820px){.step-viewport{height:720px}}@media (max-width:520px){.card{padding:14px}.brand img{height:44px}.row{flex-direction:column}.step-viewport{height:880px}}
+  .spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="region" aria-labelledby="formTitle">
+      <div class="brand" aria-hidden="false">
+        <img src="https://goaoxor.com/image/logo.png" alt="Goaoxor logo">
+      </div>
+      <h1 id="formTitle">Submit Your Project Requirements</h1>
+      <p class="lead">Thank you for choosing <strong>Goaoxor</strong>! Please take 2–3 minutes to complete this form so we can match you with the most suitable creative team. All information will remain confidential and used solely for project coordination.</p>
+
+      <div class="step-viewport" id="viewport" aria-live="polite">
+        <!-- Page 1 -->
+        <section id="step-1" class="panel" data-step="1" aria-hidden="false">
+          <div class="step-indicator">Step 1 of 5</div>
+          <form id="form-step-1" onsubmit="return false" autocomplete="on">
+            <label for="full_name">Full Name <span class="small">*</span></label>
+            <input id="full_name" name="full_name" type="text" placeholder="e.g. John Zhang" required>
+            <label for="email">Email Address <span class="small">*</span></label>
+            <input id="email" name="email" type="email" placeholder="yourname@example.com" required>
+            <label for="country">Country / Region</label>
+            <select id="country" name="country" aria-label="Country or Region">
+              <option value="">Select</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Europe</option>
+              <option>Australia</option>
+              <option>Canada</option>
+              <option>Other</option>
+            </select>
+
+            <div class="nav" style="margin-top:18px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div class="progress" aria-hidden="true"><div class="bar" id="bar" style="width:20%"></div></div>
+                <div class="small" aria-hidden="true">20%</div>
+              </div>
+              <div>
+                <button class="btn" id="next1" type="button">Next →</button>
+              </div>
+            </div>
+            <div id="err1" class="error" role="alert" aria-live="assertive" style="display:none"></div>
+          </form>
+        </section>
+
+        <!-- Page 2 -->
+        <section id="step-2" class="panel hidden" data-step="2" aria-hidden="true">
+          <div class="step-indicator">Step 2 of 5</div>
+          <form id="form-step-2" onsubmit="return false">
+            <label for="project_title">Project Title <span class="small">*</span></label>
+            <input id="project_title" name="project_title" type="text" placeholder="e.g. Brand Promo Video" required>
+            <label for="project_type">Project Type</label>
+            <select id="project_type" name="project_type">
+              <option value="">Select</option>
+              <option>Film & Video Production</option>
+              <option>Animation (2D/3D/MG)</option>
+              <option>Post-production & VFX</option>
+              <option>Sound Design & Voiceover</option>
+              <option>Illustration & Visuals</option>
+              <option>Other</option>
+            </select>
+            <label for="project_description">Project Description <span class="small">*</span></label>
+            <textarea id="project_description" name="project_description" placeholder="Please describe your project goals and key ideas." required></textarea>
+
+            <div class="nav" style="margin-top:8px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div class="progress" aria-hidden="true"><div class="bar" id="bar2" style="width:40%"></div></div>
+                <div class="small" aria-hidden="true">40%</div>
+              </div>
+
+              <div style="display:flex; gap:8px;">
+                <button class="btn ghost" id="back2" type="button">← Back</button>
+                <button class="btn" id="next2" type="button">Next →</button>
+              </div>
+            </div>
+            <div id="err2" class="error" role="alert" aria-live="assertive" style="display:none"></div>
+          </form>
+        </section>
+
+        <!-- Page 3 -->
+        <section id="step-3" class="panel hidden" data-step="3" aria-hidden="true">
+          <div class="step-indicator">Step 3 of 5</div>
+          <form id="form-step-3" onsubmit="return false">
+            <div class="row">
+              <div class="col">
+                <label for="budget">Estimated Budget (USD) <span class="small">*</span></label>
+                <select id="budget" name="budget" required>
+                  <option value="">Select</option>
+                  <option>Below $300</option>
+                  <option>$301–$800</option>
+                  <option>$801–$2000</option>
+                  <option>$2001–$5000</option>
+                  <option>$5001+</option>
+                </select>
+              </div>
+
+              <div class="col">
+                <label for="rush">Is it a rush project?</label>
+                <select id="rush" name="rush">
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="start_date">Expected Start Date</label>
+                <input id="start_date" name="start_date" type="date">
+              </div>
+              <div class="col">
+                <label for="deadline">Expected Deadline</label>
+                <input id="deadline" name="deadline" type="date">
+              </div>
+            </div>
+
+            <div class="nav" style="margin-top:8px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div class="progress" aria-hidden="true"><div class="bar" id="bar3" style="width:60%"></div></div>
+                <div class="small" aria-hidden="true">60%</div>
+              </div>
+
+              <div style="display:flex; gap:8px;">
+                <button class="btn ghost" id="back3" type="button">← Back</button>
+                <button class="btn" id="next3" type="button">Next →</button>
+              </div>
+            </div>
+            <div id="err3" class="error" role="alert" aria-live="assertive" style="display:none"></div>
+          </form>
+        </section>
+
+        <!-- Page 4 -->
+        <section id="step-4" class="panel hidden" data-step="4" aria-hidden="true">
+          <div class="step-indicator">Step 4 of 5</div>
+          <form id="form-step-4" onsubmit="return false">
+            <label for="additional_notes">Additional Notes</label>
+            <textarea id="additional_notes" name="additional_notes" placeholder="Any other details we should know?"></textarea>
+
+            <label for="referral">How did you hear about Goaoxor? <span class="small">*</span></label>
+            <select id="referral" name="referral" required>
+              <option value="">Select</option>
+              <option>TikTok</option>
+              <option>Instagram</option>
+              <option>Referral</option>
+              <option>Search Engine</option>
+              <option>Other</option>
+            </select>
+
+            <div class="nav" style="margin-top:12px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div class="progress" aria-hidden="true"><div class="bar" id="bar4" style="width:80%"></div></div>
+                <div class="small" aria-hidden="true">80%</div>
+              </div>
+
+              <div style="display:flex; gap:8px;">
+                <button class="btn ghost" id="back4" type="button">← Back</button>
+                <button class="btn" id="submitBtn" type="button">Submit Project</button>
+              </div>
+            </div>
+            <div id="err4" class="error" role="alert" aria-live="assertive" style="display:none"></div>
+          </form>
+        </section>
+
+        <!-- Page 5 (Thank you) -->
+        <section id="step-5" class="panel hidden" data-step="5" aria-hidden="true">
+          <div class="thank">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" fill="#061223"/>
+              <path d="M10 13l2 2 5-5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2>Thank you — submission received!</h2>
+            <p>We’ve received your project details. Our team will review and contact you within 48 hours.</p>
+            <p class="small">If you need urgent assistance, email us at <a href="mailto:hello@goaoxor.com" style="color:#cfe9ff">hello@goaoxor.com</a></p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
 <script>
-  // --- MODAL TOGGLE with lazy-load + postMessage listener ---
-  const modal = document.querySelector('#form-modal');
-  const modalOpenButtons = document.querySelectorAll('[data-modal="open"]');
-  const modalCloseButton = document.querySelector('.modal-close');
-  const iframeEl = document.getElementById('goaoxorFormIframe');
+/* ====== IMPORTANT ======
+ Replace ACTION_URL below with your full Getform endpoint if it's different.
+ Example: const ACTION_URL = "https://getform.io/f/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+*/
+const ACTION_URL = "https://getform.io/f/apjzqopa"; // <- your provided endpoint
 
-  let iframeLoaded = false;
+const steps = [1,2,3,4,5];
+let current = 1;
+const duration = 520;
 
-  modalOpenButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (!modal) return;
-      // lazy load iframe src on first open
-      if (!iframeLoaded && iframeEl && iframeEl.dataset && iframeEl.dataset.src) {
-        iframeEl.src = iframeEl.dataset.src;
-        iframeLoaded = true;
-      }
-      modal.style.display = 'flex';
-      // lock body scroll
-      document.body.style.overflow = 'hidden';
-    });
-  });
+function showStep(target){
+  if(target === current) return;
+  const fromEl = document.getElementById('step-' + current);
+  const toEl = document.getElementById('step-' + target);
+  toEl.classList.remove('hidden');
+  toEl.style.zIndex = 2;
+  fromEl.style.zIndex = 1;
+  fromEl.classList.add('animate-out');
+  toEl.classList.add('animate-in');
+  setTimeout(()=>{
+    fromEl.classList.remove('animate-out');
+    toEl.classList.remove('animate-in');
+    fromEl.classList.add('hidden');
+    fromEl.style.zIndex = '';
+    toEl.style.zIndex = '';
+    fromEl.setAttribute('aria-hidden','true');
+    toEl.setAttribute('aria-hidden','false');
+  }, duration + 20);
+  current = target;
+  updateProgressBar();
+}
 
-  if (modalCloseButton) {
-    modalCloseButton.addEventListener('click', () => {
-      if (!modal) return;
-      modal.style.display = 'none';
-      document.body.style.overflow = ''; // restore scroll
-    });
-  }
+function updateProgressBar(){
+  const pct = Math.round((current - 1) / (steps.length - 1) * 100);
+  [document.getElementById('bar'),document.getElementById('bar2'),document.getElementById('bar3'),document.getElementById('bar4')].forEach(bar=>{ if(bar) bar.style.width = Math.max(pct,20) + '%';});
+}
 
-  if (modal) {
-    modal.addEventListener('click', e => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-  // Listen for postMessage from the iframe (form page). When form posts {goaoxor_form:'submitted'},
-  // we auto-close the modal and show a small temporary toast.
-  window.addEventListener('message', (e) => {
-    try {
-      if (!e.data) return;
-      if (e.data.goaoxor_form && e.data.goaoxor_form === 'submitted') {
-        // close modal
-        if (modal) {
-          modal.style.display = 'none';
-          document.body.style.overflow = '';
-        }
-        // small success toast
-        showInlineToast('Thanks! Your project was submitted — we will contact you within 48 hours.');
-      }
-    } catch (err) {
-      console.error('Message handling error:', err);
+function validateStep(n){
+  const panel = document.getElementById('step-' + n);
+  const requireds = panel.querySelectorAll('[required]');
+  for(const el of requireds){
+    if(!el.value || el.value.trim() === ""){
+      return {ok:false, el};
     }
-  });
-
-  // Simple inline toast (non-blocking)
-  function showInlineToast(text){
-    const t = document.createElement('div');
-    t.textContent = text;
-    Object.assign(t.style, {
-      position: 'fixed',
-      right: '20px',
-      bottom: '28px',
-      background: 'linear-gradient(90deg,#00ddeb,#7a5bff)',
-      color:'#04101a',
-      padding:'12px 18px',
-      borderRadius:'12px',
-      boxShadow:'0 8px 30px rgba(0,0,0,0.4)',
-      zIndex: 99999,
-      fontWeight:700,
-      maxWidth:'320px'
-    });
-    document.body.appendChild(t);
-    setTimeout(()=> t.style.opacity='0', 3500);
-    setTimeout(()=> t.remove(), 4200);
   }
+  if(n === 1){
+    const email = panel.querySelector('input[type="email"]');
+    if(email){
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!re.test(email.value.trim())){
+        return {ok:false, el: email, msg: 'Please enter a valid email address.'};
+      }
+    }
+  }
+  return {ok:true};
+}
+
+document.getElementById('next1').addEventListener('click', ()=>{
+  const v = validateStep(1); const err = document.getElementById('err1');
+  if(!v.ok){ err.style.display='block'; err.textContent = v.msg || 'Please fill in all required fields.'; v.el.focus(); return; }
+  err.style.display='none'; showStep(2);
+});
+document.getElementById('back2').addEventListener('click', ()=> showStep(1));
+document.getElementById('next2').addEventListener('click', ()=>{
+  const v = validateStep(2); const err = document.getElementById('err2');
+  if(!v.ok){ err.style.display='block'; err.textContent = v.msg || 'Please fill in all required fields.'; v.el.focus(); return; }
+  err.style.display='none'; showStep(3);
+});
+document.getElementById('back3').addEventListener('click', ()=> showStep(2));
+document.getElementById('next3').addEventListener('click', ()=>{
+  const v = validateStep(3); const err = document.getElementById('err3');
+  if(!v.ok){ err.style.display='block'; err.textContent = v.msg || 'Please fill in all required fields.'; v.el.focus(); return; }
+  err.style.display='none'; showStep(4);
+});
+document.getElementById('back4').addEventListener('click', ()=> showStep(3));
+
+document.getElementById('submitBtn').addEventListener('click', async ()=>{
+  const v = validateStep(4); const err = document.getElementById('err4');
+  if(!v.ok){ err.style.display='block'; err.textContent = v.msg || 'Please fill in all required fields.'; v.el.focus(); return; }
+  err.style.display='none';
+
+  const formData = new FormData();
+  const map = ['full_name','email','country','project_title','project_type','project_description','budget','rush','start_date','deadline','additional_notes','referral'];
+  map.forEach(k=>{ const el = document.querySelector('[name="'+k+'"]'); if(el) formData.append(k, el.value || ''); });
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner" aria-hidden="true"></span> Submitting...';
+
+  try{
+    if(!ACTION_URL || ACTION_URL === "ACTION_URL"){ throw new Error('ACTION_URL is not configured. Please set it to your Getform endpoint.'); }
+    const res = await fetch(ACTION_URL, { method:'POST', body: formData });
+
+    if(res.ok || res.status === 200 || res.status === 201 || res.status === 302){
+      // show thank-you panel
+      showStep(5);
+      // notify parent window (so parent can auto-close the modal if desired)
+      try{ window.parent.postMessage({goaoxor_form: 'submitted'}, '*'); }catch(e){}
+    } else {
+      const txt = await res.text();
+      throw new Error('Submission failed: ' + (txt || res.status));
+    }
+  }catch(err){
+    const e4 = document.getElementById('err4'); e4.style.display='block'; e4.textContent = err.message || 'Submission error. Please try again later.';
+  }finally{
+    if(current === 4){ btn.disabled = false; btn.innerHTML = orig; }
+  }
+});
+
+updateProgressBar();
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter'){
+    const focused = document.activeElement;
+    if(focused && focused.tagName.toLowerCase() === 'textarea') return;
+    e.preventDefault();
+    if(current === 1) document.getElementById('next1').click();
+    if(current === 2) document.getElementById('next2').click();
+    if(current === 3) document.getElementById('next3').click();
+    if(current === 4) document.getElementById('submitBtn').click();
+  }
+});
 </script>
+</body>
+</html>
