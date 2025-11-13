@@ -1249,17 +1249,21 @@
         </div>
         <div class="footer-bottom container translatable" data-en="© 2025 GOAOXOR. All Rights Reserved." data-zh="© 2025 GOAOXOR。版权所有。">© 2025 GOAOXOR. All Rights Reserved.</div>
     </footer>
-    <div class="modal" id="form-modal">
-        <div class="modal-content">
+
+    <!-- Modal: lazy-load iframe (we will set data-src and load only when first opened) -->
+    <div class="modal" id="form-modal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <div class="modal-header">
-                <h3 class="translatable" data-en="Submit Your Project" data-zh="提交您的项目">Submit Your Project</h3>
+                <h3 id="modalTitle" class="translatable" data-en="Submit Your Project" data-zh="提交您的项目">Submit Your Project</h3>
                 <button class="modal-close" aria-label="Close modal">×</button>
             </div>
             <div class="modal-body">
                 <!-- lazy-load iframe: data-src -> real src set on first open -->
-<iframe id="goaoxorFormIframe" class="modal-iframe" data-src="https://goaoxor.com/Form/goaoxor-form.html" title="GOAOXOR Project Form" allowfullscreen></iframe>
+                <iframe id="goaoxorFormIframe" class="modal-iframe" data-src="https://goaoxor.com/forms/goaoxor-form.html" title="GOAOXOR Project Form" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
+
     <script>
     // --- Language Switcher ---
     let currentLang = 'en';
@@ -1294,6 +1298,7 @@
     document.querySelectorAll('.language-switcher button').forEach(btn => {
         btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
     });
+
     // --- Smooth Scroll ---
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', e => {
@@ -1310,6 +1315,7 @@
             }
         });
     });
+
     // --- Mobile Menu Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('nav');
@@ -1324,104 +1330,104 @@
             }
         }
     });
+
     // --- MODAL TOGGLE with lazy-load + postMessage listener ---
-  const modal = document.querySelector('#form-modal');
-  const modalOpenButtons = document.querySelectorAll('[data-modal="open"]');
-  const modalCloseButton = document.querySelector('.modal-close');
-  const iframeEl = document.getElementById('goaoxorFormIframe');
+    const modal = document.querySelector('#form-modal');
+    const modalOpenButtons = document.querySelectorAll('[data-modal="open"]');
+    const modalCloseButton = document.querySelector('.modal-close');
+    const iframeEl = document.getElementById('goaoxorFormIframe');
 
-  let iframeLoaded = false;
+    let iframeLoaded = false;
 
-  modalOpenButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (!modal) return;
-      // lazy load iframe src on first open
-      if (!iframeLoaded && iframeEl && iframeEl.dataset && iframeEl.dataset.src) {
-        iframeEl.src = iframeEl.dataset.src;
-        iframeLoaded = true;
-      }
-      modal.style.display = 'flex';
-      // lock body scroll
-      document.body.style.overflow = 'hidden';
+    modalOpenButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!modal) return;
+        // lazy load iframe src on first open
+        if (!iframeLoaded && iframeEl && iframeEl.dataset && iframeEl.dataset.src) {
+          // set src (this triggers the iframe to load the multi-step form)
+          iframeEl.src = iframeEl.dataset.src;
+          iframeLoaded = true;
+        }
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+        // lock body scroll
+        document.body.style.overflow = 'hidden';
+      });
     });
-  });
 
-  if (modalCloseButton) {
-    modalCloseButton.addEventListener('click', () => {
-      if (!modal) return;
-      modal.style.display = 'none';
-      document.body.style.overflow = ''; // restore scroll
-    });
-  }
-
-  if (modal) {
-    modal.addEventListener('click', e => {
-      if (e.target === modal) {
+    if (modalCloseButton) {
+      modalCloseButton.addEventListener('click', () => {
+        if (!modal) return;
         modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = ''; // restore scroll
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', e => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    // close modal on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       }
     });
-  }
 
-  // Listen for postMessage from the iframe (form page). When form posts {goaoxor_form:'submitted'},
-  // we auto-close the modal and show a small temporary toast.
-  window.addEventListener('message', (e) => {
-    try {
-      if (!e.data) return;
-      if (e.data.goaoxor_form && e.data.goaoxor_form === 'submitted') {
-        // close modal
-        if (modal) {
-          modal.style.display = 'none';
-          document.body.style.overflow = '';
+    // Listen for postMessage from the iframe (form page). When form posts {goaoxor_form:'submitted'},
+    // we auto-close the modal and show a small temporary toast.
+    window.addEventListener('message', (e) => {
+      try {
+        if (!e.data) return;
+        // Optionally you can validate e.origin here if your form is hosted on a different origin.
+        if (e.data.goaoxor_form && e.data.goaoxor_form === 'submitted') {
+          // close modal
+          if (modal) {
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+          }
+          // small success toast
+          showInlineToast('Thanks! Your project was submitted — we will contact you within 48 hours.');
         }
-        // small success toast
-        showInlineToast('Thanks! Your project was submitted — we will contact you within 48 hours.');
+      } catch (err) {
+        console.error('Message handling error:', err);
       }
-    } catch (err) {
-      console.error('Message handling error:', err);
-    }
-  });
+    });
 
-  // Simple inline toast (non-blocking)
-  function showInlineToast(text){
-    const t = document.createElement('div');
-    t.textContent = text;
-    Object.assign(t.style, {
-      position: 'fixed',
-      right: '20px',
-      bottom: '28px',
-      background: 'linear-gradient(90deg,#00ddeb,#7a5bff)',
-      color:'#04101a',
-      padding:'12px 18px',
-      borderRadius:'12px',
-      boxShadow:'0 8px 30px rgba(0,0,0,0.4)',
-      zIndex: 99999,
-      fontWeight:700,
-      maxWidth:'320px'
-    });
-    document.body.appendChild(t);
-    setTimeout(()=> t.style.opacity='0', 3500);
-    setTimeout(()=> t.remove(), 4200);
-  }
-        });
-    });
-    // Listener for the close button
-    if (modalCloseButton) {
-        modalCloseButton.addEventListener('click', () => {
-            if (modal) {
-                modal.style.display = 'none';
-            }
-        });
+    // Simple inline toast (non-blocking)
+    function showInlineToast(text){
+      const t = document.createElement('div');
+      t.textContent = text;
+      Object.assign(t.style, {
+        position: 'fixed',
+        right: '20px',
+        bottom: '28px',
+        background: 'linear-gradient(90deg,#00ddeb,#7a5bff)',
+        color:'#04101a',
+        padding:'12px 18px',
+        borderRadius:'12px',
+        boxShadow:'0 8px 30px rgba(0,0,0,0.4)',
+        zIndex: 99999,
+        fontWeight:700,
+        maxWidth:'320px',
+        transition: 'opacity 0.5s ease'
+      });
+      document.body.appendChild(t);
+      setTimeout(()=> t.style.opacity='0', 3500);
+      setTimeout(()=> t.remove(), 4200);
     }
-    // Listener for the modal background (to close on click outside)
-    if (modal) {
-        modal.addEventListener('click', e => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    }
+
     // --- Video Fallback ---
     const iframe = document.querySelector('.video-wrapper iframe');
     if (iframe) {
