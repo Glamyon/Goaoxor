@@ -356,7 +356,7 @@
       console.log('Response result:', result); // 添加更多调试日志
       if (response.ok && result.success) {
         loadingOverlay.style.display = 'none';
-        window.location.replace('/Form/thank-you.html'); // 用replace代替href，避免回退问题
+        window.location.replace('Form/thank-you.html'); // 用replace代替href，避免回退问题
       } else {
         console.error('Submit error:', result.message);
         alert('提交失败：' + (result.message || '服务器错误，请稍后再试或联系 info@goaoxor.com'));
@@ -371,4 +371,5 @@
 </script>
 </body>
 </html>
+
 
