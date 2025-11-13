@@ -1,60 +1,292 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thank You - GOAOXOR</title>
+
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg-dark: #0d1117;
+      --panel-bg: rgba(20, 26, 36, 0.9);
+      --text-light: #f0f2f5;
+      --text-muted: #9ca3af;
+      --accent: #8a42f5;
+      --accent-light: #9c5aff;
+      --highlight: #00f5d4;
+      --border-light: rgba(255, 255, 255, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: #0D1117;
-      color: #F0F2F5;
+      background: var(--bg-dark);
+      color: var(--text-light);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
       text-align: center;
+      overflow: hidden;
     }
+
+    /* Background animation */
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(138, 66, 245, 0.15), transparent 60%),
+                  radial-gradient(circle at 70% 70%, rgba(0, 245, 212, 0.1), transparent 60%);
+      animation: moveBackground 10s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+
+    @keyframes moveBackground {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-5%, 5%); }
+    }
+
     .success-container {
-      max-width: 600px;
-      background: rgba(20, 26, 36, 0.85);
-      padding: 60px 40px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 0 30px rgba(138, 66, 245, 0.3);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 640px;
+      background: var(--panel-bg);
+      padding: 56px 36px;
+      border-radius: 18px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 0 30px rgba(138, 66, 245, 0.25);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.6s ease-out forwards;
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-out {
+      opacity: 0 !important;
+      transform: translateY(-10px) scale(0.995) !important;
+    }
+
     h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      color: #00F5D4;
+      font-size: 2.6rem;
+      margin-bottom: 14px;
+      color: var(--highlight);
+      font-weight: 700;
     }
+
     p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      margin-bottom: 40px;
-      color: #9CA3AF;
-    }
-    .btn {
-      background: #8A42F5;
-      color: white;
-      padding: 16px 40px;
-      border: none;
-      border-radius: 12px;
       font-size: 1.1rem;
-      cursor: pointer;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: var(--text-muted);
     }
-    .btn:hover {
-      background: #9c5aff;
+
+    .meta {
+      margin-bottom: 28px;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    .timer {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .count {
+      background: rgba(255,255,255,0.06);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: var(--text-light);
+      min-width: 36px;
+      text-align: center;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.18s;
+    }
+
+    .btn:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 26px rgba(156,90,255,0.18); }
+
+    .btn--ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-light);
+      padding: 10px 20px;
+      font-weight: 500;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    footer {
+      margin-top: 22px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    @media (max-width: 480px) {
+      .success-container { padding: 36px 20px; }
+      h1 { font-size: 2rem; }
+    }
+
+    /* Respect reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      body::before, .success-container { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
 <body>
-  <div class="success-container">
-    <h1>Thank You!</h1>
-    <p>We have received your project details and will match the best team for you within 24 hours.</p>
-    <a href="https://goaoxor.com" class="btn">Return to Home</a>
-  </div>
+  <main class="success-container" role="main" aria-labelledby="thank-title">
+    <h1 id="thank-title">Thank You!</h1>
+    <p>We've received your project details and will match you with the best team within 24 hours.</p>
+
+    <!-- Visible timer + accessible live region -->
+    <div class="meta" aria-hidden="false">
+      <div class="timer" aria-live="polite">
+        <span>Redirecting to the homepage in</span>
+        <span id="count" class="count">5</span>
+        <span>seconds…</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="https://goaoxor.com" class="btn" id="immediate-btn" aria-label="Return to Home now">Return to Home Now</a>
+      <button class="btn btn--ghost" id="cancel-btn" aria-pressed="false">Stay on This Page</button>
+    </div>
+
+    <footer>© 2025 GOAOXOR. All rights reserved.</footer>
+
+    <!-- Screen-reader-only status for announcements -->
+    <div id="sr-status" class="sr-only" aria-live="assertive"></div>
+  </main>
+
+  <script>
+    (function () {
+      const REDIRECT_URL = 'https://goaoxor.com';
+      const COUNT_START = 5; // seconds to countdown
+      let remaining = COUNT_START;
+      const countEl = document.getElementById('count');
+      const srStatus = document.getElementById('sr-status');
+      const container = document.querySelector('.success-container');
+      const cancelBtn = document.getElementById('cancel-btn');
+      const immediateBtn = document.getElementById('immediate-btn');
+
+      let intervalId = null;
+      let cancelled = false;
+
+      function announce(message) {
+        // update SR-only live region so screen readers hear changes
+        srStatus.textContent = message;
+      }
+
+      function startCountdown() {
+        announce('Redirecting in ' + remaining + ' seconds.');
+        intervalId = setInterval(() => {
+          remaining -= 1;
+          if (remaining <= 0) {
+            clearInterval(intervalId);
+            announce('Redirecting now.');
+            // fade out then redirect
+            container.classList.add('fade-out');
+            // small delay to allow fade animation
+            setTimeout(() => {
+              window.location.href = REDIRECT_URL;
+            }, 420);
+          } else {
+            countEl.textContent = String(remaining);
+            announce('Redirecting in ' + remaining + ' seconds.');
+          }
+        }, 1000);
+      }
+
+      function stopCountdown() {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      }
+
+      // Start automatically unless user prefers reduced motion? (we still start)
+      startCountdown();
+
+      // Cancel / stay button toggles countdown
+      cancelBtn.addEventListener('click', function () {
+        if (!cancelled) {
+          cancelled = true;
+          cancelBtn.textContent = 'Resume Redirect';
+          cancelBtn.setAttribute('aria-pressed', 'true');
+          stopCountdown();
+          announce('Redirect paused. You will stay on this page.');
+        } else {
+          cancelled = false;
+          cancelBtn.textContent = 'Stay on This Page';
+          cancelBtn.setAttribute('aria-pressed', 'false');
+          // reset timer to 3 seconds for resumed UX (instead of full 5)
+          remaining = 3;
+          countEl.textContent = String(remaining);
+          announce('Resuming redirect in ' + remaining + ' seconds.');
+          startCountdown();
+        }
+      });
+
+      // If user clicks immediate, stop timer and go immediately
+      immediateBtn.addEventListener('click', function () {
+        stopCountdown();
+        announce('Redirecting now.');
+        container.classList.add('fade-out');
+        setTimeout(() => {
+          // let the link behave normally (but ensure redirect if JS hijacked)
+          window.location.href = REDIRECT_URL;
+        }, 300);
+      });
+
+      // In case user navigates away or page hidden, clear timers to avoid leaks
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) stopCountdown();
+        else if (!cancelled && !intervalId) startCountdown();
+      });
+
+      // For safety, ensure the visible counter matches variable
+      countEl.textContent = String(remaining);
+    })();
+  </script>
 </body>
 </html>
