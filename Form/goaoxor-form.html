@@ -85,7 +85,7 @@
       display: block;
       animation: fadeIn 0.5s ease;
     }
-    @keyframes fadeIn {
+    @: fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
@@ -297,7 +297,7 @@
   let currentPage = 1;
 
   function showPage(page) {
-    pages.forEach(p => p.classList.remove('active'));
+    pages.forEach(p  => p.classList.remove('active'));
     document.querySelector(`.page[data-page="${page}"]`).classList.add('active');
     progressBar.style.width = `${page * 20}%`;
     pageCounter.textContent = `Page ${page} of 5`;
@@ -314,7 +314,6 @@
       } else {
         field.style.borderColor = '';
       }
-      // 邮箱额外校验
       if (field.type === 'email' && field.value && !/^\S+@\S+\.\S+$/.test(field.value)) {
         valid = false;
         field.style.borderColor = '#ff6b6b';
@@ -337,14 +336,13 @@
     if (current > 1) showPage(current - 1);
   }
 
-  // 表单提交 → 跳转到独立成功页
   const form = document.getElementById('projectForm');
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
     if (!validatePage(5)) {
-      alert('Please fill in all required fields before submitting.');
+      alert('请填写所有必填项后再提交');
       return;
     }
 
@@ -352,24 +350,23 @@
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
 
-    fetch('https://submit-form.com/Euj6iIqeB', {
+    fetch('https://submit-form.com/Euj6iIqeB', {  // 您的真实 Submit-form.com endpoint
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: json
     })
-    .then(response => {
-      if (response.ok) {
-        // 跳转到独立成功页
-        window.location.href = '/Form/thank-you.html';
+    .then(response => response.json())
+    .then(data => {
+      if (data.success || data.id) {
+        window.location.href = '/Form/thank-you.html'; // 您的感谢页路径
       } else {
         throw new Error();
       }
     })
     .catch(() => {
-      alert('Submission failed. Please check your network connection or contact support@goaoxor.com directly via email.');
+      alert('提交失败，请检查网络或直接邮件 support@goaoxor.com');
     });
   });
 </script>
 </body>
 </html>
-
