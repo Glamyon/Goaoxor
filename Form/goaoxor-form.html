@@ -334,14 +334,16 @@
       return;
     }
     const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries()); // 转换为对象
     loadingOverlay.style.display = 'flex';
     try {
       const response = await fetch('https://submit-form.com/Euj6iIqeB', {
         method: 'POST',
         headers: {
+          "Content-Type": "application/json",
           "Accept": "application/json"
         },
-        body: formData
+        body: JSON.stringify(data)
       });
       console.log('Response status: ' + response.status); // 添加日志
       if (response.ok) {
