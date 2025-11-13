@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GOAOXOR - Project Submission</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #0D1117;
@@ -78,26 +78,11 @@
       margin-bottom: 32px;
       font-size: 0.95rem;
     }
-    .page {
-      display: none;
-    }
-    .page.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-    @: fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .form-group {
-      margin-bottom: 28px;
-    }
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: var(--text);
-    }
+    .page { display: none; }
+    .page.active { display: block; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .form-group { margin-bottom: 28px; }
+    label { display: block; font-weight: 600; margin-bottom: 10px; color: var(--text); }
     input, select, textarea {
       width: 100%;
       padding: 14px 16px;
@@ -113,20 +98,9 @@
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(138, 66, 245, 0.2);
     }
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-    }
-    .required::after {
-      content: " *";
-      color: #ff6b6b;
-    }
-    .nav-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 40px;
-      gap: 12px;
-    }
+    textarea { min-height: 130px; resize: vertical; }
+    .required::after { content: " *"; color: #ff6b6b; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; gap: 12px; }
     .btn {
       padding: 14px 32px;
       border: none;
@@ -136,176 +110,198 @@
       transition: all 0.3s ease;
       flex: 1;
     }
-    .btn-prev {
-      background: rgba(255,255,255,0.1);
-      color: var(--text);
-    }
-    .btn-next, .btn-submit {
-      background: var(--accent);
-      color: white;
-      box-shadow: var(--glow);
-    }
-    .btn-next:hover, .btn-submit:hover {
-      background: #9c5aff;
-      transform: translateY(-2px);
-    }
+    .btn-prev { background: rgba(255,255,255,0.1); color: var(--text); }
+    .btn-next, .btn-submit { background: var(--accent); color: white; box-shadow: var(--glow); }
+    .btn-next:hover, .btn-submit:hover { background: #9c5aff; transform: translateY(-2px); }
     @media (max-width: 480px) {
       .form-container { padding: 32px 20px; }
       .nav-buttons { flex-direction: column; }
     }
+    /* 加载遮罩层 */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(13, 17, 23, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+      color: #F0F2F5;
+      font-family: 'Inter', sans-serif;
+    }
+    .loader {
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top: 4px solid #8A42F5;
+      border-radius: 50%;
+      width: 50px; height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
+  <div class="form-container">
+    <h1>Submit Your Project Requirements</h1>
+    <p class="subtitle">
+      Thank you for choosing Goaoxor! Please take 2–3 minutes to complete this form so we can match you with the most suitable creative team. All information will remain confidential.
+    </p>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="page-counter" id="pageCounter">Page 1 of 5</div>
+    <form id="projectForm">
+      <!-- FormSubmit hidden fields -->
+      <input type="hidden" name="_subject" value="New Project Submission from Goaoxor">
+      <input type="hidden" name="_captcha" value="false"> <!-- 禁用captcha，如果需要防spam可以移除这行 -->
+      <input type="text" name="_honey" style="display:none"> <!-- honeypot防spam -->
+      <input type="hidden" name="_template" value="table"> <!-- 邮件用表格格式 -->
 
-<div class="form-container">
-  <h1>Submit Your Project Requirements</h1>
-  <p class="subtitle">Thank you for choosing Goaoxor! Please take 2–3 minutes to complete this form so we can match you with the most suitable creative team. All information will remain confidential.</p>
-
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
+      <!-- Page 1 -->
+      <div class="page active" data-page="1">
+        <div class="form-group">
+          <label class="required">Full Name / Company Name</label>
+          <input type="text" name="full_name" required placeholder="e.g. John Zhang or ABC Studio">
+        </div>
+        <div class="form-group">
+          <label class="required">Email</label>
+          <input type="email" name="email" required placeholder="yourname@example.com">
+        </div>
+        <div class="nav-buttons">
+          <div></div>
+          <button type="button" class="btn btn-next" onclick="nextPage(1)">Next →</button>
+        </div>
+      </div>
+      <!-- Page 2 -->
+      <div class="page" data-page="2">
+        <div class="form-group">
+          <label>Country / Region</label>
+          <select name="country">
+            <option value="">Select your region</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+            <option>Europe</option>
+            <option>China</option>
+            <option>Australia</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Project Title</label>
+          <input type="text" name="project_title" placeholder="e.g. 60s Brand Film 2025">
+        </div>
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-prev" onclick="prevPage(2)">← Previous</button>
+          <button type="button" class="btn btn-next" onclick="nextPage(2)">Next →</button>
+        </div>
+      </div>
+      <!-- Page 3 -->
+      <div class="page" data-page="3">
+        <div class="form-group">
+          <label class="required">Project Type</label>
+          <select name="project_type" required>
+            <option value="">Select type</option>
+            <option>Film & Video Production</option>
+            <option>Animation (2D/MG)</option>
+            <option>Post-production & VFX</option>
+            <option>Sound Design & Voiceover</option>
+            <option>Illustration & Visual Identity</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="required">Project Description</label>
+          <textarea name="project_description" rows="6" required placeholder="Please describe your project goals, target audience, style preferences, deliverables, and any specific requirements."></textarea>
+        </div>
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-prev" onclick="prevPage(3)">← Previous</button>
+          <button type="button" class="btn btn-next" onclick="nextPage(3)">Next →</button>
+        </div>
+      </div>
+      <!-- Page 4 -->
+      <div class="page" data-page="4">
+        <div class="form-group">
+          <label class="required">Estimated Budget (USD)</label>
+          <select name="budget" required>
+            <option value="">Select budget range</option>
+            <option>Below $300</option>
+            <option>$301 – $800</option>
+            <option>$801 – $2000</option>
+            <option>$2001 – $5000</option>
+            <option>$5001+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="required">Expected Start Date</label>
+          <input type="date" name="start_date" required>
+        </div>
+        <div class="form-group">
+          <label class="required">Expected Deadline</label>
+          <input type="date" name="deadline" required>
+        </div>
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-prev" onclick="prevPage(4)">← Previous</button>
+          <button type="button" class="btn btn-next" onclick="nextPage(4)">Next →</button>
+        </div>
+      </div>
+      <!-- Page 5 -->
+      <div class="page" data-page="5">
+        <div class="form-group">
+          <label>Is it a rush project?</label>
+          <select name="rush">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Additional Notes</label>
+          <textarea name="notes" rows="4" placeholder="NDA required? Bilingual team? Long-term collaboration?"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="required">How did you hear about Goaoxor?</label>
+          <select name="source" required>
+            <option value="">Select</option>
+            <option>TikTok</option>
+            <option>Instagram</option>
+            <option>Referral</option>
+            <option>Search Engine</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-prev" onclick="prevPage(5)">← Previous</button>
+          <button type="submit" class="btn btn-submit">Submit Project</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="page-counter" id="pageCounter">Page 1 of 5</div>
-
-  <form id="projectForm">
-    <!-- Page 1 -->
-    <div class="page active" data-page="1">
-      <div class="form-group">
-        <label class="required">Full Name / Company Name</label>
-        <input type="text" name="full_name" required placeholder="e.g. John Zhang or ABC Studio">
-      </div>
-      <div class="form-group">
-        <label class="required">Email</label>
-        <input type="email" name="email" required placeholder="yourname@example.com">
-      </div>
-      <div class="nav-buttons">
-        <div></div>
-        <button type="button" class="btn btn-next" onclick="nextPage(1)">Next →</button>
-      </div>
-    </div>
-
-    <!-- Page 2 -->
-    <div class="page" data-page="2">
-      <div class="form-group">
-        <label>Country / Region</label>
-        <select name="country">
-          <option value="">Select your region</option>
-          <option>United States</option>
-          <option>United Kingdom</option>
-          <option>Europe</option>
-          <option>China</option>
-          <option>Australia</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Project Title</label>
-        <input type="text" name="project_title" placeholder="e.g. 60s Brand Film 2025">
-      </div>
-      <div class="nav-buttons">
-        <button type="button" class="btn btn-prev" onclick="prevPage(2)">← Previous</button>
-        <button type="button" class="btn btn-next" onclick="nextPage(2)">Next →</button>
-      </div>
-    </div>
-
-    <!-- Page 3 -->
-    <div class="page" data-page="3">
-      <div class="form-group">
-        <label class="required">Project Type</label>
-        <select name="project_type" required>
-          <option value="">Select type</option>
-          <option>Film & Video Production</option>
-          <option>Animation (2D/3D/MG)</option>
-          <option>Post-production & VFX</option>
-          <option>Sound Design & Voiceover</option>
-          <option>Illustration & Visual Identity</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="required">Project Description</label>
-        <textarea name="project_description" rows="6" required placeholder="Please describe your project goals, target audience, style preferences, deliverables, and any specific requirements."></textarea>
-      </div>
-      <div class="nav-buttons">
-        <button type="button" class="btn btn-prev" onclick="prevPage(3)">← Previous</button>
-        <button type="button" class="btn btn-next" onclick="nextPage(3)">Next →</button>
-      </div>
-    </div>
-
-    <!-- Page 4 -->
-    <div class="page" data-page="4">
-      <div class="form-group">
-        <label class="required">Estimated Budget (USD)</label>
-        <select name="budget" required>
-          <option value="">Select budget range</option>
-          <option>Below $300</option>
-          <option>$301 – $800</option>
-          <option>$801 – $2000</option>
-          <option>$2001 – $5000</option>
-          <option>$5001+</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="required">Expected Start Date</label>
-        <input type="date" name="start_date" required>
-      </div>
-      <div class="form-group">
-        <label class="required">Expected Deadline</label>
-        <input type="date" name="deadline" required>
-      </div>
-      <div class="nav-buttons">
-        <button type="button" class="btn btn-prev" onclick="prevPage(4)">← Previous</button>
-        <button type="button" class="btn btn-next" onclick="nextPage(4)">Next →</button>
-      </div>
-    </div>
-
-    <!-- Page 5 -->
-    <div class="page" data-page="5">
-      <div class="form-group">
-        <label>Is it a rush project?</label>
-        <select name="rush">
-          <option value="No">No</option>
-          <option value="Yes">Yes</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Additional Notes</label>
-        <textarea name="notes" rows="4" placeholder="NDA required? Bilingual team? Long-term collaboration?"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="required">How did you hear about Goaoxor?</label>
-        <select name="source" required>
-          <option value="">Select</option>
-          <option>TikTok</option>
-          <option>Instagram</option>
-          <option>Referral</option>
-          <option>Search Engine</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="nav-buttons">
-        <button type="button" class="btn btn-prev" onclick="prevPage(5)">← Previous</button>
-        <button type="submit" class="btn btn-submit">Submit Project</button>
-      </div>
-    </div>
-  </form>
-</div>
-
+  <!-- 加载动画 -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loader"></div>
+    <p>Submitting your project...</p>
+  </div>
 <script>
   const pages = document.querySelectorAll('.page');
   const progressBar = document.getElementById('progressBar');
   const pageCounter = document.getElementById('pageCounter');
+  const form = document.getElementById('projectForm');
+  const loadingOverlay = document.getElementById('loadingOverlay');
   let currentPage = 1;
-
   function showPage(page) {
-    pages.forEach(p  => p.classList.remove('active'));
-    document.querySelector(`.page[data-page="${page}"]`).classList.add('active');
-    progressBar.style.width = `${page * 20}%`;
-    pageCounter.textContent = `Page ${page} of 5`;
+    pages.forEach(p => p.classList.remove('active'));
+    document.querySelector('.page[data-page="' + page + '"]').classList.add('active');
+    progressBar.style.width = (page * 20) + '%';
+    pageCounter.textContent = 'Page ' + page + ' of 5';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    currentPage = page;
   }
-
   function validatePage(page) {
-    const required = document.querySelectorAll(`.page[data-page="${page}"] [required]`);
+    const required = document.querySelectorAll('.page[data-page="' + page + '"] [required]');
     let valid = true;
     required.forEach(field => {
       if (!field.value.trim()) {
@@ -319,9 +315,9 @@
         field.style.borderColor = '#ff6b6b';
       }
     });
+    console.log('Validation for page ' + page + ': ' + valid); // 调试日志
     return valid;
   }
-
   function nextPage(current) {
     if (current < 5) {
       if (validatePage(current)) {
@@ -331,41 +327,46 @@
       }
     }
   }
-
   function prevPage(current) {
-    if (current > 1) showPage(current - 1);
+    if (current > 1) {
+      showPage(current - 1);
+    }
   }
-
-  const form = document.getElementById('projectForm');
-
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
-
+    console.log('Submit event triggered'); // 调试日志
     if (!validatePage(5)) {
       alert('请填写所有必填项后再提交');
       return;
     }
-
+    loadingOverlay.style.display = 'flex';
     const formData = new FormData(form);
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
-
-    fetch('https://submit-form.com/Euj6iIqeB', {  // 您的真实 Submit-form.com endpoint
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: json
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success || data.id) {
-        window.location.href = 'Form/thank-you.html'; // 您的感谢页路径
+    const data = Object.fromEntries(formData); // 转换为JSON对象
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/6b3bf25eec406819cf20aebec6f6c05f', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      console.log('Response status: ' + response.status); // 调试日志
+      const result = await response.json();
+      console.log('Response result:', result); // 添加更多调试日志
+      if (response.ok && result.success) {
+        loadingOverlay.style.display = 'none';
+        window.location.replace('Form/thank-you.html'); // 用replace代替href，避免回退问题
       } else {
-        throw new Error();
+        console.error('Submit error:', result.message);
+        alert('提交失败：' + (result.message || '服务器错误，请稍后再试或联系 info@goaoxor.com'));
+        loadingOverlay.style.display = 'none';
       }
-    })
-    .catch(() => {
-      alert('提交失败，请检查网络或直接邮件 support@goaoxor.com');
-    });
+    } catch (error) {
+      console.error('Network error:', error);
+      alert('提交失败，请检查网络或直接邮件 info@goaoxor.com');
+      loadingOverlay.style.display = 'none';
+    }
   });
 </script>
 </body>
