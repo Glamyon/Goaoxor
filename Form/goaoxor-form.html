@@ -125,6 +125,7 @@
       display: flex;
       justify-content: space-between;
       margin-top: 40px;
+      gap: 12px;
     }
     .btn {
       padding: 14px 32px;
@@ -133,7 +134,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      min-width: 120px;
+      flex: 1;
     }
     .btn-prev {
       background: rgba(255,255,255,0.1);
@@ -148,32 +149,9 @@
       background: #9c5aff;
       transform: translateY(-2px);
     }
-    .success {
-      text-align: center;
-      padding: 60px 20px;
-      display: none;
-    }
-    .success h3 {
-      font-size: 2rem;
-      color: var(--accent-light);
-      margin-bottom: 16px;
-    }
-    .success p {
-      font-size: 1.1rem;
-      margin-bottom: 24px;
-    }
-    /* 移动端优化 */
     @media (max-width: 480px) {
-      .form-container {
-        padding: 32px 20px;
-      }
-      .nav-buttons {
-        flex-direction: column;
-        gap: 12px;
-      }
-      .btn {
-        width: 100%;
-      }
+      .form-container { padding: 32px 20px; }
+      .nav-buttons { flex-direction: column; }
     }
   </style>
 </head>
@@ -310,12 +288,6 @@
       </div>
     </div>
   </form>
-
-  <div class="success" id="successMessage">
-    <h3>Thank You!</h3>
-    <p>We have received your project details and will match the best team for you within 24 hours.</p>
-    <button class="btn btn-primary" onclick="location.reload()">Close</button>
-  </div>
 </div>
 
 <script>
@@ -342,8 +314,8 @@
       } else {
         field.style.borderColor = '';
       }
-      // 额外邮箱格式校验
-      if (field.type === 'email' && !/^\S+@S+\.S+/.test(field.value)) {
+      // 邮箱额外校验
+      if (field.type === 'email' && field.value && !/^\S+@\S+\.\S+$/.test(field.value)) {
         valid = false;
         field.style.borderColor = '#ff6b6b';
       }
@@ -365,14 +337,14 @@
     if (current > 1) showPage(current - 1);
   }
 
+  // 表单提交 → 跳转到独立成功页
   const form = document.getElementById('projectForm');
-  const success = document.getElementById('successMessage');
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
     if (!validatePage(5)) {
-      alert('请填写所有必填项后再提交');
+      alert('Please fill in all required fields before submitting.');
       return;
     }
 
@@ -380,25 +352,23 @@
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
 
-    fetch('https://submit-form.com/Euj6iIqeB', {  // 您的真实 ID
+    fetch('https://submit-form.com/Euj6iIqeB', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: json
     })
     .then(response => {
       if (response.ok) {
-        form.style.display = 'none';
-        success.style.display = 'block';
-        window.scrollTo(0, 0);
+        // 跳转到独立成功页
+        window.location.href = 'Form/thank-you.html';
       } else {
-        throw new Error('Submission failed');
+        throw new Error();
       }
     })
     .catch(() => {
-      alert('提交失败，请检查网络或直接邮件 support@goaoxor.com');
+      alert('Submission failed. Please check your network connection or contact support@goaoxor.com directly via email.');
     });
   });
 </script>
 </body>
 </html>
-
