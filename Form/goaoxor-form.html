@@ -156,6 +156,12 @@
     </div>
     <div class="page-counter" id="pageCounter">Page 1 of 5</div>
     <form id="projectForm">
+      <!-- FormSubmit hidden fields -->
+      <input type="hidden" name="_subject" value="New Project Submission from Goaoxor">
+      <input type="hidden" name="_captcha" value="false"> <!-- 禁用captcha，如果需要防spam可以移除这行 -->
+      <input type="text" name="_honey" style="display:none"> <!-- honeypot防spam -->
+      <input type="hidden" name="_template" value="table"> <!-- 邮件用表格格式 -->
+
       <!-- Page 1 -->
       <div class="page active" data-page="1">
         <div class="form-group">
@@ -309,7 +315,7 @@
         field.style.borderColor = '#ff6b6b';
       }
     });
-    console.log('Validation for page ' + page + ': ' + valid); // 添加日志
+    console.log('Validation for page ' + page + ': ' + valid); // 调试日志
     return valid;
   }
   function nextPage(current) {
@@ -328,36 +334,36 @@
   }
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    console.log('Submit event triggered'); // 添加日志
+    console.log('Submit event triggered'); // 调试日志
     if (!validatePage(5)) {
       alert('请填写所有必填项后再提交');
       return;
     }
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries()); // 转换为对象
     loadingOverlay.style.display = 'flex';
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData); // 转换为JSON对象
     try {
-      const response = await fetch('https://submit-form.com/Euj6iIqeB', {
+      const response = await fetch('https://formsubmit.co/ajax/info@goaoxor.com', {
         method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify(data)
       });
-      console.log('Response status: ' + response.status); // 添加日志
-      if (response.ok) {
-        loadingOverlay.style.display = 'none'; // 成功后隐藏loading
-        window.location.href = '/Form/thank-you.html';
+      console.log('Response status: ' + response.status); // 调试日志
+      const result = await response.json();
+      if (response.ok && result.success) {
+        loadingOverlay.style.display = 'none';
+        window.location.href = '/Form/thank-you.html'; // 成功重定向
       } else {
-        const errText = await response.text();
-        console.error('SubmitForm error:', errText);
-        alert('提交失败（服务器错误），请稍后再试或联系 support@goaoxor.com');
+        console.error('Submit error:', result.message);
+        alert('提交失败：' + (result.message || '服务器错误，请稍后再试或联系 info@goaoxor.com'));
         loadingOverlay.style.display = 'none';
       }
     } catch (error) {
       console.error('Network error:', error);
-      alert('提交失败，请检查网络或直接邮件 support@goaoxor.com');
+      alert('提交失败，请检查网络或直接邮件 info@goaoxor.com');
       loadingOverlay.style.display = 'none';
     }
   });
