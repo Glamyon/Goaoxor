@@ -355,7 +355,8 @@
       const result = await response.json();
       if (response.ok && result.success) {
         loadingOverlay.style.display = 'none';
-        window.location.href = '/Form/thank-you.html'; // 成功重定向，如果404，改成你的实际路径，如'/thank-you.html'
+        alert('提交成功！'); // 临时用alert确认成功，之后换回跳转
+        // window.location.href = '/Form/thank-you.html'; // 如果页面存在，再取消注释
       } else {
         console.error('Submit error:', result.message);
         alert('提交失败：' + (result.message || '服务器错误，请稍后再试或联系 info@goaoxor.com'));
