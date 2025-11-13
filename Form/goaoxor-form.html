@@ -288,7 +288,6 @@
   let currentPage = 1;
   function showPage(page) {
     pages.forEach(p => p.classList.remove('active'));
-    // ✅ 修复这里的语法问题
     document.querySelector('.page[data-page="' + page + '"]').classList.add('active');
     progressBar.style.width = (page * 20) + '%';
     pageCounter.textContent = 'Page ' + page + ' of 5';
@@ -310,6 +309,7 @@
         field.style.borderColor = '#ff6b6b';
       }
     });
+    console.log('Validation for page ' + page + ': ' + valid); // 添加日志
     return valid;
   }
   function nextPage(current) {
@@ -328,6 +328,7 @@
   }
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
+    console.log('Submit event triggered'); // 添加日志
     if (!validatePage(5)) {
       alert('请填写所有必填项后再提交');
       return;
@@ -342,7 +343,9 @@
         },
         body: formData
       });
+      console.log('Response status: ' + response.status); // 添加日志
       if (response.ok) {
+        loadingOverlay.style.display = 'none'; // 成功后隐藏loading
         window.location.href = '/Form/thank-you.html';
       } else {
         const errText = await response.text();
