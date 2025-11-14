@@ -137,7 +137,11 @@
       transition: background 0.2s, transform 0.18s;
     }
 
-    .btn:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 26px rgba(156,90,255,0.18); }
+    .btn:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(156,90,255,0.18);
+    }
 
     .btn--ghost {
       background: transparent;
@@ -167,7 +171,6 @@
       h1 { font-size: 2rem; }
     }
 
-    /* Respect reduced motion preference */
     @media (prefers-reduced-motion: reduce) {
       body::before, .success-container { animation: none !important; transition: none !important; }
     }
@@ -178,30 +181,27 @@
     <h1 id="thank-title">Thank You!</h1>
     <p>We've received your project details and will match you with the best team within 24 hours.</p>
 
-    <!-- Visible timer + accessible live region -->
     <div class="meta" aria-hidden="false">
       <div class="timer" aria-live="polite">
-        <span>Redirecting to the homepage in</span>
+        <span>Closing in</span>
         <span id="count" class="count">5</span>
         <span>seconds…</span>
       </div>
     </div>
 
     <div class="actions">
-      <a href="https://goaoxor.com" class="btn" id="immediate-btn" aria-label="Return to Home now">Return to Home Now</a>
+      <button class="btn" id="immediate-btn">Close Now</button>
       <button class="btn btn--ghost" id="cancel-btn" aria-pressed="false">Stay on This Page</button>
     </div>
 
     <footer>© 2025 GOAOXOR. All rights reserved.</footer>
 
-    <!-- Screen-reader-only status for announcements -->
     <div id="sr-status" class="sr-only" aria-live="assertive"></div>
   </main>
 
   <script>
     (function () {
-      const REDIRECT_URL = 'https://goaoxor.com';
-      const COUNT_START = 5; // seconds to countdown
+      const COUNT_START = 5;
       let remaining = COUNT_START;
       const countEl = document.getElementById('count');
       const srStatus = document.getElementById('sr-status');
@@ -212,80 +212,64 @@
       let intervalId = null;
       let cancelled = false;
 
-      function announce(message) {
-        // update SR-only live region so screen readers hear changes
-        srStatus.textContent = message;
+      function announce(msg) { srStatus.textContent = msg; }
+
+      function closePopup() {
+        window.parent.postMessage("closeFormPopup", "*");
       }
 
       function startCountdown() {
-        announce('Redirecting in ' + remaining + ' seconds.');
+        announce("Closing in " + remaining + " seconds.");
         intervalId = setInterval(() => {
           remaining -= 1;
           if (remaining <= 0) {
             clearInterval(intervalId);
-            announce('Redirecting now.');
-            // fade out then redirect
-            container.classList.add('fade-out');
-            // small delay to allow fade animation
-            setTimeout(() => {
-              window.location.href = REDIRECT_URL;
-            }, 420);
+            announce("Closing now.");
+            container.classList.add("fade-out");
+            setTimeout(closePopup, 420);
           } else {
-            countEl.textContent = String(remaining);
-            announce('Redirecting in ' + remaining + ' seconds.');
+            countEl.textContent = remaining;
+            announce("Closing in " + remaining + " seconds.");
           }
         }, 1000);
       }
 
       function stopCountdown() {
-        if (intervalId) {
-          clearInterval(intervalId);
-          intervalId = null;
-        }
+        clearInterval(intervalId);
+        intervalId = null;
       }
 
-      // Start automatically unless user prefers reduced motion? (we still start)
       startCountdown();
 
-      // Cancel / stay button toggles countdown
-      cancelBtn.addEventListener('click', function () {
+      cancelBtn.addEventListener("click", () => {
         if (!cancelled) {
           cancelled = true;
-          cancelBtn.textContent = 'Resume Redirect';
-          cancelBtn.setAttribute('aria-pressed', 'true');
+          cancelBtn.textContent = "Resume";
+          cancelBtn.setAttribute("aria-pressed", "true");
           stopCountdown();
-          announce('Redirect paused. You will stay on this page.');
+          announce("Countdown paused.");
         } else {
           cancelled = false;
-          cancelBtn.textContent = 'Stay on This Page';
-          cancelBtn.setAttribute('aria-pressed', 'false');
-          // reset timer to 3 seconds for resumed UX (instead of full 5)
+          cancelBtn.textContent = "Stay on This Page";
+          cancelBtn.setAttribute("aria-pressed", "false");
           remaining = 3;
-          countEl.textContent = String(remaining);
-          announce('Resuming redirect in ' + remaining + ' seconds.');
+          countEl.textContent = remaining;
+          announce("Resuming, closing in " + remaining + " seconds.");
           startCountdown();
         }
       });
 
-      // If user clicks immediate, stop timer and go immediately
-      immediateBtn.addEventListener('click', function () {
+      immediateBtn.addEventListener("click", () => {
         stopCountdown();
-        announce('Redirecting now.');
-        container.classList.add('fade-out');
-        setTimeout(() => {
-          // let the link behave normally (but ensure redirect if JS hijacked)
-          window.location.href = REDIRECT_URL;
-        }, 300);
+        announce("Closing now.");
+        container.classList.add("fade-out");
+        setTimeout(closePopup, 300);
       });
 
-      // In case user navigates away or page hidden, clear timers to avoid leaks
-      document.addEventListener('visibilitychange', function () {
+      document.addEventListener("visibilitychange", () => {
         if (document.hidden) stopCountdown();
         else if (!cancelled && !intervalId) startCountdown();
       });
-
-      // For safety, ensure the visible counter matches variable
-      countEl.textContent = String(remaining);
     })();
   </script>
 </body>
