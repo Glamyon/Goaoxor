@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>合同编号生成器</title>
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<style>
+body { font-family:'Arial', sans-serif; background:#f5f5f5; margin:0; padding:20px; }
+h1 { text-align:center; color:#333; margin-bottom:30px; }
+.contract-section { background:#fff; padding:20px; margin:20px auto; border-radius:12px; max-width:600px; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+h2 { color:#444; margin-bottom:10px; font-size:1.2rem; }
+label { display:block; margin:10px 0 5px; font-size:0.95rem; color:#555; }
+input[type=text] { width:100%; padding:8px; font-size:14px; border-radius:6px; border:1px solid #ccc; }
+button { margin-top:10px; padding:10px 15px; border:none; border-radius:6px; cursor:pointer; font-size:14px; transition:all 0.2s; }
+.random-btn { background:#6c63ff; color:#fff; margin-right:10px; }
+.random-btn:hover { background:#574fd1; }
+.download-btn { background:#00b894; color:#fff; }
+.download-btn:hover { background:#01976c; }
+@media(max-width:480px){
+  body { padding:10px; }
+  .contract-section { margin:15px auto; padding:15px; }
+  h1 { font-size:1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<script>
+// 检查来源页面
+(function() {
+    const allowedReferrer = "https://goaoxor.com/admin.html";
+    if (document.referrer !== allowedReferrer) {
+        alert("您无权限直接访问此页面！");
+        window.location.href = "https://goaoxor.com/"; // 跳转回首页
+    }
+})();
+</script>
+
+<h1>合同编号生成器</h1>
+
+<div class="contract-section" id="contract1">
+  <h2>第一份合同（匹配合同）</h2>
+  <label>合同编号（自动生成/可随机生成）:</label>
+  <input type="text" id="contractNumber1" readonly>
+  <button class="random-btn" onclick="generateRandom('1')">随机生成编号</button>
+  <button class="download-btn" onclick="downloadContract(contractNumber1.value,'1')">下载合同</button>
+</div>
+
+<div class="contract-section" id="contract2">
+  <h2>第二份合同（团队合同）</h2>
+  <label>合同编号（默认读取第一份合同，可手动修改）:</label>
+  <input type="text" id="contractNumber2" placeholder="可复制第一份合同编号">
+  <button class="download-btn" onclick="downloadContract(contractNumber2.value,'2')">下载合同</button>
+</div>
+
+<div class="contract-section" id="contract3">
+  <h2>第三份合同（提供合同）</h2>
+  <label>合同编号（默认读取第一份合同，可手动修改）:</label>
+  <input type="text" id="contractNumber3" placeholder="可复制第一份合同编号">
+  <button class="download-btn" onclick="downloadContract(contractNumber3.value,'3')">下载合同</button>
+</div>
+
+<script>
+const pdfUrls = {
+  '1':'https://goaoxor.com/pdf/ServiceMatchingandMonitoringAgreement.pdf',
+  '2':'https://goaoxor.com/pdf/ProjectProductionTeamIntroductionAgreement.pdf',
+  '3':'' // 第三份先空
+};
+
+// 三份合同独立编号位置
+const contractPositions = {
+  '1': { x:50, y:720 },
+  '2': { x:60, y:755 },
+  '3': { x:55, y:710 }
+};
+
+// 自动生成编号，高辨识度（日期+随机字符）
+function generateRandom(contractId){
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let randomPart = '';
+  for(let i=0;i<5;i++) randomPart += chars.charAt(Math.floor(Math.random()*chars.length));
+
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+
+  const code = `GOX-${y}${m}${d}-${randomPart}`;
+  document.getElementById('contractNumber'+contractId).value = code;
+
+  if(contractId==='1'){
+    document.getElementById('contractNumber2').value = code;
+    document.getElementById('contractNumber3').value = code;
+  }
+}
+
+// 页面加载默认生成第一份合同编号
+window.onload = function(){ generateRandom('1'); }
+
+// 下载合同函数
+async function downloadContract(contractNumber, contractId){
+  if(!contractNumber){ alert('请先填写合同编号！'); return; }
+  const url = pdfUrls[contractId];
+  if(!url){ alert('合同 PDF URL 未设置'); return; }
+
+  const existingPdfBytes = await fetch(url).then(res=>res.arrayBuffer());
+  const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
+  const pages = pdfDoc.getPages();
+  const firstPage = pages[0];
+  const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+  const fontSize = 8;
+
+  const pos = contractPositions[contractId];
+  firstPage.drawText(`Contract Number: ${contractNumber}`, {
+    x: pos.x,
+    y: pos.y,
+    size: fontSize,
+    font,
+    color: PDFLib.rgb(0.1,0.1,0.5)
+  });
+
+  const pdfBytes = await pdfDoc.save();
+  const blob = new Blob([pdfBytes], {type:'application/pdf'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+
+  let fileName = '';
+  if(contractId==='1') fileName = `匹配合同-${contractNumber}.pdf`;
+  else if(contractId==='2') fileName = `团队合同-${contractNumber}.pdf`;
+  else if(contractId==='3') fileName = `提供合同-${contractNumber}.pdf`;
+
+  link.download = fileName;
+  link.click();
+}
+</script>
+</body>
+</html>
