@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Goaoxor 管理后台</title>
+
+  <!-- Bootstrap (仅用于布局和按钮) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+
+  <!-- jsPDF (合同PDF导出) -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- DOMPurify -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+
+  <!-- 你单独的样式 -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 登录 / 上传区 -->
+  <div id="loginDiv" class="login-screen">
+    <div id="loginCard" class="card p-4">
+      <h2 class="mb-3">Goaoxor 管理后台</h2>
+
+      <label for="dataFileInput" class="form-label">上传 goaoxor_data.json 文件（恢复整个后台）</label>
+      <input type="file" id="dataFileInput" class="form-control mb-2" accept=".json">
+
+      <label for="usernameInput" class="form-label mt-2">选择管理员</label>
+      <select id="usernameInput" class="form-select mb-2">
+        <option value="" disabled selected>选择管理员账户</option>
+      </select>
+
+      <label for="passwordInput" class="form-label mt-2">密码</label>
+      <input type="password" id="passwordInput" class="form-control mb-3" placeholder="请输入密码">
+
+      <div class="d-grid gap-2">
+        <button id="loginBtn" class="btn btn-primary">登录</button>
+      </div>
+
+      <p id="loginMsg" class="mt-3 text-danger"></p>
+
+      <p class="note mt-3">多人协作流程：上一个管理员导出 JSON → 下一个管理员上传该 JSON 并登录继续工作。</p>
+    </div>
+  </div>
+
+  <!-- 主后台 -->
+  <div id="mainDiv" class="app-container" style="display:none;">
+    <aside id="sidebar">
+      <h3>后台导航</h3>
+      <nav>
+        <button id="navDashboard" class="nav-btn active">首页</button>
+        <button id="navOrder" class="nav-btn">添加订单</button>
+        <button id="navOrderRecord" class="nav-btn">订单记录</button>
+        <button id="navContract" class="nav-btn">添加合同记录</button>
+        <button id="navContractRecord" class="nav-btn">合同记录</button>
+        <button id="navStats" class="nav-btn">数据统计</button>
+        <button id="navAdmin" class="nav-btn">管理员管理</button>
+        <button id="navChange" class="nav-btn">修改密码</button>
+        <button id="navLogout" class="nav-btn text-danger">退出并下载数据</button>
+      </nav>
+    </aside>
+
+    <main id="content">
+      <header id="topBar" class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="welcome">欢迎，<strong id="currentUser">管理员</strong></span>
+          <span class="ms-3 text-muted">上次登录: <span id="lastLogin">未记录</span></span>
+        </div>
+        <div id="currentTime" class="text-muted"></div>
+      </header>
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="section active">
+        <h2>Goaoxor 生态首页</h2>
+        <p>快速入口和工具。</p>
+
+        <div class="cards">
+          <div class="card toolCard">
+            <h4>订单计算器</h4>
+            <p>快速计算中介与介绍费。</p>
+            <div class="d-flex gap-2">
+              <a href="http://goaoxor.com/pricing_calculator.html" target="_blank" class="btn btn-sm btn-primary">打开计算器</a>
+            </div>
+          </div>
+
+          <div class="card toolCard">
+            <h4>合同编号 / 生成器</h4>
+            <p>快速生成合同 PDF。</p>
+            <div class="d-flex gap-2">
+              <a href="http://goaoxor.com/tools/ContractNumberGenerator.html" target="_blank" class="btn btn-sm btn-primary">打开工具</a>
+            </div>
+          </div>
+
+          <div class="card toolCard">
+            <h4>添加订单</h4>
+            <p>快速新增订单记录。</p>
+            <div><button class="btn btn-sm btn-primary" onclick="showSection('orderDiv')">添加订单</button></div>
+          </div>
+
+          <div class="card toolCard">
+            <h4>合同记录</h4>
+            <p>查看 / 编辑 / 导出合同。</p>
+            <div><button class="btn btn-sm btn-primary" onclick="showSection('contractRecordDiv')">查看合同</button></div>
+          </div>
+
+          <div class="card toolCard">
+            <h4>数据统计</h4>
+            <p>实时折线图显示（订单数 & 收入）。</p>
+            <div><button class="btn btn-sm btn-primary" onclick="showSection('statsDiv')">打开统计</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 添加订单 -->
+      <section id="orderDiv" class="section" style="display:none;">
+        <h2>添加订单</h2>
+        <form id="orderForm" class="form-compact">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label>客户姓名</label>
+              <input id="clientName" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label>客户邮箱</label>
+              <input id="clientEmail" type="email" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+              <label>项目价值（$100-$10000）</label>
+              <input id="projectValue" type="number" class="form-control" min="100" max="10000" required>
+            </div>
+            <div class="col-md-4">
+              <label>项目类型</label>
+              <select id="projectType" class="form-select" required>
+                <option value="" disabled selected>选择项目类型</option>
+                <option value="film_video">影视与视频</option>
+                <option value="short_video">短视频内容</option>
+                <option value="post_production">后期制作</option>
+                <option value="animation">动画</option>
+                <option value="other">其他项目</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label>订单状态</label>
+              <select id="orderStatus" class="form-select" required>
+                <option value="pending">待处理</option>
+                <option value="in-progress">进行中</option>
+                <option value="completed">已完成</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label>截止日期</label>
+              <input id="deadline" type="date" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+              <label>团队名称</label>
+              <input id="providerName" class="form-control" required>
+            </div>
+            <div class="col-md-12">
+              <label>备注</label>
+              <input id="notes" class="form-control">
+            </div>
+          </div>
+
+          <div class="mt-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">创建订单</button>
+            <button type="reset" class="btn btn-secondary">重置</button>
+          </div>
+          <p id="orderMsg" class="mt-2 text-danger"></p>
+        </form>
+      </section>
+
+      <!-- 订单记录 -->
+      <section id="orderRecordDiv" class="section" style="display:none;">
+        <h2>订单记录</h2>
+        <div class="mb-3 filters">
+          <input id="filterClientName" class="form-control me-2" placeholder="按客户姓名筛选">
+          <input id="filterProviderName" class="form-control me-2" placeholder="按团队筛选">
+          <select id="filterStatus" class="form-select me-2" style="width:160px;">
+            <option value="">所有状态</option>
+            <option value="pending">待处理</option>
+            <option value="in-progress">进行中</option>
+            <option value="completed">已完成</option>
+          </select>
+          <button class="btn btn-primary" onclick="fetchOrders()">筛选</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead>
+              <tr>
+                <th>订单ID</th>
+                <th>客户</th>
+                <th>价值</th>
+                <th>类型</th>
+                <th>状态</th>
+                <th>团队</th>
+                <th>备注</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="orderTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 添加合同记录 -->
+      <section id="contractDiv" class="section" style="display:none;">
+        <h2>添加合同记录</h2>
+        <form id="contractForm" class="form-compact">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label>订单ID（可选）</label>
+              <input id="contractOrderId" type="number" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>客户姓名</label>
+              <input id="contractClientName" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+              <label>团队名称</label>
+              <input id="contractProviderName" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+              <label>项目价值</label>
+              <input id="contractProjectValue" type="number" class="form-control" min="100" max="10000" required>
+            </div>
+            <div class="col-md-4">
+              <label>合同类型</label>
+              <select id="contractType" class="form-select" required>
+                <option value="client">客户中介服务合同</option>
+                <option value="provider">服务团队介绍费合同</option>
+                <option value="project">客户-服务团队项目合同</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label>服务类型</label>
+              <select id="contractServiceType" class="form-select" required>
+                <option value="film_video">影视与视频</option>
+                <option value="short_video">短视频内容</option>
+                <option value="post_production">后期制作</option>
+                <option value="animation">动画</option>
+                <option value="other">其他</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">生成合同并保存记录</button>
+            <button type="reset" class="btn btn-secondary">重置</button>
+          </div>
+          <p id="contractMsg" class="mt-2 text-danger"></p>
+        </form>
+      </section>
+
+      <!-- 合同记录 -->
+      <section id="contractRecordDiv" class="section" style="display:none;">
+        <h2>合同记录</h2>
+        <div class="mb-3 filters">
+          <input id="filterContractClient" class="form-control me-2" placeholder="按客户姓名筛选">
+          <input id="filterContractProvider" class="form-control me-2" placeholder="按团队姓名筛选">
+          <input id="filterContractOrderId" type="number" class="form-control me-2" placeholder="按订单ID筛选" style="width:160px;">
+          <input id="filterContractDate" type="date" class="form-control me-2" style="width:180px;">
+          <button class="btn btn-primary" onclick="fetchContracts()">筛选</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead>
+              <tr>
+                <th>合同ID</th>
+                <th>订单ID</th>
+                <th>客户姓名</th>
+                <th>团队姓名</th>
+                <th>服务类型</th>
+                <th>合同类型</th>
+                <th>创建日期</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="contractTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 数据统计（独立页） -->
+      <section id="statsDiv" class="section" style="display:none;">
+        <h2>数据统计（折线图）</h2>
+        <p>图表自动从所有订单的 `created_at_iso` 计算每日订单数量与每日总收入（client_fee + provider_fee）。</p>
+
+        <div class="chart-container">
+          <canvas id="trendChart" width="800" height="300"></canvas>
+        </div>
+
+        <div class="mt-3">
+          <button class="btn btn-outline-primary" onclick="renderStatistics()">刷新图表</button>
+          <button class="btn btn-outline-secondary" onclick="exportSnapshotCSV()">导出统计CSV</button>
+        </div>
+      </section>
+
+      <!-- 管理员管理 -->
+      <section id="adminDiv" class="section" style="display:none;">
+        <h2>管理员管理</h2>
+        <form id="adminForm" class="d-flex gap-2 mb-3">
+          <input id="newUsername" class="form-control" placeholder="新管理员用户名" required>
+          <input id="newAdminPassword" type="password" class="form-control" placeholder="新密码（至少6位）" required>
+          <input id="confirmAdminPassword" type="password" class="form-control" placeholder="确认新密码" required>
+          <button class="btn btn-primary" type="submit">添加</button>
+        </form>
+        <p id="adminMsg" class="text-danger"></p>
+
+        <table class="table table-bordered">
+          <thead><tr><th>用户名</th><th>上次登录</th><th>操作</th></tr></thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+      </section>
+
+      <!-- 修改密码 -->
+      <section id="changePasswordDiv" class="section" style="display:none;">
+        <h2>修改密码</h2>
+        <div class="d-flex gap-2" style="max-width:680px;">
+          <input id="oldPassword" type="password" class="form-control" placeholder="旧密码">
+          <input id="newPassword" type="password" class="form-control" placeholder="新密码（至少6位）">
+          <input id="confirmPassword" type="password" class="form-control" placeholder="确认新密码">
+          <button id="changeBtn" class="btn btn-primary">修改</button>
+        </div>
+        <p id="changeMsg" class="text-danger mt-2"></p>
+      </section>
+
+      <footer id="footer" class="mt-4">Goaoxor © 2025 管理后台 | 版本 1.4</footer>
+    </main>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- 你的业务脚本 -->
+  <script src="app.js"></script>
+</body>
+</html>
