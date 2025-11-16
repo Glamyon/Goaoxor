@@ -8,25 +8,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
   <style>
-    body { 
-      font-family: "Noto Sans SC", sans-serif; 
-      background: linear-gradient(135deg, #121212, #1e1e1e, #2a2a2a); 
+    body {
+      font-family: "Noto Sans SC", sans-serif;
+      background: linear-gradient(135deg, #121212, #1e1e1e, #2a2a2a);
       color: #e0e0e0; /* 主要文本颜色：浅灰 */
       margin: 0;
       overflow: hidden;
       font-size: 16px;
       line-height: 1.6;
     }
-    #loginDiv { 
+    #loginDiv {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100vh;
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background: linear-gradient(135deg, #007bff, #00b4d8);
       z-index: 1000;
       overflow: hidden;
@@ -42,24 +43,24 @@
       opacity: 0.5;
       z-index: 0;
     }
-    #loginCard { 
+    #loginCard {
       background: rgba(30, 30, 30, 0.9);
       padding: 50px;
       border-radius: 15px;
       width: 450px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      text-align: center; 
-      animation: fadeIn 0.8s ease-in; 
+      text-align: center;
+      animation: fadeIn 0.8s ease-in;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
       z-index: 1;
     }
-    @keyframes fadeIn { 
-      from { opacity: 0; transform: translateY(-20px); } 
-      to { opacity: 1; transform: translateY(0); } 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    #loginCard h2 { 
-      margin-bottom: 30px; 
+    #loginCard h2 {
+      margin-bottom: 30px;
       color: #ffffff;
       font-weight: 700;
       text-shadow: 0 1px 4px rgba(0,0,0,0.2);
@@ -72,7 +73,7 @@
       font-size: 14px;
       color: #cccccc;
     }
-    #loginCard input, #loginCard select { 
+    #loginCard input, #loginCard select {
       width: 100%;
       padding: 14px;
       margin: 10px 0 20px;
@@ -83,7 +84,7 @@
       color: #ffffff;
       transition: border 0.3s, box-shadow 0.3s;
     }
-    #loginCard input::placeholder, #loginCard select option[disabled] { 
+    #loginCard input::placeholder, #loginCard select option[disabled] {
       color: #a5d8ff; /* 浅蓝，高对比度占位符 */
       opacity: 1; /* 确保占位符清晰可见 */
     }
@@ -91,12 +92,12 @@
       color: #000000; /* 选项文字为黑色，确保在下拉菜单中清晰 */
       background: #ffffff; /* 下拉菜单背景为白色 */
     }
-    #loginCard input:focus, #loginCard select:focus { 
+    #loginCard input:focus, #loginCard select:focus {
       border-color: #00b4d8;
       box-shadow: 0 0 0 0.25rem rgba(0, 180, 216, 0.4);
       outline: none;
     }
-    #loginCard button { 
+    #loginCard button {
       width: 100%;
       padding: 14px;
       background: linear-gradient(90deg, #007bff, #00b4d8);
@@ -107,11 +108,11 @@
       cursor: pointer;
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    #loginCard button:hover { 
+    #loginCard button:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 15px rgba(0, 180, 216, 0.6);
     }
-    #loginMsg { 
+    #loginMsg {
       margin-top: 15px;
       color: #ff4757;
       font-size: 14px;
@@ -121,15 +122,14 @@
       font-size: 14px;
       margin-top: 10px;
     }
-
-    #mainDiv { 
+    #mainDiv {
       display: none;
       height: 100vh;
       overflow: hidden;
       position: relative;
       z-index: 1;
     }
-    #sidebar { 
+    #sidebar {
       width: 280px;
       background: linear-gradient(180deg, #1e1e1e, #121212);
       color: #e0e0e0;
@@ -139,7 +139,7 @@
       padding-top: 40px;
       box-shadow: 4px 0 20px rgba(0,0,0,0.5);
     }
-    #sidebar h3 { 
+    #sidebar h3 {
       text-align: center;
       margin-bottom: 40px;
       font-weight: 600;
@@ -148,7 +148,7 @@
       text-shadow: 0 1px 4px rgba(0,0,0,0.2);
       color: #ffffff;
     }
-    #sidebar button { 
+    #sidebar button {
       width: 100%;
       padding: 18px;
       border: none;
@@ -161,24 +161,23 @@
       transition: background 0.3s, padding-left 0.3s, transform 0.3s;
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
-    #sidebar button:hover { 
+    #sidebar button:hover {
       background: rgba(0, 180, 216, 0.3);
       padding-left: 40px;
       transform: translateY(-2px);
     }
-    #sidebar .active { 
+    #sidebar .active {
       background: rgba(0, 180, 216, 0.4);
       padding-left: 40px;
       border-left: 5px solid #00b4d8;
     }
-
-    #content { 
+    #content {
       flex: 1;
       padding: 40px;
       background: linear-gradient(135deg, #121212, #1e1e1e);
       overflow-y: auto;
     }
-    #topBar { 
+    #topBar {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -190,18 +189,17 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,0.2);
     }
-    #topBar .welcome { 
+    #topBar .welcome {
       font-size: 20px;
       color: #ffffff;
       font-weight: 600;
       text-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
-    #topBar .time { 
+    #topBar .time {
       font-size: 15px;
       color: #a5d8ff;
     }
-
-    .toolCard { 
+    .toolCard {
       background: rgba(30, 30, 30, 0.9);
       padding: 25px;
       border-radius: 12px;
@@ -216,32 +214,31 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,0.2);
     }
-    .toolCard:hover { 
+    .toolCard:hover {
       transform: translateY(-6px);
       box-shadow: 0 10px 25px rgba(0, 180, 216, 0.5);
     }
-    .toolCard a { 
+    .toolCard a {
       text-decoration: none;
       color: #ffffff;
       display: block;
       margin-top: 15px;
       font-weight: 600;
     }
-    .toolCard h4 { 
+    .toolCard h4 {
       margin-bottom: 15px;
       color: #ffffff;
       font-size: 20px;
       text-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
-    .toolCard p { 
+    .toolCard p {
       color: #a5d8ff;
       font-size: 15px;
     }
-
-    .form-group { 
+    .form-group {
       margin-bottom: 25px;
     }
-    .form-control, .form-select { 
+    .form-control, .form-select {
       border-radius: 8px;
       border: 1px solid rgba(255,255,255,0.3);
       background: rgba(255,255,255,0.1);
@@ -249,7 +246,7 @@
       transition: border 0.3s, box-shadow 0.3s;
       font-size: 16px;
     }
-    .form-control::placeholder, .form-select option[disabled] { 
+    .form-control::placeholder, .form-select option[disabled] {
       color: #a5d8ff; /* 浅蓝，高对比度占位符 */
       opacity: 1;
     }
@@ -257,12 +254,12 @@
       color: #000000;
       background: #ffffff;
     }
-    .form-control:focus, .form-select:focus { 
+    .form-control:focus, .form-select:focus {
       border-color: #00b4d8;
       box-shadow: 0 0 0 0.25rem rgba(0, 180, 216, 0.4);
       outline: none;
     }
-    .btn-primary { 
+    .btn-primary {
       background: linear-gradient(90deg, #007bff, #00b4d8);
       border: none;
       padding: 12px 25px;
@@ -270,11 +267,11 @@
       color: #ffffff;
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    .btn-primary:hover { 
+    .btn-primary:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 15px rgba(0, 180, 216, 0.6);
     }
-    .btn-secondary { 
+    .btn-secondary {
       background: #6c757d;
       border: none;
       padding: 12px 25px;
@@ -282,10 +279,10 @@
       color: #ffffff;
       transition: transform 0.3s;
     }
-    .btn-secondary:hover { 
+    .btn-secondary:hover {
       transform: translateY(-3px);
     }
-    .btn-danger { 
+    .btn-danger {
       background: #ff4757;
       border: none;
       padding: 12px 25px;
@@ -293,35 +290,63 @@
       color: #ffffff;
       transition: transform 0.3s;
     }
-    .btn-danger:hover { 
+    .btn-danger:hover {
       transform: translateY(-3px);
     }
-    .error { 
+    .error {
       color: #ff4757;
       font-size: 14px;
       margin-top: 10px;
     }
-    .success { 
+    .success {
       color: #2ed573;
       font-size: 14px;
       margin-top: 10px;
     }
-    #adminTable th, #adminTable td { 
+    #adminTable th, #adminTable td {
       vertical-align: middle;
       color: #e0e0e0;
     }
-    #adminTable th { 
+    #adminTable th {
       background: rgba(0, 180, 216, 0.3);
     }
-    #adminTable td { 
+    #adminTable td {
       background: rgba(30, 30, 30, 0.9);
     }
-    #footer { 
+    #footer {
       text-align: center;
       padding: 25px;
       color: #a5d8ff;
       font-size: 15px;
       text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .chart-container {
+      background: rgba(30, 30, 30, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .stat-item {
+      background: rgba(30, 30, 30, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    .stat-item h4 {
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+    .stat-item p {
+      font-size: 24px;
+      color: #00b4d8;
     }
     @media (max-width: 900px) {
       #mainDiv { flex-direction: column; }
@@ -350,7 +375,6 @@
       <p id="loginMsg" class="error"></p>
     </div>
   </div>
-
   <!-- 主后台 -->
   <div id="mainDiv" class="d-flex">
     <div id="sidebar">
@@ -358,8 +382,9 @@
       <button id="navDashboard" class="active">首页</button>
       <button id="navOrder">添加订单</button>
       <button id="navOrderRecord">订单记录</button>
-      <button id="navContract">合同生成器</button>
+      <button id="navContract">添加合同记录</button>
       <button id="navContractRecord">合同记录</button>
+      <button id="navStatistics">数据统计</button>
       <button id="navAdmin">管理员管理</button>
       <button id="navChange">修改密码</button>
       <button id="navLogout">退出并下载数据</button>
@@ -369,7 +394,6 @@
         <div class="welcome">欢迎，<span id="currentUser">管理员</span>！ 上次登录: <span id="lastLogin">未记录</span></div>
         <div id="currentTime"></div>
       </div>
-
       <!-- 首页 -->
       <div id="dashboard">
         <h2>Goaoxor 生态首页</h2>
@@ -406,11 +430,6 @@
             <a href="#" onclick="showSection('contractRecordDiv')" class="btn btn-primary btn-sm">查看记录</a>
           </div>
           <div class="toolCard col-md-4">
-            <h4>数据统计</h4>
-            <p>查看收入、订单数量和状态分布。</p>
-            <a href="#" onclick="showStatistics()" class="btn btn-primary btn-sm">查看统计</a>
-          </div>
-          <div class="toolCard col-md-4">
             <h4>数据备份</h4>
             <p>导出订单和合同数据。</p>
             <a href="#" onclick="exportData()" class="btn btn-primary btn-sm">导出备份</a>
@@ -422,7 +441,6 @@
           </div>
         </div>
       </div>
-
       <!-- 管理员管理 -->
       <div id="adminDiv" style="display:none;">
         <h2>管理员管理</h2>
@@ -451,7 +469,6 @@
           <tbody id="adminTableBody"></tbody>
         </table>
       </div>
-
       <!-- 修改密码 -->
       <div id="changePasswordDiv" style="display:none;">
         <h2>修改密码</h2>
@@ -464,7 +481,6 @@
         <button id="changeBtn" class="btn btn-primary">确认修改</button>
         <p id="changeMsg" class="error"></p>
       </div>
-
       <!-- 订单管理 -->
       <div id="orderDiv" style="display:none;">
         <h2>添加订单</h2>
@@ -518,7 +534,6 @@
         </form>
         <p id="orderMsg" class="error"></p>
       </div>
-
       <!-- 订单记录 -->
       <div id="orderRecordDiv" style="display:none;">
         <h2>订单记录</h2>
@@ -552,7 +567,6 @@
           <tbody id="orderTable"></tbody>
         </table>
       </div>
-
       <!-- 添加合同记录 -->
       <div id="contractDiv" style="display:none;">
         <h2>添加合同记录</h2>
@@ -601,7 +615,6 @@
         </form>
         <p id="contractMsg" class="error"></p>
       </div>
-
       <!-- 合同记录 -->
       <div id="contractRecordDiv" style="display:none;">
         <h2>合同记录</h2>
@@ -632,11 +645,47 @@
           <tbody id="contractTable"></tbody>
         </table>
       </div>
-
+      <!-- 数据统计 -->
+      <div id="statisticsDiv" style="display:none;">
+        <h2>数据统计</h2>
+        <div class="stats-summary">
+          <div class="stat-item">
+            <h4>订单总数</h4>
+            <p id="totalOrders">0</p>
+          </div>
+          <div class="stat-item">
+            <h4>总收入</h4>
+            <p id="totalIncome">$0.00</p>
+          </div>
+          <div class="stat-item">
+            <h4>待处理订单</h4>
+            <p id="pendingOrders">0</p>
+          </div>
+          <div class="stat-item">
+            <h4>进行中订单</h4>
+            <p id="inProgressOrders">0</p>
+          </div>
+          <div class="stat-item">
+            <h4>已完成订单</h4>
+            <p id="completedOrders">0</p>
+          </div>
+          <div class="stat-item">
+            <h4>合同总数</h4>
+            <p id="totalContracts">0</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <h4>收入趋势（按月）</h4>
+          <canvas id="incomeChart" height="200"></canvas>
+        </div>
+        <div class="chart-container">
+          <h4>订单状态分布</h4>
+          <canvas id="statusChart" height="200"></canvas>
+        </div>
+      </div>
       <div id="footer">Goaoxor © 2025 管理后台 | 版本 1.4</div>
     </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // 全局数据存储
@@ -646,7 +695,8 @@
       contracts: [],
       logs: []
     };
-
+    let incomeChart;
+    let statusChart;
     // 初始化默认数据
     async function initializeDefaultData() {
       const defaultAdmin = {
@@ -661,7 +711,6 @@
       console.log('初始化默认管理员账户: admin / 123456');
       loadAdminList();
     }
-
     // SHA-256 哈希函数
     async function sha256(str) {
       try {
@@ -674,13 +723,11 @@
         throw e;
       }
     }
-
     // 记录日志
     function logAction(action, username) {
       appData.logs.push({ action, username, timestamp: new Date().toLocaleString() });
       console.log('日志记录:', action, username);
     }
-
     // 加载管理员列表到登录下拉框
     function loadAdminList() {
       const select = document.getElementById('usernameInput');
@@ -693,7 +740,6 @@
       });
       console.log('管理员列表:', appData.admins);
     }
-
     // 上传数据文件
     document.getElementById('dataFileInput').addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -717,7 +763,6 @@
       };
       reader.readAsText(file);
     });
-
     // 费用计算逻辑
     function calculateFees(projectValue) {
       let clientFee, providerFee;
@@ -746,7 +791,6 @@
         clientCost: clientFee + projectValue
       };
     }
-
     // 登录
     document.getElementById('loginBtn').addEventListener('click', async () => {
       const username = DOMPurify.sanitize(document.getElementById('usernameInput').value);
@@ -779,7 +823,6 @@
         console.error('登录加密错误:', e);
       }
     });
-
     // 添加管理员
     document.getElementById('adminForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -813,7 +856,6 @@
         console.error('添加管理员加密错误:', e);
       }
     });
-
     // 删除管理员
     function deleteAdmin(username) {
       if (appData.admins.length <= 1) {
@@ -828,7 +870,6 @@
       logAction(`删除管理员: ${username}`, sessionStorage.getItem('currentUser'));
       fetchAdmins();
     }
-
     // 获取管理员列表
     function fetchAdmins() {
       const tbody = document.getElementById('adminTableBody');
@@ -843,7 +884,6 @@
         tbody.appendChild(tr);
       });
     }
-
     // 修改密码
     document.getElementById('changeBtn').addEventListener('click', async () => {
       const oldPwd = document.getElementById('oldPassword').value;
@@ -878,7 +918,6 @@
         console.error('修改密码加密错误:', e);
       }
     });
-
     // 创建订单
     document.getElementById('orderForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -922,7 +961,6 @@
       msg.textContent = '订单创建成功！';
       document.getElementById('orderForm').reset();
     });
-
     // 获取订单
     function fetchOrders() {
       const clientName = DOMPurify.sanitize(document.getElementById('filterClientName').value);
@@ -982,7 +1020,6 @@
         tbody.appendChild(tr);
       });
     }
-
     // 更新订单状态
     function updateOrderStatus(orderId, status) {
       const order = appData.orders.find(o => o.id === orderId);
@@ -994,7 +1031,6 @@
         fetchOrders();
       }
     }
-
     // 生成合同
     function generateContract(orderId, type, clientName = null, providerName = null, projectValue = null, serviceType = null) {
       const order = orderId ? appData.orders.find(o => o.id === orderId) : null;
@@ -1040,7 +1076,6 @@
       };
       appData.contracts.push(contract);
       logAction(`生成合同: 订单 ${contractData.id}, 类型 ${type} (Memory/Contract/contracts.json)`, sessionStorage.getItem('currentUser'));
-
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       doc.setFontSize(16);
@@ -1091,12 +1126,10 @@
       }
       doc.text('条款: 知识产权归客户所有。仲裁地: 新加坡。', 20, 160);
       doc.save(`contract_order_${contractData.id}_${type}.pdf`);
-
       document.getElementById('contractMsg').className = 'success';
       document.getElementById('contractMsg').textContent = '合同生成并下载成功！';
       fetchContracts();
     }
-
     // 获取合同
     function fetchContracts() {
       const clientName = DOMPurify.sanitize(document.getElementById('filterContractClient').value);
@@ -1148,17 +1181,76 @@
         tbody.appendChild(tr);
       });
     }
-
-    // 显示统计
-    function showStatistics() {
+    // 更新统计和图表
+    function updateStatistics() {
       const totalOrders = appData.orders.length;
       const totalIncome = appData.orders.reduce((sum, o) => sum + o.client_fee + o.provider_fee, 0);
       const pending = appData.orders.filter(o => o.status === 'pending').length;
       const inProgress = appData.orders.filter(o => o.status === 'in-progress').length;
       const completed = appData.orders.filter(o => o.status === 'completed').length;
-      alert(`订单总数: ${totalOrders}\n总收入: $${totalIncome.toFixed(2)}\n待处理: ${pending}\n进行中: ${inProgress}\n已完成: ${completed}`);
-    }
+      const totalContracts = appData.contracts.length;
 
+      document.getElementById('totalOrders').textContent = totalOrders;
+      document.getElementById('totalIncome').textContent = `$${totalIncome.toFixed(2)}`;
+      document.getElementById('pendingOrders').textContent = pending;
+      document.getElementById('inProgressOrders').textContent = inProgress;
+      document.getElementById('completedOrders').textContent = completed;
+      document.getElementById('totalContracts').textContent = totalContracts;
+
+      // 聚合收入数据按月
+      const monthlyIncome = {};
+      appData.orders.forEach(order => {
+        const date = new Date(order.created_at);
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        if (!monthlyIncome[monthKey]) {
+          monthlyIncome[monthKey] = 0;
+        }
+        monthlyIncome[monthKey] += order.client_fee + order.provider_fee;
+      });
+
+      const sortedMonths = Object.keys(monthlyIncome).sort();
+      const labels = sortedMonths.map(key => key);
+      const data = sortedMonths.map(key => monthlyIncome[key]);
+
+      // 更新折线图
+      if (incomeChart) incomeChart.destroy();
+      incomeChart = new Chart(document.getElementById('incomeChart'), {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '月收入 ($)',
+            data: data,
+            borderColor: '#00b4d8',
+            backgroundColor: 'rgba(0, 180, 216, 0.2)',
+            fill: true,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+
+      // 更新饼图（订单状态分布）
+      if (statusChart) statusChart.destroy();
+      statusChart = new Chart(document.getElementById('statusChart'), {
+        type: 'pie',
+        data: {
+          labels: ['待处理', '进行中', '已完成'],
+          datasets: [{
+            data: [pending, inProgress, completed],
+            backgroundColor: ['#ff4757', '#ffc107', '#2ed573']
+          }]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    }
     // 导出数据
     function exportData() {
       const lastModified = new Date().toISOString().split('T')[0];
@@ -1175,15 +1267,13 @@
       logAction('退出并下载数据', sessionStorage.getItem('currentUser'));
       alert('数据下载成功！');
     }
-
     // 显示设置
     function showSettings() {
       alert('系统设置: 即将推出（例如修改定价、重置数据）。');
     }
-
     // 显示页面
     function showSection(section) {
-      ['dashboard', 'adminDiv', 'changePasswordDiv', 'orderDiv', 'orderRecordDiv', 'contractDiv', 'contractRecordDiv'].forEach(id => {
+      ['dashboard', 'adminDiv', 'changePasswordDiv', 'orderDiv', 'orderRecordDiv', 'contractDiv', 'contractRecordDiv', 'statisticsDiv'].forEach(id => {
         document.getElementById(id).style.display = id === section ? 'block' : 'none';
       });
       document.querySelectorAll('#sidebar button').forEach(b => b.classList.remove('active'));
@@ -1192,8 +1282,8 @@
       if (section === 'orderRecordDiv') fetchOrders();
       if (section === 'contractRecordDiv') fetchContracts();
       if (section === 'adminDiv') fetchAdmins();
+      if (section === 'statisticsDiv') updateStatistics();
     }
-
     // 绑定导航事件
     document.getElementById('navDashboard').addEventListener('click', () => showSection('dashboard'));
     document.getElementById('navAdmin').addEventListener('click', () => showSection('adminDiv'));
@@ -1202,6 +1292,7 @@
     document.getElementById('navOrderRecord').addEventListener('click', () => showSection('orderRecordDiv'));
     document.getElementById('navContract').addEventListener('click', () => showSection('contractDiv'));
     document.getElementById('navContractRecord').addEventListener('click', () => showSection('contractRecordDiv'));
+    document.getElementById('navStatistics').addEventListener('click', () => showSection('statisticsDiv'));
     document.getElementById('navLogout').addEventListener('click', () => {
       exportData();
       sessionStorage.removeItem('currentUser');
@@ -1212,7 +1303,6 @@
       document.getElementById('usernameInput').value = '';
       document.getElementById('dataFileInput').value = '';
     });
-
     // 合同生成表单
     document.getElementById('contractForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1224,13 +1314,11 @@
       const serviceType = document.getElementById('contractServiceType').value;
       generateContract(orderId, type, clientName, providerName, projectValue, serviceType);
     });
-
     // 更新时间
     function updateTime() {
       document.getElementById('currentTime').textContent = new Date().toLocaleString();
     }
     setInterval(updateTime, 1000);
-
     // 初始化
     window.onload = async () => {
       await initializeDefaultData();
