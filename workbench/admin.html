@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Goaoxor 管理后台</title>
 
   <!-- Bootstrap (仅用于布局和按钮) -->
@@ -29,11 +29,8 @@
       <label for="dataFileInput" class="form-label">上传 goaoxor_data.json 文件（恢复整个后台）</label>
       <input type="file" id="dataFileInput" class="form-control mb-2" accept=".json">
 
-      <label for="usernameInput" class="form-label mt-2">选择管理员</label>
-      <select id="usernameInput" class="form-select mb-2">
-        <option value="" disabled selected>选择管理员账户</option>
-        <option value="" disabled selected>admin</option>
-      </select>
+      <label for="usernameInput" class="form-label mt-2">管理员账户</label>
+      <input type="text" id="usernameInput" class="form-control mb-2" placeholder="请输入管理员账户" required>
 
       <label for="passwordInput" class="form-label mt-2">密码</label>
       <input type="password" id="passwordInput" class="form-control mb-3" placeholder="请输入密码">
@@ -342,4 +339,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
