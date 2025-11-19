@@ -334,7 +334,7 @@
   // 仅改动这里：提交到 Make Webhook
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    if (!validatePage(5)) { alert('请填写所有必填项后再提交'); return; }
+    if (!validatePage(5)) { alert('Please complete all required fields before submitting.'); return; }
 
     loadingOverlay.style.display = 'flex';
     const formData = new FormData(form);
@@ -352,18 +352,20 @@
         window.location.replace('https://goaoxor.com/Form/thank-you.html');
       } else {
         console.error('HTTP error', response.status);
-        alert('提交失败，请稍后再试');
+        alert('Submission failed. Please try again later.');
         loadingOverlay.style.display = 'none';
       }
     } catch (err) {
       console.error('网络错误', err);
-      alert('提交失败，请检查网络或联系 info@goaoxor.com');
+      alert('Submission failed. Check your network or contact info@goaoxor.com
+.');
       loadingOverlay.style.display = 'none';
     }
   });
 </script>
 </body>
 </html>
+
 
 
 
